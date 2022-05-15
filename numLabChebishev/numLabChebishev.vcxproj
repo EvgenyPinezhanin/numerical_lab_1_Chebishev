@@ -129,17 +129,25 @@ xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chebishev.cpp" />
+    <ClCompile Include="HelpForm.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="matrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chebishev.h" />
+    <ClInclude Include="HelpForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="info.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="matrix.h" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="HelpForm.resx">
+      <DependentUpon>HelpForm.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>

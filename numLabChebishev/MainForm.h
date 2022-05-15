@@ -3,6 +3,8 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include "HelpForm.h"
+#include "info.h"
 
 namespace numLabChebishev {
 
@@ -13,8 +15,6 @@ namespace numLabChebishev {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
-	enum class APPROX { LINEARX, LINEARY, AVERAGE, ZERO };
 
 	// Функция для проверки, что переменная типа double лежит в диапазоне чисел decimal
 	bool double_in_dec(double d) {
@@ -55,15 +55,14 @@ namespace numLabChebishev {
 		double epsMet;
 		int Nmax;
 		APPROX startApprox;
+		TASK task;
 		double h, k;
-	private: System::Windows::Forms::TableLayoutPanel^ TableLayoutPanelMain;
-	private: System::Windows::Forms::ToolStripMenuItem^ справкаToolStripMenuItem;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart2;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart3;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart4;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart5;
 
-
-
-
-
-	private: System::Windows::Forms::SplitContainer^ SplitContainerChartTable;
+		HelpForm^ hForm;
 
 	public:
 		MainForm(void)
@@ -74,6 +73,8 @@ namespace numLabChebishev {
 			imageMain = gcnew Bitmap("images/main_task.png");
 
 			PictureBoxEquation->Image = (Image^)imageTest;
+
+			hForm = gcnew HelpForm();
 		}
 
 	protected:
@@ -104,7 +105,8 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::MenuStrip^ MenuStripMain;
 	private: System::Windows::Forms::ToolStripMenuItem^ задачаToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ решатьToolStripMenuItem;
-	private: System::Windows::Forms::PictureBox^ PictureBoxChart;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart1;
+
 	private: System::Windows::Forms::ToolStripMenuItem^ графикToolStripMenuItem;
 	private: System::Windows::Forms::GroupBox^ GroupBoxApproximation;
 	private: System::Windows::Forms::RadioButton^ RadioButtonApproxZero;
@@ -117,9 +119,13 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::Label^ LabelStep;
 	private: System::Windows::Forms::Label^ LabelAccuracy;
 	private: System::Windows::Forms::TabControl^ TabControlTable;
-	private: System::Windows::Forms::TabPage^ TabPageV;
-	private: System::Windows::Forms::TabPage^ tabPageU2V;
-	private: System::Windows::Forms::TabPage^ tabPageU_V;
+	private: System::Windows::Forms::TabPage^ tabPage6;
+
+	private: System::Windows::Forms::TabPage^ tabPage7;
+	private: System::Windows::Forms::TabPage^ tabPage8;
+
+
+
 	private: System::Windows::Forms::DataGridView^ TableV;
 	private: System::Windows::Forms::DataGridView^ TableU2V;
 	private: System::Windows::Forms::DataGridView^ TableU_V;
@@ -135,13 +141,22 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::ToolStripMenuItem^ численноеРешениеV2xYToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ разностьЧисленныхРешенийToolStripMenuItem;
 	private: System::Windows::Forms::TabControl^ TabControlChart;
-	private: System::Windows::Forms::TabPage^ tabPage;
+	private: System::Windows::Forms::TabPage^ tabPage1;
+
 	private: System::Windows::Forms::TabPage^ tabPage2;
 	private: System::Windows::Forms::TabPage^ tabPage3;
 	private: System::Windows::Forms::TabPage^ tabPage4;
 	private: System::Windows::Forms::TabPage^ tabPage5;
 	private: System::Windows::Forms::TextBox^ TextBoxK;
 	private: System::Windows::Forms::Label^ LabelK;
+	private: System::Windows::Forms::TableLayoutPanel^ TableLayoutPanelMain;
+	private: System::Windows::Forms::ToolStripMenuItem^ справкаToolStripMenuItem;
+
+
+
+
+
+	private: System::Windows::Forms::SplitContainer^ SplitContainerChartTable;
 	private: System::ComponentModel::IContainer^ components;
 
 
@@ -186,22 +201,27 @@ namespace numLabChebishev {
 			this->PictureBoxEquation = (gcnew System::Windows::Forms::PictureBox());
 			this->ComboBoxTask = (gcnew System::Windows::Forms::ComboBox());
 			this->TabControlChart = (gcnew System::Windows::Forms::TabControl());
-			this->tabPage = (gcnew System::Windows::Forms::TabPage());
-			this->PictureBoxChart = (gcnew System::Windows::Forms::PictureBox());
+			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
+			this->PictureBoxChart1 = (gcnew System::Windows::Forms::PictureBox());
 			this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
+			this->PictureBoxChart2 = (gcnew System::Windows::Forms::PictureBox());
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
+			this->PictureBoxChart3 = (gcnew System::Windows::Forms::PictureBox());
 			this->tabPage4 = (gcnew System::Windows::Forms::TabPage());
+			this->PictureBoxChart4 = (gcnew System::Windows::Forms::PictureBox());
 			this->tabPage5 = (gcnew System::Windows::Forms::TabPage());
+			this->PictureBoxChart5 = (gcnew System::Windows::Forms::PictureBox());
 			this->TabControlTable = (gcnew System::Windows::Forms::TabControl());
-			this->TabPageV = (gcnew System::Windows::Forms::TabPage());
+			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
 			this->TableV = (gcnew System::Windows::Forms::DataGridView());
-			this->tabPageU2V = (gcnew System::Windows::Forms::TabPage());
+			this->tabPage7 = (gcnew System::Windows::Forms::TabPage());
 			this->TableU2V = (gcnew System::Windows::Forms::DataGridView());
-			this->tabPageU_V = (gcnew System::Windows::Forms::TabPage());
+			this->tabPage8 = (gcnew System::Windows::Forms::TabPage());
 			this->TableU_V = (gcnew System::Windows::Forms::DataGridView());
 			this->MenuStripMain = (gcnew System::Windows::Forms::MenuStrip());
 			this->задачаToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->решатьToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->справкаToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->графикToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->TestToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->точноеРешениеUxYToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -216,7 +236,6 @@ namespace numLabChebishev {
 			this->разностьЧисленныхРешенийToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->TableLayoutPanelMain = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->SplitContainerChartTable = (gcnew System::Windows::Forms::SplitContainer());
-			this->справкаToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->TableLayoutPanelTaskOptHelp->SuspendLayout();
 			this->GroupBoxOpt->SuspendLayout();
 			this->GroupBoxStop->SuspendLayout();
@@ -225,14 +244,22 @@ namespace numLabChebishev {
 			this->GroupBoxEquation->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxEquation))->BeginInit();
 			this->TabControlChart->SuspendLayout();
-			this->tabPage->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart))->BeginInit();
+			this->tabPage1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart1))->BeginInit();
+			this->tabPage2->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart2))->BeginInit();
+			this->tabPage3->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart3))->BeginInit();
+			this->tabPage4->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart4))->BeginInit();
+			this->tabPage5->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart5))->BeginInit();
 			this->TabControlTable->SuspendLayout();
-			this->TabPageV->SuspendLayout();
+			this->tabPage6->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableV))->BeginInit();
-			this->tabPageU2V->SuspendLayout();
+			this->tabPage7->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU2V))->BeginInit();
-			this->tabPageU_V->SuspendLayout();
+			this->tabPage8->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU_V))->BeginInit();
 			this->MenuStripMain->SuspendLayout();
 			this->TableLayoutPanelMain->SuspendLayout();
@@ -519,7 +546,7 @@ namespace numLabChebishev {
 			// 
 			// TabControlChart
 			// 
-			this->TabControlChart->Controls->Add(this->tabPage);
+			this->TabControlChart->Controls->Add(this->tabPage1);
 			this->TabControlChart->Controls->Add(this->tabPage2);
 			this->TabControlChart->Controls->Add(this->tabPage3);
 			this->TabControlChart->Controls->Add(this->tabPage4);
@@ -528,91 +555,131 @@ namespace numLabChebishev {
 			this->TabControlChart->Location = System::Drawing::Point(0, 0);
 			this->TabControlChart->Name = L"TabControlChart";
 			this->TabControlChart->SelectedIndex = 0;
-			this->TabControlChart->Size = System::Drawing::Size(1076, 347);
+			this->TabControlChart->Size = System::Drawing::Size(1076, 556);
 			this->TabControlChart->TabIndex = 1;
 			// 
-			// tabPage
+			// tabPage1
 			// 
-			this->tabPage->Controls->Add(this->PictureBoxChart);
-			this->tabPage->Location = System::Drawing::Point(4, 25);
-			this->tabPage->Name = L"tabPage";
-			this->tabPage->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage->Size = System::Drawing::Size(1068, 318);
-			this->tabPage->TabIndex = 0;
-			this->tabPage->Text = L"tabPage1";
-			this->tabPage->UseVisualStyleBackColor = true;
+			this->tabPage1->Controls->Add(this->PictureBoxChart1);
+			this->tabPage1->Location = System::Drawing::Point(4, 25);
+			this->tabPage1->Name = L"tabPage1";
+			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage1->Size = System::Drawing::Size(1068, 527);
+			this->tabPage1->TabIndex = 0;
+			this->tabPage1->Text = L"U(x, y)";
+			this->tabPage1->UseVisualStyleBackColor = true;
 			// 
-			// PictureBoxChart
+			// PictureBoxChart1
 			// 
-			this->PictureBoxChart->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->PictureBoxChart->Location = System::Drawing::Point(3, 3);
-			this->PictureBoxChart->Name = L"PictureBoxChart";
-			this->PictureBoxChart->Size = System::Drawing::Size(1062, 312);
-			this->PictureBoxChart->TabIndex = 0;
-			this->PictureBoxChart->TabStop = false;
+			this->PictureBoxChart1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->PictureBoxChart1->Location = System::Drawing::Point(3, 3);
+			this->PictureBoxChart1->Name = L"PictureBoxChart1";
+			this->PictureBoxChart1->Size = System::Drawing::Size(1062, 521);
+			this->PictureBoxChart1->TabIndex = 0;
+			this->PictureBoxChart1->TabStop = false;
 			// 
 			// tabPage2
 			// 
+			this->tabPage2->Controls->Add(this->PictureBoxChart2);
 			this->tabPage2->Location = System::Drawing::Point(4, 25);
 			this->tabPage2->Name = L"tabPage2";
 			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(1073, 410);
+			this->tabPage2->Size = System::Drawing::Size(1068, 527);
 			this->tabPage2->TabIndex = 1;
-			this->tabPage2->Text = L"tabPage2";
+			this->tabPage2->Text = L"V(0)(xi, yj)";
 			this->tabPage2->UseVisualStyleBackColor = true;
+			// 
+			// PictureBoxChart2
+			// 
+			this->PictureBoxChart2->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->PictureBoxChart2->Location = System::Drawing::Point(3, 3);
+			this->PictureBoxChart2->Name = L"PictureBoxChart2";
+			this->PictureBoxChart2->Size = System::Drawing::Size(1062, 521);
+			this->PictureBoxChart2->TabIndex = 0;
+			this->PictureBoxChart2->TabStop = false;
 			// 
 			// tabPage3
 			// 
+			this->tabPage3->Controls->Add(this->PictureBoxChart3);
 			this->tabPage3->Location = System::Drawing::Point(4, 25);
 			this->tabPage3->Name = L"tabPage3";
 			this->tabPage3->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage3->Size = System::Drawing::Size(1073, 410);
+			this->tabPage3->Size = System::Drawing::Size(1068, 527);
 			this->tabPage3->TabIndex = 2;
-			this->tabPage3->Text = L"tabPage3";
+			this->tabPage3->Text = L"V(N)(x, y)";
 			this->tabPage3->UseVisualStyleBackColor = true;
+			// 
+			// PictureBoxChart3
+			// 
+			this->PictureBoxChart3->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->PictureBoxChart3->Location = System::Drawing::Point(3, 3);
+			this->PictureBoxChart3->Name = L"PictureBoxChart3";
+			this->PictureBoxChart3->Size = System::Drawing::Size(1062, 521);
+			this->PictureBoxChart3->TabIndex = 0;
+			this->PictureBoxChart3->TabStop = false;
 			// 
 			// tabPage4
 			// 
+			this->tabPage4->Controls->Add(this->PictureBoxChart4);
 			this->tabPage4->Location = System::Drawing::Point(4, 25);
 			this->tabPage4->Name = L"tabPage4";
 			this->tabPage4->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage4->Size = System::Drawing::Size(1073, 410);
+			this->tabPage4->Size = System::Drawing::Size(1068, 527);
 			this->tabPage4->TabIndex = 3;
-			this->tabPage4->Text = L"tabPage4";
+			this->tabPage4->Text = L"U(x, y) - V(N)(x, y)";
 			this->tabPage4->UseVisualStyleBackColor = true;
+			// 
+			// PictureBoxChart4
+			// 
+			this->PictureBoxChart4->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->PictureBoxChart4->Location = System::Drawing::Point(3, 3);
+			this->PictureBoxChart4->Name = L"PictureBoxChart4";
+			this->PictureBoxChart4->Size = System::Drawing::Size(1062, 521);
+			this->PictureBoxChart4->TabIndex = 0;
+			this->PictureBoxChart4->TabStop = false;
 			// 
 			// tabPage5
 			// 
+			this->tabPage5->Controls->Add(this->PictureBoxChart5);
 			this->tabPage5->Location = System::Drawing::Point(4, 25);
 			this->tabPage5->Name = L"tabPage5";
 			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage5->Size = System::Drawing::Size(1073, 410);
+			this->tabPage5->Size = System::Drawing::Size(1068, 527);
 			this->tabPage5->TabIndex = 4;
-			this->tabPage5->Text = L"tabPage5";
+			this->tabPage5->Text = L"***";
 			this->tabPage5->UseVisualStyleBackColor = true;
+			// 
+			// PictureBoxChart5
+			// 
+			this->PictureBoxChart5->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->PictureBoxChart5->Location = System::Drawing::Point(3, 3);
+			this->PictureBoxChart5->Name = L"PictureBoxChart5";
+			this->PictureBoxChart5->Size = System::Drawing::Size(1062, 521);
+			this->PictureBoxChart5->TabIndex = 0;
+			this->PictureBoxChart5->TabStop = false;
 			// 
 			// TabControlTable
 			// 
-			this->TabControlTable->Controls->Add(this->TabPageV);
-			this->TabControlTable->Controls->Add(this->tabPageU2V);
-			this->TabControlTable->Controls->Add(this->tabPageU_V);
+			this->TabControlTable->Controls->Add(this->tabPage6);
+			this->TabControlTable->Controls->Add(this->tabPage7);
+			this->TabControlTable->Controls->Add(this->tabPage8);
 			this->TabControlTable->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->TabControlTable->Location = System::Drawing::Point(0, 0);
 			this->TabControlTable->Name = L"TabControlTable";
 			this->TabControlTable->SelectedIndex = 0;
-			this->TabControlTable->Size = System::Drawing::Size(1076, 343);
+			this->TabControlTable->Size = System::Drawing::Size(1076, 134);
 			this->TabControlTable->TabIndex = 1;
 			// 
-			// TabPageV
+			// tabPage6
 			// 
-			this->TabPageV->Controls->Add(this->TableV);
-			this->TabPageV->Location = System::Drawing::Point(4, 25);
-			this->TabPageV->Name = L"TabPageV";
-			this->TabPageV->Padding = System::Windows::Forms::Padding(3);
-			this->TabPageV->Size = System::Drawing::Size(1068, 314);
-			this->TabPageV->TabIndex = 0;
-			this->TabPageV->Text = L"V(x, y)";
-			this->TabPageV->UseVisualStyleBackColor = true;
+			this->tabPage6->Controls->Add(this->TableV);
+			this->tabPage6->Location = System::Drawing::Point(4, 25);
+			this->tabPage6->Name = L"tabPage6";
+			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage6->Size = System::Drawing::Size(1068, 105);
+			this->tabPage6->TabIndex = 0;
+			this->tabPage6->Text = L"U(x, y)";
+			this->tabPage6->UseVisualStyleBackColor = true;
 			// 
 			// TableV
 			// 
@@ -622,19 +689,19 @@ namespace numLabChebishev {
 			this->TableV->Name = L"TableV";
 			this->TableV->RowHeadersWidth = 51;
 			this->TableV->RowTemplate->Height = 24;
-			this->TableV->Size = System::Drawing::Size(1062, 308);
+			this->TableV->Size = System::Drawing::Size(1062, 99);
 			this->TableV->TabIndex = 0;
 			// 
-			// tabPageU2V
+			// tabPage7
 			// 
-			this->tabPageU2V->Controls->Add(this->TableU2V);
-			this->tabPageU2V->Location = System::Drawing::Point(4, 25);
-			this->tabPageU2V->Name = L"tabPageU2V";
-			this->tabPageU2V->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageU2V->Size = System::Drawing::Size(1073, 406);
-			this->tabPageU2V->TabIndex = 1;
-			this->tabPageU2V->Text = L"U(x, y)";
-			this->tabPageU2V->UseVisualStyleBackColor = true;
+			this->tabPage7->Controls->Add(this->TableU2V);
+			this->tabPage7->Location = System::Drawing::Point(4, 25);
+			this->tabPage7->Name = L"tabPage7";
+			this->tabPage7->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage7->Size = System::Drawing::Size(1068, 105);
+			this->tabPage7->TabIndex = 1;
+			this->tabPage7->Text = L"V(N)(x, y)";
+			this->tabPage7->UseVisualStyleBackColor = true;
 			// 
 			// TableU2V
 			// 
@@ -644,19 +711,19 @@ namespace numLabChebishev {
 			this->TableU2V->Name = L"TableU2V";
 			this->TableU2V->RowHeadersWidth = 51;
 			this->TableU2V->RowTemplate->Height = 24;
-			this->TableU2V->Size = System::Drawing::Size(1067, 400);
+			this->TableU2V->Size = System::Drawing::Size(1062, 99);
 			this->TableU2V->TabIndex = 0;
 			// 
-			// tabPageU_V
+			// tabPage8
 			// 
-			this->tabPageU_V->Controls->Add(this->TableU_V);
-			this->tabPageU_V->Location = System::Drawing::Point(4, 25);
-			this->tabPageU_V->Name = L"tabPageU_V";
-			this->tabPageU_V->Padding = System::Windows::Forms::Padding(3);
-			this->tabPageU_V->Size = System::Drawing::Size(1073, 406);
-			this->tabPageU_V->TabIndex = 2;
-			this->tabPageU_V->Text = L"U(x, y) - V(x, y)";
-			this->tabPageU_V->UseVisualStyleBackColor = true;
+			this->tabPage8->Controls->Add(this->TableU_V);
+			this->tabPage8->Location = System::Drawing::Point(4, 25);
+			this->tabPage8->Name = L"tabPage8";
+			this->tabPage8->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage8->Size = System::Drawing::Size(1068, 105);
+			this->tabPage8->TabIndex = 2;
+			this->tabPage8->Text = L"U(x, y) - V(N)(x, y)";
+			this->tabPage8->UseVisualStyleBackColor = true;
 			// 
 			// TableU_V
 			// 
@@ -666,7 +733,7 @@ namespace numLabChebishev {
 			this->TableU_V->Name = L"TableU_V";
 			this->TableU_V->RowHeadersWidth = 51;
 			this->TableU_V->RowTemplate->Height = 24;
-			this->TableU_V->Size = System::Drawing::Size(1067, 400);
+			this->TableU_V->Size = System::Drawing::Size(1062, 99);
 			this->TableU_V->TabIndex = 0;
 			// 
 			// MenuStripMain
@@ -695,9 +762,16 @@ namespace numLabChebishev {
 			// решатьToolStripMenuItem
 			// 
 			this->решатьToolStripMenuItem->Name = L"решатьToolStripMenuItem";
-			this->решатьToolStripMenuItem->Size = System::Drawing::Size(142, 26);
+			this->решатьToolStripMenuItem->Size = System::Drawing::Size(150, 26);
 			this->решатьToolStripMenuItem->Text = L"Решать";
 			this->решатьToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::решатьToolStripMenuItem_Click);
+			// 
+			// справкаToolStripMenuItem
+			// 
+			this->справкаToolStripMenuItem->Name = L"справкаToolStripMenuItem";
+			this->справкаToolStripMenuItem->Size = System::Drawing::Size(150, 26);
+			this->справкаToolStripMenuItem->Text = L"Справка";
+			this->справкаToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::справкаToolStripMenuItem_Click);
 			// 
 			// графикToolStripMenuItem
 			// 
@@ -819,15 +893,8 @@ namespace numLabChebishev {
 			// 
 			this->SplitContainerChartTable->Panel2->Controls->Add(this->TabControlTable);
 			this->SplitContainerChartTable->Size = System::Drawing::Size(1076, 694);
-			this->SplitContainerChartTable->SplitterDistance = 347;
+			this->SplitContainerChartTable->SplitterDistance = 556;
 			this->SplitContainerChartTable->TabIndex = 1;
-			// 
-			// справкаToolStripMenuItem
-			// 
-			this->справкаToolStripMenuItem->Name = L"справкаToolStripMenuItem";
-			this->справкаToolStripMenuItem->Size = System::Drawing::Size(224, 26);
-			this->справкаToolStripMenuItem->Text = L"Справка";
-			this->справкаToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::справкаToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
@@ -856,14 +923,22 @@ namespace numLabChebishev {
 			this->GroupBoxEquation->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxEquation))->EndInit();
 			this->TabControlChart->ResumeLayout(false);
-			this->tabPage->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart))->EndInit();
+			this->tabPage1->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart1))->EndInit();
+			this->tabPage2->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart2))->EndInit();
+			this->tabPage3->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart3))->EndInit();
+			this->tabPage4->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart4))->EndInit();
+			this->tabPage5->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart5))->EndInit();
 			this->TabControlTable->ResumeLayout(false);
-			this->TabPageV->ResumeLayout(false);
+			this->tabPage6->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableV))->EndInit();
-			this->tabPageU2V->ResumeLayout(false);
+			this->tabPage7->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU2V))->EndInit();
-			this->tabPageU_V->ResumeLayout(false);
+			this->tabPage8->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU_V))->EndInit();
 			this->MenuStripMain->ResumeLayout(false);
 			this->MenuStripMain->PerformLayout();
@@ -940,16 +1015,38 @@ namespace numLabChebishev {
 			proc->WaitForExit();
 			proc->Close();
 
-			PictureBoxChart->Image = Image::FromFile("./images/sinx.png");
+			PictureBoxChart1->Image = Image::FromFile("./images/sinx.png");
 		}
 
 		private: System::Void ComboBoxTask_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 			if (ComboBoxTask->Text == "Тестовая задача") {
+				task = TASK::TEST;
 				PictureBoxEquation->Image = (Image^)imageTest;
+
+				tabPage1->Text = "U(x, y)";
+				tabPage2->Text = "V(0)(xi, yi)";
+				tabPage3->Text = "V(N)(x, y)";
+				tabPage4->Text = "U(x, y) - V(N)(x, y)";
+				tabPage5->Text = "***";
+
+				tabPage6->Text = "U(x, y)";
+				tabPage7->Text = "V(N)(x, y)";
+				tabPage8->Text = "U(x, y) - V(N)(x, y)";
 			}
 			else
 			{
+				task = TASK::MAIN;
 				PictureBoxEquation->Image = (Image^)imageMain;
+
+				tabPage1->Text = "V(0)(xi, yj)";
+				tabPage2->Text = "V2(0)(xi, yj)";
+				tabPage3->Text = "V(N)(x, y)";
+				tabPage4->Text = "V2(N2)(x, y)";
+				tabPage5->Text = "V(N)(x, y) - V2(N2)(x, y)";
+
+				tabPage6->Text = "V(N)(x, y)";
+				tabPage7->Text = "V2(N2)(x, y)";
+				tabPage8->Text = "V(N)(x, y) - V2(N2)(x, y)";
 			}
 		}
 
@@ -970,7 +1067,8 @@ namespace numLabChebishev {
 		}
 
 		private: System::Void справкаToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-
+			// hForm->info->b = 100;
+			hForm->Show();
 		}
-	};
+};
 }
