@@ -21,7 +21,7 @@
     <ClCompile Include="chebishev.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="matrix.cpp">
+    <ClCompile Include="linsys.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="HelpForm.cpp">
@@ -35,7 +35,7 @@
     <ClInclude Include="chebishev.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="matrix.h">
+    <ClInclude Include="linsys.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="HelpForm.h">

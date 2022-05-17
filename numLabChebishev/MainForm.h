@@ -4,7 +4,9 @@
 #include <iostream>
 #include <string>
 #include "HelpForm.h"
+#include "linsys.h"
 #include "info.h"
+#include "chebishev.h"
 
 namespace numLabChebishev {
 
@@ -15,16 +17,6 @@ namespace numLabChebishev {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
-	// Функция для проверки, что переменная типа double лежит в диапазоне чисел decimal
-	bool double_in_dec(double d) {
-		static double maxD = 79228162514264337593543950335.0;
-		static double minD = 0.00000000000000000000000000001;
-		if ((abs(d) >= minD && abs(d) <= maxD) || d == 0.0) {
-			return true;
-		}
-		return false;
-	}
 
 	const double a = -1.0, b = 1.0, c = -1.0, d = 1.0;
 
@@ -40,6 +32,8 @@ namespace numLabChebishev {
 		switch (j) {
 		case 1: case 2: case 3: case 4: 
 			return exp(-arg * arg);
+		default:
+			return -1.0;
 		}
 	}
 
@@ -52,15 +46,19 @@ namespace numLabChebishev {
 		Bitmap ^imageTest, ^imageMain;
 		int kParam;
 		int n, m;
-		double epsMet;
-		int Nmax;
+		double epsMet, *eps;
+		int Nmax, *N;
 		APPROX startApprox;
 		TASK task;
 		double h, k;
-	private: System::Windows::Forms::PictureBox^ PictureBoxChart2;
-	private: System::Windows::Forms::PictureBox^ PictureBoxChart3;
-	private: System::Windows::Forms::PictureBox^ PictureBoxChart4;
-	private: System::Windows::Forms::PictureBox^ PictureBoxChart5;
+
+		MatrixA *A;
+		vector<double> *B;
+		vector<double> *V, *V0;
+
+		iter_chebishev *chebishev;
+
+		Info *info;
 
 		HelpForm^ hForm;
 
@@ -71,10 +69,21 @@ namespace numLabChebishev {
 			
 			imageTest = gcnew Bitmap("images/test_task.png");
 			imageMain = gcnew Bitmap("images/main_task.png");
-
 			PictureBoxEquation->Image = (Image^)imageTest;
 
 			hForm = gcnew HelpForm();
+
+			A = new MatrixA();
+			B = new vector<double>();
+			V = new vector<double>();
+			V0 = new vector<double>();
+
+			eps = new double;
+			N = new int;
+
+			info = new Info();
+
+			chebishev = new iter_chebishev();
 		}
 
 	protected:
@@ -90,10 +99,8 @@ namespace numLabChebishev {
 		}
 
 	private: System::Windows::Forms::TableLayoutPanel^ TableLayoutPanelTaskOptHelp;
-
 	private: System::Windows::Forms::GroupBox^ GroupBoxTask;
 	private: System::Windows::Forms::GroupBox^ GroupBoxOpt;
-
 	private: System::Windows::Forms::ComboBox^ ComboBoxTask;
 	private: System::Windows::Forms::GroupBox^ GroupBoxEquation;
 	private: System::Windows::Forms::PictureBox^ PictureBoxEquation;
@@ -106,7 +113,6 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::ToolStripMenuItem^ задачаToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ решатьToolStripMenuItem;
 	private: System::Windows::Forms::PictureBox^ PictureBoxChart1;
-
 	private: System::Windows::Forms::ToolStripMenuItem^ графикToolStripMenuItem;
 	private: System::Windows::Forms::GroupBox^ GroupBoxApproximation;
 	private: System::Windows::Forms::RadioButton^ RadioButtonApproxZero;
@@ -120,12 +126,8 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::Label^ LabelAccuracy;
 	private: System::Windows::Forms::TabControl^ TabControlTable;
 	private: System::Windows::Forms::TabPage^ tabPage6;
-
 	private: System::Windows::Forms::TabPage^ tabPage7;
 	private: System::Windows::Forms::TabPage^ tabPage8;
-
-
-
 	private: System::Windows::Forms::DataGridView^ TableV;
 	private: System::Windows::Forms::DataGridView^ TableU2V;
 	private: System::Windows::Forms::DataGridView^ TableU_V;
@@ -142,7 +144,6 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::ToolStripMenuItem^ разностьЧисленныхРешенийToolStripMenuItem;
 	private: System::Windows::Forms::TabControl^ TabControlChart;
 	private: System::Windows::Forms::TabPage^ tabPage1;
-
 	private: System::Windows::Forms::TabPage^ tabPage2;
 	private: System::Windows::Forms::TabPage^ tabPage3;
 	private: System::Windows::Forms::TabPage^ tabPage4;
@@ -151,16 +152,12 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::Label^ LabelK;
 	private: System::Windows::Forms::TableLayoutPanel^ TableLayoutPanelMain;
 	private: System::Windows::Forms::ToolStripMenuItem^ справкаToolStripMenuItem;
-
-
-
-
-
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart2;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart3;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart4;
+	private: System::Windows::Forms::PictureBox^ PictureBoxChart5;
 	private: System::Windows::Forms::SplitContainer^ SplitContainerChartTable;
 	private: System::ComponentModel::IContainer^ components;
-
-
-
 
 	protected:
 
@@ -1005,6 +1002,24 @@ namespace numLabChebishev {
 			reading_parameters();
 			h = (b - a) / n;
 			k = (d - c) / m;
+			A->setParam(n, m, h, k);
+			VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
+
+			chebishev->setA(*A);
+			chebishev->setB(*B);
+			chebishev->setK(kParam);
+			chebishev->setApprox(startApprox);
+			chebishev->setEpsMet(epsMet);
+			chebishev->setNmax(Nmax);
+
+			Stopwatch^ stopWatch = gcnew Stopwatch();
+			stopWatch->Start();
+			chebishev->solve(*V, *V0, *eps, *N);
+			stopWatch->Stop();
+
+			TimeSpan ts = stopWatch->Elapsed;
+			
+			double time = ts.TotalSeconds;
 
 			Process^ proc = gcnew Process();
 			proc->StartInfo->FileName = "gnuplot.exe";
