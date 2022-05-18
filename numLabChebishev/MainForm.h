@@ -47,7 +47,7 @@ namespace numLabChebishev {
 		Bitmap ^imageTest, ^imageMain;
 		int kParam;
 		int n, m;
-		double epsMet, *eps;
+		double epsMet, *eps, eps1;
 		int Nmax, *N;
 		APPROX startApprox;
 		TASK task;
@@ -59,6 +59,7 @@ namespace numLabChebishev {
 
 		double time;
 		double RN, R0;
+		double *x_max, *y_max;
 		
 		iter_chebishev *chebishev;
 		
@@ -84,6 +85,9 @@ namespace numLabChebishev {
 			B = new vector<double>();
 			V = new vector<double>();
 			V0 = new vector<double>();
+
+			x_max = new double;
+			y_max = new double;
 
 			eps = new double;
 			N = new int;
@@ -1064,10 +1068,10 @@ namespace numLabChebishev {
 			hForm->info->Nmax = Nmax;
 			hForm->info->N = *N;
 			hForm->info->epsN = *eps;
-			// hForm->info->eps1;
+			hForm->info->eps1 = eps1;
 			hForm->info->norm_RN = RN;
-			// hForm->info->max_x1;
-			// hForm->info->max_y1;
+			hForm->info->max_x1 = *x_max;
+			hForm->info->max_y1 = *y_max;
 			hForm->info->approx = startApprox;
 			hForm->info->norm_R0 = R0;
 
@@ -1084,17 +1088,47 @@ namespace numLabChebishev {
 		}
 
 		private: void write_points_test() {
-			ofstr->open("./data/points_test.txt");
+			ofstr->open("./data/points_vn_test.txt");
 			if (!ofstr->is_open()) throw "Error! The file is not open";
+			*ofstr << n + 2 << " ";
+			for (int i = 0; i < n + 1; i++) {
+				*ofstr << a + i * h << " ";
+			}
+			*ofstr << endl << c << " ";
+			for (int i = 0; i < n + 1; i++) {
+				*ofstr << mu_test(a + i * h, 3) << " ";
+			}
+			*ofstr << endl;
+			for (int i = 1; i < m; i++) {
+				*ofstr << c + i * k << " " << mu_test(c + i * k, 1) << " ";
+				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
+					*ofstr << (*V)[j] << " ";
+				}
+				*ofstr << mu_test(c + i * k, 2)  << endl;
+			}
+			*ofstr << d << " ";
+			for (int i = 0; i < n + 1; i++) {
+				*ofstr << mu_test(a + i * h, 4) << " ";
+			}
+			*ofstr << endl;
+			ofstr->close();
+		}
+
+		private: void calc_eps_1(double &x_max, double &y_max) {
+			double eps_curr, eps_tmp = 0.0;
+			double x_max_tmp = a;
+			double y_max_tmp = c;
 			for (int i = 0; i < m - 1; i++) {
-				for (int j = 0; j < n - 1; j++) {
-					*ofstr << a + (j + 1) * h << " " << c + (i + 1) * k << " " << (*V)[j + i * (n - 1)] << endl;
+				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
+					eps_curr = abs(f_test(a + (j % (n - 1) + 1) * h, c + (i + 1) * k));
+					if (eps_curr > eps_tmp) {
+						eps_tmp = eps_curr;
+						x_max_tmp = a + (j % (n - 1) + 1) * h;
+						y_max_tmp = c + (i + 1) * k;
+					}
 				}
 			}
-			for (int i = 0; i < n; i++) {
-				*ofstr << a + i * h << " " << c << " " << mu_test(a + i * h, 3) << endl;
-			}
-			ofstr->close();
+			eps1 = eps_tmp;
 		}
 
 		private: System::Void решатьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1124,6 +1158,7 @@ namespace numLabChebishev {
 			time = ts.TotalSeconds;
 
 			RN = norm_vector_max((*A) * (*V) - *B);
+			calc_eps_1(*x_max, *y_max);
 
 			setInfo();
 			справкаToolStripMenuItem->Enabled = true;
@@ -1151,6 +1186,9 @@ namespace numLabChebishev {
 				proc->Close();
 
 				PictureBoxChart1->Image = Image::FromFile("./images/test_u.png");
+				PictureBoxChart2->Image = Image::FromFile("./images/test_v0.png");
+				PictureBoxChart3->Image = Image::FromFile("./images/test_vn.png");
+				PictureBoxChart4->Image = Image::FromFile("./images/test_u_vn.png");
 			}
 		}
 
