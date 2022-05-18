@@ -34,3 +34,5 @@ public:
 vector<double> operator+(const vector<double> &v1, const vector<double> &v2);
 vector<double> operator-(const vector<double>& v1, const vector<double>& v2);
 vector<double> operator*(double a, const vector<double>& v);
+
+double norm_vector_max(vector<double> vec);

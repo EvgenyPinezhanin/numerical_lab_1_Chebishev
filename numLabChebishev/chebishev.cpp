@@ -2,14 +2,14 @@
 
 void iter_chebishev::calc_tau() {
 	tau.resize(k);
-	for (int i = 0; i < tau.size(); i++) {
+	for (size_t i = 0; i < tau.size(); i++) {
 		tau[i] = 1.0 / ((Mmin + Mmax) / 2.0 + (Mmax - Mmin) / 2.0 * cos(M_PI / (2.0 * k) * (1.0 + 2.0 * i)));
 	}
 }
 
 double iter_chebishev::calc_eps_current(const vector<double>& V_prev, const vector<double> &V_curr) {
 	double eps_tmp = 0.0;
-	for (int i = 0; i < V_prev.size(); i++) {
+	for (size_t i = 0; i < V_prev.size(); i++) {
 		eps_tmp = max(eps_tmp, abs(V_prev[i] - V_curr[i]));
 	}
 	return eps_tmp;

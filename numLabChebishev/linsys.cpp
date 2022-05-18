@@ -72,7 +72,7 @@ void VectorB::getVectorB(vector<double>& vec, int n, int m, double h, double k, 
 	vec.clear();
 	vec.resize((n - 1) * (m - 1));
 
-	for (int i = 0; i < vec.size(); i++) {
+	for (size_t i = 0; i < vec.size(); i++) {
 		vec[i] = f(a + h + i % (n - 1) * h, c + h + i / (n - 1) * k);
 		if (i / (n - 1) == 0) {
 			vec[i] += mu(a + h + i % (n - 1) * h, 1);
@@ -91,7 +91,7 @@ void VectorB::getVectorB(vector<double>& vec, int n, int m, double h, double k, 
 
 vector<double> operator+(const vector<double>& v1, const vector<double>& v2) {
 	vector<double> v_tmp(v1);
-	for (int i = 0; i < v1.size(); i++) {
+	for (size_t i = 0; i < v1.size(); i++) {
 		v_tmp[i] += v2[i];
 	}
 	return v_tmp;
@@ -99,7 +99,7 @@ vector<double> operator+(const vector<double>& v1, const vector<double>& v2) {
 
 vector<double> operator-(const vector<double>& v1, const vector<double>& v2) {
 	vector<double> v_tmp(v1);
-	for (int i = 0; i < v1.size(); i++) {
+	for (size_t i = 0; i < v1.size(); i++) {
 		v_tmp[i] -= v2[i];
 	}
 	return v_tmp;
@@ -107,8 +107,16 @@ vector<double> operator-(const vector<double>& v1, const vector<double>& v2) {
 
 vector<double> operator*(double a, const vector<double>& v) {
 	vector<double> v_tmp(v);
-	for (int i = 0; i < v.size(); i++) {
+	for (size_t i = 0; i < v.size(); i++) {
 		v_tmp[i] *= a;
 	}
 	return v_tmp;
+}
+
+double norm_vector_max(vector<double> vec) {
+	double max_tmp = vec[0];
+	for (size_t i = 1; i < vec.size(); i++) {
+		max_tmp = max(max_tmp, vec[i]);
+	}
+	return max_tmp;
 }

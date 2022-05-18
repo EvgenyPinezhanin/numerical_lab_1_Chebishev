@@ -87,7 +87,8 @@
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(SolutionDir)scripts\*.*" "$(TargetDir)scripts\" /Y /I /E
-xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E</Command>
+xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
+if not exist "$(TargetDir)data\" mkdir  "$(TargetDir)data\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -142,6 +143,9 @@ xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E</Command>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="HelpForm.resx">
+      <DependentUpon>HelpForm.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
