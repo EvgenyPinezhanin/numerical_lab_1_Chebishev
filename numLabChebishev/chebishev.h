@@ -21,7 +21,6 @@ private:
 	double Mmin, Mmax;
 	vector<double> tau;
 
-	void initial_approximation(vector<double>& V);
 	void calc_tau();
 	double calc_eps_current(const vector<double> &V_prev, const vector<double> &V_curr);
 
@@ -36,5 +35,5 @@ public:
 	void setEpsMet(double _epsMet);
 	void setNmax(int _Nmax);
 
-	void solve(vector<double> &V, vector<double> &V0, double &eps, int &N);
+	void solve(vector<double> &V, double &eps, int &N);
 };

@@ -3,10 +3,10 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-// #include "HelpForm.h"
-// #include "linsys.h"
-// #include "info.h"
-// #include "chebishev.h"
+#include "HelpForm.h"
+#include "linsys.h"
+#include "info.h"
+#include "chebishev.h"
 
 namespace numLabChebishev {
 
@@ -20,22 +20,22 @@ namespace numLabChebishev {
 
 	const double a = -1.0, b = 1.0, c = -1.0, d = 1.0;
 
-	// double u(double x, double y) {
-	// 	return exp(1 - x * x - y * y);
-	// }
-	// 
-	// double f_test(double x, double y) {
-	// 	return 4.0 * (1 - x * x - y * y) * exp(1 - x * x - y * y);
-	// }
-	// 
-	// double mu_test(double arg, int j) {
-	// 	switch (j) {
-	// 	case 1: case 2: case 3: case 4: 
-	// 		return exp(-arg * arg);
-	// 	default:
-	// 		return -1.0;
-	// 	}
-	// }
+	double u(double x, double y) {
+		return exp(1 - x * x - y * y);
+	}
+	
+	double f_test(double x, double y) {
+		return 4.0 * (1 - x * x - y * y) * exp(1 - x * x - y * y);
+	}
+	
+	double mu_test(double arg, int j) {
+		switch (j) {
+		case 1: case 2: case 3: case 4: 
+			return exp(-arg * arg);
+		default:
+			return -1.0;
+		}
+	}
 
 	/// <summary>
 	/// Сводка для MainForm
@@ -43,47 +43,48 @@ namespace numLabChebishev {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	private:
-		// Bitmap ^imageTest, ^imageMain;
+		Bitmap ^imageTest, ^imageMain;
 		int kParam;
 		int n, m;
 		double epsMet, *eps;
 		int Nmax, *N;
-		// APPROX startApprox;
-		// TASK task;
+		APPROX startApprox;
+		TASK task;
 		double h, k;
-		// 
-		// MatrixA *A;
-		// vector<double> *B;
-		// vector<double> *V, *V0;
-		// 
-		// iter_chebishev *chebishev;
-		// 
-		// Info *info;
-		// 
-		// HelpForm^ hForm;
+		
+		MatrixA *A;
+		vector<double> *B;
+		vector<double> *V, *V0;
+		
+		iter_chebishev *chebishev;
+		
+		Info *info;
+		
+		HelpForm^ hForm;
 
 	public:
 		MainForm(void)
 		{
 			InitializeComponent();
 			
-			// imageTest = gcnew Bitmap("images/test_task.png");
-			// imageMain = gcnew Bitmap("images/main_task.png");
-			// PictureBoxEquation->Image = (Image^)imageTest;
-			// 
-			// hForm = gcnew HelpForm();
-			// 
-			// A = new MatrixA();
-			// B = new vector<double>();
-			// V = new vector<double>();
-			// V0 = new vector<double>();
-			// 
-			// eps = new double;
-			// N = new int;
-			// 
-			// info = new Info();
-			// 
-			// chebishev = new iter_chebishev();
+			imageTest = gcnew Bitmap("images/test_task.png");
+			imageMain = gcnew Bitmap("images/main_task.png");
+			PictureBoxEquation->Image = (Image^)imageTest;
+			
+			hForm = gcnew HelpForm();
+			
+			A = new MatrixA();
+			B = new vector<double>();
+			V = new vector<double>();
+			V0 = new vector<double>();
+			
+			eps = new double;
+			N = new int;
+			startApprox = APPROX::ZERO;
+			
+			info = new Info();
+			
+			chebishev = new iter_chebishev();
 		}
 
 	protected:
@@ -952,66 +953,101 @@ namespace numLabChebishev {
 #pragma endregion
 		
 		private: void reading_parameters() {
-			// if (!Int32::TryParse(TextBoxK->Text, kParam)) {
-			// 	MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// else if (kParam < 1) {
-			// 	MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// 
-			// if (!Int32::TryParse(TextBoxPartX->Text, n)) {
-			// 	MessageBox::Show(L"Число разбиениий по x, n не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// else if (n < 2) {
-			// 	MessageBox::Show(L"Число разбиениий по x, n меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// 
-			// if (!Int32::TryParse(TextBoxPartY->Text, m)) {
-			// 	MessageBox::Show(L"Число разбиениий по y, m не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// else if (m < 2) {
-			// 	MessageBox::Show(L"Число разбиениий по y, m меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// 
-			// if (!Double::TryParse(TextBoxAccuracy->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet)) {
-			// 	MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// else if (epsMet <= 0.0) {
-			// 	MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// 
-			// if (!Int32::TryParse(TextBoxStep->Text, Nmax)) {
-			// 	MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
-			// else if (Nmax < 1) {
-			// 	MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			// 	return;
-			// }
+			if (!Int32::TryParse(TextBoxK->Text, kParam)) {
+				MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (kParam < 1) {
+				MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			
+			if (!Int32::TryParse(TextBoxPartX->Text, n)) {
+				MessageBox::Show(L"Число разбиениий по x, n не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (n < 2) {
+				MessageBox::Show(L"Число разбиениий по x, n меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			
+			if (!Int32::TryParse(TextBoxPartY->Text, m)) {
+				MessageBox::Show(L"Число разбиениий по y, m не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (m < 2) {
+				MessageBox::Show(L"Число разбиениий по y, m меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			
+			if (!Double::TryParse(TextBoxAccuracy->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet)) {
+				MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (epsMet <= 0.0) {
+				MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			
+			if (!Int32::TryParse(TextBoxStep->Text, Nmax)) {
+				MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+			else if (Nmax < 1) {
+				MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+				return;
+			}
+		}
+
+		private: void initial_approximation() {
+			V->resize((n - 1) * (m - 1));
+			double lb1, inter1, lb2, inter2;
+			switch (startApprox) {
+			case APPROX::ZERO:
+				for (size_t i = 0; i < V->size(); i++) {
+					(*V)[i] = 0.0;
+				}
+				break;
+			case APPROX::AVERAGE:
+				break;
+			case APPROX::LINEARX:
+				for (size_t i = 0; i < m - 1; i++) {
+					lb1 = mu_test(c + (i + 1) * k, 1);
+					inter1 = (mu_test(c + (i + 1) * k, 2) - mu_test(c + (i + 1) * k, 1)) / n;
+					for (size_t j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
+						(*V)[j] = lb1 + inter1 * (j % (n - 1) + 1);
+					}
+				}
+				break;
+			case APPROX::LINEARY:
+				for (size_t i = 0; i < n - 1; i++) {
+					lb2 = mu_test(a + (i + 1) * h, 3);
+					inter2 = (mu_test(a + (i + 1) * h, 4) - mu_test(a + (i + 1) * h, 3)) / m;
+					for (size_t j = i; j < i + 1 + (m - 2) * (n - 1); j += (n - 1)) {
+						(*V)[j] = lb2 + inter2 * (j / (n - 1) + 1);
+					}
+				}
+				break;
+			default:
+				break;
+			}
 		}
 
 		private: System::Void решатьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-			// reading_parameters();
-			// h = (b - a) / n;
-			// k = (d - c) / m;
-			// A->setParam(n, m, h, k);
-			// VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
-			// 
-			// chebishev->setA(*A);
-			// chebishev->setB(*B);
-			// chebishev->setK(kParam);
-			// chebishev->setApprox(startApprox);
-			// chebishev->setEpsMet(epsMet);
-			// chebishev->setNmax(Nmax);
-			// 
+			reading_parameters();
+			h = (b - a) / n;
+			k = (d - c) / m;
+			A->setParam(n, m, h, k);
+			VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
+			initial_approximation();
+			
+			chebishev->setA(*A);
+			chebishev->setB(*B);
+			chebishev->setK(kParam);
+			chebishev->setApprox(startApprox);
+			chebishev->setEpsMet(epsMet);
+			chebishev->setNmax(Nmax);
+			
 			// Stopwatch^ stopWatch = gcnew Stopwatch();
 			// stopWatch->Start();
 			// chebishev->solve(*V, *V0, *eps, *N);
@@ -1066,19 +1102,19 @@ namespace numLabChebishev {
 		}
 
 		private: System::Void RadioButtonApproxX_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			// startApprox = APPROX::LINEARX;
+			startApprox = APPROX::LINEARX;
 		}
 
 		private: System::Void RadioButtonApproxY_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			// startApprox = APPROX::LINEARY;
+			startApprox = APPROX::LINEARY;
 		}
 
 		private: System::Void RadioButtonApproxAverage_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			// startApprox = APPROX::AVERAGE;
+			startApprox = APPROX::AVERAGE;
 		}
 
 		private: System::Void RadioButtonApproxZero_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			// startApprox = APPROX::ZERO;
+			startApprox = APPROX::ZERO;
 		}
 
 		private: System::Void справкаToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {

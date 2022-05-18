@@ -1,24 +1,5 @@
 #include "chebishev.h"
 
-void iter_chebishev::initial_approximation(vector<double>& V) {
-	V.resize(B.size());
-	switch (approx) {
-	case APPROX::ZERO:
-		for (int i = 0; i < V.size(); i++) {
-			V[i] = 0.0;
-		}
-		break;
-	case APPROX::AVERAGE:
-		break;
-	case APPROX::LINEARX:
-		break;
-	case APPROX::LINEARY:
-		break;
-	default:
-		break;
-	}
-}
-
 void iter_chebishev::calc_tau() {
 	tau.resize(k);
 	for (int i = 0; i < tau.size(); i++) {
@@ -64,11 +45,9 @@ void iter_chebishev::setNmax(int _Nmax) {
 	Nmax = _Nmax;
 }
 
-void iter_chebishev::solve(vector<double>& V, vector<double>& V0, double& eps, int& N) {
-	initial_approximation(V);
+void iter_chebishev::solve(vector<double>& V, double& eps, int& N) {
 	A.getLamdMinMax(Mmin, Mmax);
 	calc_tau();
-	V0 = V;
 	vector<double> V_tmp(V.size());
 	int Nmax_correct = Nmax - (Nmax % k);
 	int count = 0;
