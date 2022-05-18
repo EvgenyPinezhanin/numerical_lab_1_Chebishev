@@ -17,4 +17,3 @@ void main(cli::array<String^>^ args) {
     numLabChebishev::MainForm form;
     Application::Run(% form);
 }
-

@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{030FA742-54F9-4C55-B71C-446618EBE72D}</ProjectGuid>
+    <ProjectGuid>{263AF93E-728F-4317-AEDA-A82B48437FD9}</ProjectGuid>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>numLabChebishev</RootNamespace>
@@ -84,6 +84,10 @@
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy "$(SolutionDir)scripts\*.*" "$(TargetDir)scripts\" /Y /I /E
+xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -92,14 +96,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
-      <SubSystem>Windows</SubSystem>
-      <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
-    <PreBuildEvent>
-      <Command>xcopy "$(SolutionDir)scripts\*.*" "$(TargetDir)scripts\" /Y /I /E
-xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
-</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -124,14 +121,13 @@ xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chebishev.cpp" />
     <ClCompile Include="HelpForm.cpp" />
-    <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="linsys.cpp" />
+    <ClCompile Include="MainForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chebishev.h" />
@@ -139,15 +135,12 @@ xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="info.h" />
+    <ClInclude Include="linsys.h" />
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="linsys.h" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="HelpForm.resx">
-      <DependentUpon>HelpForm.h</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>

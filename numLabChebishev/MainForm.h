@@ -3,10 +3,10 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include "HelpForm.h"
-#include "linsys.h"
-#include "info.h"
-#include "chebishev.h"
+// #include "HelpForm.h"
+// #include "linsys.h"
+// #include "info.h"
+// #include "chebishev.h"
 
 namespace numLabChebishev {
 
@@ -20,22 +20,22 @@ namespace numLabChebishev {
 
 	const double a = -1.0, b = 1.0, c = -1.0, d = 1.0;
 
-	double u(double x, double y) {
-		return exp(1 - x * x - y * y);
-	}
-
-	double f_test(double x, double y) {
-		return 4.0 * (1 - x * x - y * y) * exp(1 - x * x - y * y);
-	}
-
-	double mu_test(double arg, int j) {
-		switch (j) {
-		case 1: case 2: case 3: case 4: 
-			return exp(-arg * arg);
-		default:
-			return -1.0;
-		}
-	}
+	// double u(double x, double y) {
+	// 	return exp(1 - x * x - y * y);
+	// }
+	// 
+	// double f_test(double x, double y) {
+	// 	return 4.0 * (1 - x * x - y * y) * exp(1 - x * x - y * y);
+	// }
+	// 
+	// double mu_test(double arg, int j) {
+	// 	switch (j) {
+	// 	case 1: case 2: case 3: case 4: 
+	// 		return exp(-arg * arg);
+	// 	default:
+	// 		return -1.0;
+	// 	}
+	// }
 
 	/// <summary>
 	/// Сводка для MainForm
@@ -43,47 +43,47 @@ namespace numLabChebishev {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	private:
-		Bitmap ^imageTest, ^imageMain;
+		// Bitmap ^imageTest, ^imageMain;
 		int kParam;
 		int n, m;
 		double epsMet, *eps;
 		int Nmax, *N;
-		APPROX startApprox;
-		TASK task;
+		// APPROX startApprox;
+		// TASK task;
 		double h, k;
-
-		MatrixA *A;
-		vector<double> *B;
-		vector<double> *V, *V0;
-
-		iter_chebishev *chebishev;
-
-		Info *info;
-
-		HelpForm^ hForm;
+		// 
+		// MatrixA *A;
+		// vector<double> *B;
+		// vector<double> *V, *V0;
+		// 
+		// iter_chebishev *chebishev;
+		// 
+		// Info *info;
+		// 
+		// HelpForm^ hForm;
 
 	public:
 		MainForm(void)
 		{
 			InitializeComponent();
 			
-			imageTest = gcnew Bitmap("images/test_task.png");
-			imageMain = gcnew Bitmap("images/main_task.png");
-			PictureBoxEquation->Image = (Image^)imageTest;
-
-			hForm = gcnew HelpForm();
-
-			A = new MatrixA();
-			B = new vector<double>();
-			V = new vector<double>();
-			V0 = new vector<double>();
-
-			eps = new double;
-			N = new int;
-
-			info = new Info();
-
-			chebishev = new iter_chebishev();
+			// imageTest = gcnew Bitmap("images/test_task.png");
+			// imageMain = gcnew Bitmap("images/main_task.png");
+			// PictureBoxEquation->Image = (Image^)imageTest;
+			// 
+			// hForm = gcnew HelpForm();
+			// 
+			// A = new MatrixA();
+			// B = new vector<double>();
+			// V = new vector<double>();
+			// V0 = new vector<double>();
+			// 
+			// eps = new double;
+			// N = new int;
+			// 
+			// info = new Info();
+			// 
+			// chebishev = new iter_chebishev();
 		}
 
 	protected:
@@ -552,7 +552,7 @@ namespace numLabChebishev {
 			this->TabControlChart->Location = System::Drawing::Point(0, 0);
 			this->TabControlChart->Name = L"TabControlChart";
 			this->TabControlChart->SelectedIndex = 0;
-			this->TabControlChart->Size = System::Drawing::Size(1076, 556);
+			this->TabControlChart->Size = System::Drawing::Size(1076, 328);
 			this->TabControlChart->TabIndex = 1;
 			// 
 			// tabPage1
@@ -561,7 +561,7 @@ namespace numLabChebishev {
 			this->tabPage1->Location = System::Drawing::Point(4, 25);
 			this->tabPage1->Name = L"tabPage1";
 			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(1068, 527);
+			this->tabPage1->Size = System::Drawing::Size(1068, 299);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"U(x, y)";
 			this->tabPage1->UseVisualStyleBackColor = true;
@@ -571,7 +571,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->PictureBoxChart1->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart1->Name = L"PictureBoxChart1";
-			this->PictureBoxChart1->Size = System::Drawing::Size(1062, 521);
+			this->PictureBoxChart1->Size = System::Drawing::Size(1062, 293);
 			this->PictureBoxChart1->TabIndex = 0;
 			this->PictureBoxChart1->TabStop = false;
 			// 
@@ -664,7 +664,7 @@ namespace numLabChebishev {
 			this->TabControlTable->Location = System::Drawing::Point(0, 0);
 			this->TabControlTable->Name = L"TabControlTable";
 			this->TabControlTable->SelectedIndex = 0;
-			this->TabControlTable->Size = System::Drawing::Size(1076, 134);
+			this->TabControlTable->Size = System::Drawing::Size(1076, 362);
 			this->TabControlTable->TabIndex = 1;
 			// 
 			// tabPage6
@@ -673,7 +673,7 @@ namespace numLabChebishev {
 			this->tabPage6->Location = System::Drawing::Point(4, 25);
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage6->Size = System::Drawing::Size(1068, 105);
+			this->tabPage6->Size = System::Drawing::Size(1068, 333);
 			this->tabPage6->TabIndex = 0;
 			this->tabPage6->Text = L"U(x, y)";
 			this->tabPage6->UseVisualStyleBackColor = true;
@@ -686,7 +686,7 @@ namespace numLabChebishev {
 			this->TableV->Name = L"TableV";
 			this->TableV->RowHeadersWidth = 51;
 			this->TableV->RowTemplate->Height = 24;
-			this->TableV->Size = System::Drawing::Size(1062, 99);
+			this->TableV->Size = System::Drawing::Size(1062, 327);
 			this->TableV->TabIndex = 0;
 			// 
 			// tabPage7
@@ -890,7 +890,7 @@ namespace numLabChebishev {
 			// 
 			this->SplitContainerChartTable->Panel2->Controls->Add(this->TabControlTable);
 			this->SplitContainerChartTable->Size = System::Drawing::Size(1076, 694);
-			this->SplitContainerChartTable->SplitterDistance = 556;
+			this->SplitContainerChartTable->SplitterDistance = 328;
 			this->SplitContainerChartTable->TabIndex = 1;
 			// 
 			// MainForm
@@ -952,91 +952,91 @@ namespace numLabChebishev {
 #pragma endregion
 		
 		private: void reading_parameters() {
-			if (!Int32::TryParse(TextBoxK->Text, kParam)) {
-				MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-			else if (kParam < 1) {
-				MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-
-			if (!Int32::TryParse(TextBoxPartX->Text, n)) {
-				MessageBox::Show(L"Число разбиениий по x, n не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-			else if (n < 2) {
-				MessageBox::Show(L"Число разбиениий по x, n меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-
-			if (!Int32::TryParse(TextBoxPartY->Text, m)) {
-				MessageBox::Show(L"Число разбиениий по y, m не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-			else if (m < 2) {
-				MessageBox::Show(L"Число разбиениий по y, m меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-
-			if (!Double::TryParse(TextBoxAccuracy->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet)) {
-				MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-			else if (epsMet <= 0.0) {
-				MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-
-			if (!Int32::TryParse(TextBoxStep->Text, Nmax)) {
-				MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
-			else if (Nmax < 1) {
-				MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
-			}
+			// if (!Int32::TryParse(TextBoxK->Text, kParam)) {
+			// 	MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// else if (kParam < 1) {
+			// 	MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// 
+			// if (!Int32::TryParse(TextBoxPartX->Text, n)) {
+			// 	MessageBox::Show(L"Число разбиениий по x, n не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// else if (n < 2) {
+			// 	MessageBox::Show(L"Число разбиениий по x, n меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// 
+			// if (!Int32::TryParse(TextBoxPartY->Text, m)) {
+			// 	MessageBox::Show(L"Число разбиениий по y, m не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// else if (m < 2) {
+			// 	MessageBox::Show(L"Число разбиениий по y, m меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// 
+			// if (!Double::TryParse(TextBoxAccuracy->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet)) {
+			// 	MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// else if (epsMet <= 0.0) {
+			// 	MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// 
+			// if (!Int32::TryParse(TextBoxStep->Text, Nmax)) {
+			// 	MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
+			// else if (Nmax < 1) {
+			// 	MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			// 	return;
+			// }
 		}
 
 		private: System::Void решатьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-			reading_parameters();
-			h = (b - a) / n;
-			k = (d - c) / m;
-			A->setParam(n, m, h, k);
-			VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
-
-			chebishev->setA(*A);
-			chebishev->setB(*B);
-			chebishev->setK(kParam);
-			chebishev->setApprox(startApprox);
-			chebishev->setEpsMet(epsMet);
-			chebishev->setNmax(Nmax);
-
-			Stopwatch^ stopWatch = gcnew Stopwatch();
-			stopWatch->Start();
-			chebishev->solve(*V, *V0, *eps, *N);
-			stopWatch->Stop();
-
-			TimeSpan ts = stopWatch->Elapsed;
-			
-			double time = ts.TotalSeconds;
-
-			Process^ proc = gcnew Process();
-			proc->StartInfo->FileName = "gnuplot.exe";
-			proc->StartInfo->Arguments = "-p -c scripts/chart_main_image.gp";
-			proc->StartInfo->CreateNoWindow = true;
-
-			proc->Start();
-			proc->WaitForExit();
-			proc->Close();
-
-			PictureBoxChart1->Image = Image::FromFile("./images/sinx.png");
+			// reading_parameters();
+			// h = (b - a) / n;
+			// k = (d - c) / m;
+			// A->setParam(n, m, h, k);
+			// VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
+			// 
+			// chebishev->setA(*A);
+			// chebishev->setB(*B);
+			// chebishev->setK(kParam);
+			// chebishev->setApprox(startApprox);
+			// chebishev->setEpsMet(epsMet);
+			// chebishev->setNmax(Nmax);
+			// 
+			// Stopwatch^ stopWatch = gcnew Stopwatch();
+			// stopWatch->Start();
+			// chebishev->solve(*V, *V0, *eps, *N);
+			// stopWatch->Stop();
+			// 
+			// TimeSpan ts = stopWatch->Elapsed;
+			// 
+			// double time = ts.TotalSeconds;
+			// 
+			// Process^ proc = gcnew Process();
+			// proc->StartInfo->FileName = "gnuplot.exe";
+			// proc->StartInfo->Arguments = "-p -c scripts/chart_main_image.gp";
+			// proc->StartInfo->CreateNoWindow = true;
+			// 
+			// proc->Start();
+			// proc->WaitForExit();
+			// proc->Close();
+			// 
+			// PictureBoxChart1->Image = Image::FromFile("./images/sinx.png");
 		}
 
 		private: System::Void ComboBoxTask_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 			if (ComboBoxTask->Text == "Тестовая задача") {
-				task = TASK::TEST;
-				PictureBoxEquation->Image = (Image^)imageTest;
+				// task = TASK::TEST;
+				// PictureBoxEquation->Image = (Image^)imageTest;
 
 				tabPage1->Text = "U(x, y)";
 				tabPage2->Text = "V(0)(xi, yi)";
@@ -1050,8 +1050,8 @@ namespace numLabChebishev {
 			}
 			else
 			{
-				task = TASK::MAIN;
-				PictureBoxEquation->Image = (Image^)imageMain;
+				// task = TASK::MAIN;
+				// PictureBoxEquation->Image = (Image^)imageMain;
 
 				tabPage1->Text = "V(0)(xi, yj)";
 				tabPage2->Text = "V2(0)(xi, yj)";
@@ -1066,24 +1066,24 @@ namespace numLabChebishev {
 		}
 
 		private: System::Void RadioButtonApproxX_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			startApprox = APPROX::LINEARX;
+			// startApprox = APPROX::LINEARX;
 		}
 
 		private: System::Void RadioButtonApproxY_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			startApprox = APPROX::LINEARY;
+			// startApprox = APPROX::LINEARY;
 		}
 
 		private: System::Void RadioButtonApproxAverage_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			startApprox = APPROX::AVERAGE;
+			// startApprox = APPROX::AVERAGE;
 		}
 
 		private: System::Void RadioButtonApproxZero_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-			startApprox = APPROX::ZERO;
+			// startApprox = APPROX::ZERO;
 		}
 
 		private: System::Void справкаToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 			// hForm->info->b = 100;
-			hForm->Show();
+			// hForm->Show();
 		}
 };
 }

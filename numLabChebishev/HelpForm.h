@@ -16,14 +16,14 @@ namespace numLabChebishev {
 	public ref class HelpForm : public System::Windows::Forms::Form
 	{
 	public:
-		Info *info;
+		// Info *info;
 
 	public:
 		HelpForm(void)
 		{
 			InitializeComponent();
 
-			info = new Info();
+			// info = new Info();
 		}
 
 	protected:
