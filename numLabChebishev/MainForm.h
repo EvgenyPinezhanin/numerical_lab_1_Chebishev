@@ -44,7 +44,8 @@ namespace numLabChebishev {
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	private:
-		Bitmap ^imageTest, ^imageMain;
+		Bitmap ^imageTest, ^imageMain, ^imageDefault;
+		Image^ image1, ^ image2, ^ image3, ^ image4, ^ image5;
 		int kParam;
 		int n, m;
 		double epsMet, *eps, eps1;
@@ -77,7 +78,9 @@ namespace numLabChebishev {
 
 			imageTest = gcnew Bitmap("images/test_task.png");
 			imageMain = gcnew Bitmap("images/main_task.png");
+			imageDefault = gcnew Bitmap("images/default_chart.png");
 			PictureBoxEquation->Image = (Image^)imageTest;
+			set_default_chart();
 
 			hForm = gcnew HelpForm();
 
@@ -100,6 +103,8 @@ namespace numLabChebishev {
 
 			ofstr = new ofstream();
 			proc = gcnew Process();
+			proc->StartInfo->FileName = "gnuplot.exe";
+			proc->StartInfo->CreateNoWindow = true;
 		}
 
 	protected:
@@ -113,6 +118,8 @@ namespace numLabChebishev {
 				delete components;
 			}
 		}
+
+#pragma region declaration
 
 	private: System::Windows::Forms::TableLayoutPanel^ TableLayoutPanelTaskOptHelp;
 	private: System::Windows::Forms::GroupBox^ GroupBoxTask;
@@ -144,9 +151,12 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::TabPage^ tabPage6;
 	private: System::Windows::Forms::TabPage^ tabPage7;
 	private: System::Windows::Forms::TabPage^ tabPage8;
-	private: System::Windows::Forms::DataGridView^ TableV;
-	private: System::Windows::Forms::DataGridView^ TableU2V;
-	private: System::Windows::Forms::DataGridView^ TableU_V;
+private: System::Windows::Forms::DataGridView^ Table1;
+private: System::Windows::Forms::DataGridView^ Table2;
+private: System::Windows::Forms::DataGridView^ Table3;
+
+
+
 	private: System::Windows::Forms::ToolStripMenuItem^ TestToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ MainToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ точноеРешениеUxYToolStripMenuItem;
@@ -174,6 +184,8 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::PictureBox^ PictureBoxChart5;
 	private: System::Windows::Forms::SplitContainer^ SplitContainerChartTable;
 	private: System::ComponentModel::IContainer^ components;
+
+#pragma endregion
 
 	protected:
 
@@ -226,11 +238,11 @@ namespace numLabChebishev {
 			this->PictureBoxChart5 = (gcnew System::Windows::Forms::PictureBox());
 			this->TabControlTable = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
-			this->TableV = (gcnew System::Windows::Forms::DataGridView());
+			this->Table1 = (gcnew System::Windows::Forms::DataGridView());
 			this->tabPage7 = (gcnew System::Windows::Forms::TabPage());
-			this->TableU2V = (gcnew System::Windows::Forms::DataGridView());
+			this->Table2 = (gcnew System::Windows::Forms::DataGridView());
 			this->tabPage8 = (gcnew System::Windows::Forms::TabPage());
-			this->TableU_V = (gcnew System::Windows::Forms::DataGridView());
+			this->Table3 = (gcnew System::Windows::Forms::DataGridView());
 			this->MenuStripMain = (gcnew System::Windows::Forms::MenuStrip());
 			this->задачаToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->решатьToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -269,11 +281,11 @@ namespace numLabChebishev {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart5))->BeginInit();
 			this->TabControlTable->SuspendLayout();
 			this->tabPage6->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableV))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Table1))->BeginInit();
 			this->tabPage7->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU2V))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Table2))->BeginInit();
 			this->tabPage8->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU_V))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Table3))->BeginInit();
 			this->MenuStripMain->SuspendLayout();
 			this->TableLayoutPanelMain->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainerChartTable))->BeginInit();
@@ -328,7 +340,7 @@ namespace numLabChebishev {
 			this->TextBoxK->Name = L"TextBoxK";
 			this->TextBoxK->Size = System::Drawing::Size(132, 22);
 			this->TextBoxK->TabIndex = 8;
-			this->TextBoxK->Text = L"3";
+			this->TextBoxK->Text = L"13";
 			// 
 			// LabelK
 			// 
@@ -363,7 +375,7 @@ namespace numLabChebishev {
 			this->TextBoxStep->Name = L"TextBoxStep";
 			this->TextBoxStep->Size = System::Drawing::Size(132, 22);
 			this->TextBoxStep->TabIndex = 3;
-			this->TextBoxStep->Text = L"1000";
+			this->TextBoxStep->Text = L"100000";
 			// 
 			// TextBoxAccuracy
 			// 
@@ -373,7 +385,7 @@ namespace numLabChebishev {
 			this->TextBoxAccuracy->Name = L"TextBoxAccuracy";
 			this->TextBoxAccuracy->Size = System::Drawing::Size(132, 22);
 			this->TextBoxAccuracy->TabIndex = 2;
-			this->TextBoxAccuracy->Text = L"0.00005";
+			this->TextBoxAccuracy->Text = L"0.000000005";
 			// 
 			// LabelStep
 			// 
@@ -466,7 +478,7 @@ namespace numLabChebishev {
 			this->TextBoxPartY->Name = L"TextBoxPartY";
 			this->TextBoxPartY->Size = System::Drawing::Size(132, 22);
 			this->TextBoxPartY->TabIndex = 4;
-			this->TextBoxPartY->Text = L"10";
+			this->TextBoxPartY->Text = L"100";
 			// 
 			// TextBoxPartX
 			// 
@@ -476,7 +488,7 @@ namespace numLabChebishev {
 			this->TextBoxPartX->Name = L"TextBoxPartX";
 			this->TextBoxPartX->Size = System::Drawing::Size(132, 22);
 			this->TextBoxPartX->TabIndex = 3;
-			this->TextBoxPartX->Text = L"10";
+			this->TextBoxPartX->Text = L"100";
 			// 
 			// LabelPartY
 			// 
@@ -609,6 +621,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart2->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart2->Name = L"PictureBoxChart2";
 			this->PictureBoxChart2->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart2->TabIndex = 0;
 			this->PictureBoxChart2->TabStop = false;
 			// 
@@ -629,6 +642,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart3->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart3->Name = L"PictureBoxChart3";
 			this->PictureBoxChart3->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart3->TabIndex = 0;
 			this->PictureBoxChart3->TabStop = false;
 			// 
@@ -649,6 +663,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart4->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart4->Name = L"PictureBoxChart4";
 			this->PictureBoxChart4->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart4->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart4->TabIndex = 0;
 			this->PictureBoxChart4->TabStop = false;
 			// 
@@ -669,6 +684,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart5->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart5->Name = L"PictureBoxChart5";
 			this->PictureBoxChart5->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart5->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart5->TabIndex = 0;
 			this->PictureBoxChart5->TabStop = false;
 			// 
@@ -686,7 +702,7 @@ namespace numLabChebishev {
 			// 
 			// tabPage6
 			// 
-			this->tabPage6->Controls->Add(this->TableV);
+			this->tabPage6->Controls->Add(this->Table1);
 			this->tabPage6->Location = System::Drawing::Point(4, 25);
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
@@ -695,20 +711,23 @@ namespace numLabChebishev {
 			this->tabPage6->Text = L"U(x, y)";
 			this->tabPage6->UseVisualStyleBackColor = true;
 			// 
-			// TableV
+			// Table1
 			// 
-			this->TableV->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->TableV->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->TableV->Location = System::Drawing::Point(3, 3);
-			this->TableV->Name = L"TableV";
-			this->TableV->RowHeadersWidth = 51;
-			this->TableV->RowTemplate->Height = 24;
-			this->TableV->Size = System::Drawing::Size(1062, 327);
-			this->TableV->TabIndex = 0;
+			this->Table1->AllowUserToAddRows = false;
+			this->Table1->AllowUserToDeleteRows = false;
+			this->Table1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->Table1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->Table1->Location = System::Drawing::Point(3, 3);
+			this->Table1->Name = L"Table1";
+			this->Table1->ReadOnly = true;
+			this->Table1->RowHeadersWidth = 51;
+			this->Table1->RowTemplate->Height = 24;
+			this->Table1->Size = System::Drawing::Size(1062, 327);
+			this->Table1->TabIndex = 0;
 			// 
 			// tabPage7
 			// 
-			this->tabPage7->Controls->Add(this->TableU2V);
+			this->tabPage7->Controls->Add(this->Table2);
 			this->tabPage7->Location = System::Drawing::Point(4, 25);
 			this->tabPage7->Name = L"tabPage7";
 			this->tabPage7->Padding = System::Windows::Forms::Padding(3);
@@ -717,20 +736,20 @@ namespace numLabChebishev {
 			this->tabPage7->Text = L"V(N)(x, y)";
 			this->tabPage7->UseVisualStyleBackColor = true;
 			// 
-			// TableU2V
+			// Table2
 			// 
-			this->TableU2V->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->TableU2V->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->TableU2V->Location = System::Drawing::Point(3, 3);
-			this->TableU2V->Name = L"TableU2V";
-			this->TableU2V->RowHeadersWidth = 51;
-			this->TableU2V->RowTemplate->Height = 24;
-			this->TableU2V->Size = System::Drawing::Size(1062, 327);
-			this->TableU2V->TabIndex = 0;
+			this->Table2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->Table2->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->Table2->Location = System::Drawing::Point(3, 3);
+			this->Table2->Name = L"Table2";
+			this->Table2->RowHeadersWidth = 51;
+			this->Table2->RowTemplate->Height = 24;
+			this->Table2->Size = System::Drawing::Size(1062, 327);
+			this->Table2->TabIndex = 0;
 			// 
 			// tabPage8
 			// 
-			this->tabPage8->Controls->Add(this->TableU_V);
+			this->tabPage8->Controls->Add(this->Table3);
 			this->tabPage8->Location = System::Drawing::Point(4, 25);
 			this->tabPage8->Name = L"tabPage8";
 			this->tabPage8->Padding = System::Windows::Forms::Padding(3);
@@ -739,16 +758,16 @@ namespace numLabChebishev {
 			this->tabPage8->Text = L"U(x, y) - V(N)(x, y)";
 			this->tabPage8->UseVisualStyleBackColor = true;
 			// 
-			// TableU_V
+			// Table3
 			// 
-			this->TableU_V->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-			this->TableU_V->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->TableU_V->Location = System::Drawing::Point(3, 3);
-			this->TableU_V->Name = L"TableU_V";
-			this->TableU_V->RowHeadersWidth = 51;
-			this->TableU_V->RowTemplate->Height = 24;
-			this->TableU_V->Size = System::Drawing::Size(1062, 327);
-			this->TableU_V->TabIndex = 0;
+			this->Table3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->Table3->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->Table3->Location = System::Drawing::Point(3, 3);
+			this->Table3->Name = L"Table3";
+			this->Table3->RowHeadersWidth = 51;
+			this->Table3->RowTemplate->Height = 24;
+			this->Table3->Size = System::Drawing::Size(1062, 327);
+			this->Table3->TabIndex = 0;
 			// 
 			// MenuStripMain
 			// 
@@ -950,11 +969,11 @@ namespace numLabChebishev {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PictureBoxChart5))->EndInit();
 			this->TabControlTable->ResumeLayout(false);
 			this->tabPage6->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableV))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Table1))->EndInit();
 			this->tabPage7->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU2V))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Table2))->EndInit();
 			this->tabPage8->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TableU_V))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Table3))->EndInit();
 			this->MenuStripMain->ResumeLayout(false);
 			this->MenuStripMain->PerformLayout();
 			this->TableLayoutPanelMain->ResumeLayout(false);
@@ -968,6 +987,14 @@ namespace numLabChebishev {
 
 		}
 #pragma endregion
+
+		private: void set_default_chart() {
+			PictureBoxChart1->Image = (Image^)imageDefault;
+			PictureBoxChart2->Image = (Image^)imageDefault;
+			PictureBoxChart3->Image = (Image^)imageDefault;
+			PictureBoxChart4->Image = (Image^)imageDefault;
+			PictureBoxChart5->Image = (Image^)imageDefault;
+		}
 		
 		private: void reading_parameters() {
 			if (!Int32::TryParse(TextBoxK->Text, kParam)) {
@@ -1083,12 +1110,108 @@ namespace numLabChebishev {
 			hForm->info->time = time;
 		}
 
-		private: void write_points_main() {
+		private: void set_chart(PictureBox^ pb, Image^% img, string str) {
+			img = Image::FromFile(gcnew String(str.c_str()));
+			pb->Image = img;
+		}
+
+		private: void clear_image(Image^% img) {
+			if (img != nullptr) {
+				img->~Image();
+				img = nullptr;
+			}
+		}
+
+		private: void create_chart() {
+			clear_image(image1);
+			clear_image(image2);
+			clear_image(image3);
+			clear_image(image4);
+			clear_image(image5);
+
+			if (task == TASK::MAIN) {
+				write_points_in_matrix("./data/points_v0_test.txt", *V0, n, m, h, k);
+				write_points_in_matrix("./data/points_vn_test.txt", *V, n, m, h, k);
+				write_points_in_matrix_u_("./data/points_u_vn_test.txt", *V);
+
+				proc->StartInfo->Arguments = "-p -c scripts/chart_main_image.gp";
+
+				proc->Start();
+				proc->WaitForExit();
+				proc->Close();
+
+				set_chart(PictureBoxChart1, image1, "./images/test_u.png");
+				set_chart(PictureBoxChart2, image2, "./images/test_v0.png");
+				set_chart(PictureBoxChart3, image3, "./images/test_vn.png");
+				set_chart(PictureBoxChart4, image4, "./images/test_u_vn.png");
+			}
+			else
+			{
+				write_points_in_matrix("./data/points_v0_test.txt", *V0, n, m, h, k);
+				write_points_in_matrix("./data/points_vn_test.txt", *V, n, m, h, k);
+				write_points_in_matrix_u_("./data/points_u_vn_test.txt", *V);
+
+				proc->StartInfo->Arguments = "-p -c scripts/chart_test_image.gp";
+
+				proc->Start();
+				proc->WaitForExit();
+				proc->Close();
+
+				set_chart(PictureBoxChart1, image1, "./images/test_u.png");
+				set_chart(PictureBoxChart2, image2, "./images/test_v0.png");
+				set_chart(PictureBoxChart3, image3, "./images/test_vn.png");
+				set_chart(PictureBoxChart4, image4, "./images/test_u_vn.png");
+			}
+		}
+
+		private: void clear_table() {
+			Table1->Columns->Clear();
+			Table2->Columns->Clear();
+			Table3->Columns->Clear();
+		}
+
+		private: void set_table() {
+			clear_table();
+			Table1->Columns->Add("null", "");
+			Table1->Columns->Add("ci", "i");
+			for (int i = 0; i < n + 1; i++) {
+				Table1->Columns->Add("c" + i.ToString(), i.ToString());
+			}
+			for (int i = 0; i < m + 2; i++) {
+				Table1->Rows->Add();
+			}
 
 		}
 
-		private: void write_points_test() {
-			ofstr->open("./data/points_vn_test.txt");
+		private: void write_points_in_matrix(string str, const vector<double> &v, int _n, int _m, double _h, double _k) {
+			ofstr->open(str);
+			if (!ofstr->is_open()) throw "Error! The file is not open";
+			*ofstr << _n + 2 << " ";
+			for (int i = 0; i < _n + 1; i++) {
+				*ofstr << a + i * _h << " ";
+			}
+			*ofstr << endl << c << " ";
+			for (int i = 0; i < _n + 1; i++) {
+				*ofstr << mu_test(a + i * _h, 3) << " ";
+			}
+			*ofstr << endl;
+			for (int i = 1; i < _m; i++) {
+				*ofstr << c + i * _k << " " << mu_test(c + i * _k, 1) << " ";
+				for (int j = (i - 1) * (_n - 1); j < i * (_n - 1); j++) {
+					*ofstr << v[j] << " ";
+				}
+				*ofstr << mu_test(c + i * _k, 2)  << endl;
+			}
+			*ofstr << d << " ";
+			for (int i = 0; i < _n + 1; i++) {
+				*ofstr << mu_test(a + i * _h, 4) << " ";
+			}
+			*ofstr << endl;
+			ofstr->close();
+		}
+
+		private: void write_points_in_matrix_u_(string str, const vector<double>& v) {
+			ofstr->open(str);
 			if (!ofstr->is_open()) throw "Error! The file is not open";
 			*ofstr << n + 2 << " ";
 			for (int i = 0; i < n + 1; i++) {
@@ -1096,39 +1219,40 @@ namespace numLabChebishev {
 			}
 			*ofstr << endl << c << " ";
 			for (int i = 0; i < n + 1; i++) {
-				*ofstr << mu_test(a + i * h, 3) << " ";
+				*ofstr << 0.0 << " ";
 			}
 			*ofstr << endl;
 			for (int i = 1; i < m; i++) {
-				*ofstr << c + i * k << " " << mu_test(c + i * k, 1) << " ";
+				*ofstr << c + i * k << " " << 0.0 << " ";
 				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
-					*ofstr << (*V)[j] << " ";
+					double asd = a + (j % (n - 1) + 1) * h;
+					*ofstr << u(a + (j % (n - 1) + 1) * h, c + i * k) - v[j] << " ";
 				}
-				*ofstr << mu_test(c + i * k, 2)  << endl;
+				*ofstr << 0.0 << endl;
 			}
 			*ofstr << d << " ";
 			for (int i = 0; i < n + 1; i++) {
-				*ofstr << mu_test(a + i * h, 4) << " ";
+				*ofstr << 0.0 << " ";
 			}
 			*ofstr << endl;
 			ofstr->close();
 		}
 
 		private: void calc_eps_1(double &x_max, double &y_max) {
-			double eps_curr, eps_tmp = 0.0;
-			double x_max_tmp = a;
-			double y_max_tmp = c;
-			for (int i = 0; i < m - 1; i++) {
-				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-					eps_curr = abs(f_test(a + (j % (n - 1) + 1) * h, c + (i + 1) * k));
-					if (eps_curr > eps_tmp) {
-						eps_tmp = eps_curr;
-						x_max_tmp = a + (j % (n - 1) + 1) * h;
-						y_max_tmp = c + (i + 1) * k;
+			double eps_curr;
+			eps1 = 0.0;
+			x_max = a;
+			y_max = c;
+			for (int i = 1; i < m; i++) {
+				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
+					eps_curr = abs(u(a + (j % (n - 1) + 1) * h, c + i * k) - (*V)[j]);
+					if (eps_curr > eps1) {
+						eps1 = eps_curr;
+						x_max = a + (j % (n - 1) + 1) * h;
+						y_max = c + i * k;
 					}
 				}
 			}
-			eps1 = eps_tmp;
 		}
 
 		private: System::Void решатьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -1138,6 +1262,8 @@ namespace numLabChebishev {
 			A->setParam(n, m, h, k);
 			VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
 			initial_approximation();
+
+			*V0 = *V;
 
 			R0 = norm_vector_max((*A) * (*V) - *B);
 			
@@ -1163,37 +1289,14 @@ namespace numLabChebishev {
 			setInfo();
 			справкаToolStripMenuItem->Enabled = true;
 
-			proc->StartInfo->FileName = "gnuplot.exe";
-			proc->StartInfo->CreateNoWindow = true;
+			create_chart();
 
-			if (task == TASK::MAIN) {
-				write_points_main();
-				proc->StartInfo->Arguments = "-p -c scripts/chart_main_image.gp";
-
-				proc->Start();
-				proc->WaitForExit();
-				proc->Close();
-
-				// PictureBoxChart1->Image = Image::FromFile("./images/test_u.png");
-			}
-			else
-			{
-				write_points_test();
-				proc->StartInfo->Arguments = "-p -c scripts/chart_test_image.gp";
-
-				proc->Start();
-				proc->WaitForExit();
-				proc->Close();
-
-				PictureBoxChart1->Image = Image::FromFile("./images/test_u.png");
-				PictureBoxChart2->Image = Image::FromFile("./images/test_v0.png");
-				PictureBoxChart3->Image = Image::FromFile("./images/test_vn.png");
-				PictureBoxChart4->Image = Image::FromFile("./images/test_u_vn.png");
-			}
+			set_table();
 		}
 
 		private: System::Void ComboBoxTask_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 			справкаToolStripMenuItem->Enabled = false;
+			set_default_chart();
 			if (ComboBoxTask->Text == "Тестовая задача") {
 				task = TASK::TEST;
 				PictureBoxEquation->Image = (Image^)imageTest;

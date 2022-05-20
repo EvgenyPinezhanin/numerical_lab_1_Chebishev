@@ -95,10 +95,18 @@ if not exist "$(TargetDir)data\" mkdir  "$(TargetDir)data\"</Command>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy "$(SolutionDir)scripts\*.*" "$(TargetDir)scripts\" /Y /I /E
+xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
+if not exist "$(TargetDir)data\" mkdir "$(TargetDir)data\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -113,10 +121,18 @@ if not exist "$(TargetDir)data\" mkdir  "$(TargetDir)data\"</Command>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy "$(SolutionDir)scripts\*.*" "$(TargetDir)scripts\" /Y /I /E
+xcopy "$(SolutionDir)images\*.*" "$(TargetDir)images\" /Y /I /E
+if not exist "$(TargetDir)data\" mkdir "$(TargetDir)data\"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -53,7 +53,6 @@ void iter_chebishev::solve(vector<double>& V, double& eps, int& N) {
 	int count = 0;
 	for (int i = 0; i < Nmax_correct / k; i++) {
 		for (int j = 0; j < k; j++) {
-			vector<double> v1 = A * V;
 			V = V + tau[j] * (B - A * V);
 		}
 		eps = calc_eps_current(V_tmp, V);
