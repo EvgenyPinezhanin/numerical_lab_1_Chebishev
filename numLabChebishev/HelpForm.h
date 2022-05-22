@@ -1140,6 +1140,34 @@ namespace numLabChebishev {
 					LabelYmax2->Visible = true;
 					LabelYmax2_->Visible = true;
 					PictureBoxEps1->Image = (Image^)imageEps2;
+
+					LabelControl->Visible = true;
+					label17->Visible = true;
+					LabelK2->Visible = true;
+					label16->Visible = true;
+					LabelEpsMet2->Visible = true;
+					PictureBoxEpsMet2->Visible = true;
+					label15->Visible = true;
+					LabelNmax2->Visible = true;
+					PictureBoxNmax2->Visible = true;
+					label14->Visible = true;
+					LabelN_iter2->Visible = true;
+					label13->Visible = true;
+					LabelEpsN2->Visible = true;
+					PictureBoxEpsN2->Visible = true;
+					label12->Visible = true;
+					LabelRN2->Visible = true;
+					PictureBoxRN2->Visible = true;
+					label11->Visible = true;
+					label5->Visible = true;
+					LabelApprox2->Visible = true;
+					label4->Visible = true;
+					LabelR02->Visible = true;
+					PictureBoxR02->Visible = true;
+					label3->Visible = true;
+					label2->Visible = true;
+					LabelTime2->Visible = true;
+					label1->Visible = true;
 				}
 				else
 				{
@@ -1153,6 +1181,34 @@ namespace numLabChebishev {
 					LabelYmax2->Visible = false;
 					LabelYmax2_->Visible = false;
 					PictureBoxEps1->Image = (Image^)imageEps1;
+
+					LabelControl->Visible = false;
+					label17->Visible = false;
+					LabelK2->Visible = false;
+					label16->Visible = false;
+					LabelEpsMet2->Visible = false;
+					PictureBoxEpsMet2->Visible = false;
+					label15->Visible = false;
+					LabelNmax2->Visible = false;
+					PictureBoxNmax2->Visible = false;
+					label14->Visible = false;
+					LabelN_iter2->Visible = false;
+					label13->Visible = false;
+					LabelEpsN2->Visible = false;
+					PictureBoxEpsN2->Visible = false;
+					label12->Visible = false;
+					LabelRN2->Visible = false;
+					PictureBoxRN2->Visible = false;
+					label11->Visible = false;
+					label5->Visible = false;
+					LabelApprox2->Visible = false;
+					label4->Visible = false;
+					LabelR02->Visible = false;
+					PictureBoxR02->Visible = false;
+					label3->Visible = false;
+					label2->Visible = false;
+					LabelTime2->Visible = false;
+					label1->Visible = false;
 				}
 				LabelN->Text = info->n.ToString();
 				LabelM->Text = info->m.ToString();

@@ -986,24 +986,28 @@ namespace numLabChebishev {
 			this->точноеРешениеUxYToolStripMenuItem->Name = L"точноеРешениеUxYToolStripMenuItem";
 			this->точноеРешениеUxYToolStripMenuItem->Size = System::Drawing::Size(380, 26);
 			this->точноеРешениеUxYToolStripMenuItem->Text = L"Точное решение U(x, y)";
+			this->точноеРешениеUxYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::точноеРешениеUxYToolStripMenuItem_Click);
 			// 
 			// начальноПриближениеV0xYToolStripMenuItem
 			// 
 			this->начальноПриближениеV0xYToolStripMenuItem->Name = L"начальноПриближениеV0xYToolStripMenuItem";
 			this->начальноПриближениеV0xYToolStripMenuItem->Size = System::Drawing::Size(380, 26);
 			this->начальноПриближениеV0xYToolStripMenuItem->Text = L"Начально приближение V0(x, y)";
+			this->начальноПриближениеV0xYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::начальноПриближениеV0xYToolStripMenuItem_Click);
 			// 
 			// численноеРешениеVxYToolStripMenuItem
 			// 
 			this->численноеРешениеVxYToolStripMenuItem->Name = L"численноеРешениеVxYToolStripMenuItem";
 			this->численноеРешениеVxYToolStripMenuItem->Size = System::Drawing::Size(380, 26);
 			this->численноеРешениеVxYToolStripMenuItem->Text = L"Численное решение V(x, y)";
+			this->численноеРешениеVxYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::численноеРешениеVxYToolStripMenuItem_Click);
 			// 
 			// разностьТочногоИЧисленногоРешенияToolStripMenuItem
 			// 
 			this->разностьТочногоИЧисленногоРешенияToolStripMenuItem->Name = L"разностьТочногоИЧисленногоРешенияToolStripMenuItem";
 			this->разностьТочногоИЧисленногоРешенияToolStripMenuItem->Size = System::Drawing::Size(380, 26);
 			this->разностьТочногоИЧисленногоРешенияToolStripMenuItem->Text = L"Разность точного и численного решения";
+			this->разностьТочногоИЧисленногоРешенияToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::разностьТочногоИЧисленногоРешенияToolStripMenuItem_Click);
 			// 
 			// MainToolStripMenuItem
 			// 
@@ -1022,30 +1026,35 @@ namespace numLabChebishev {
 			this->начальноеПриближениеV0xYToolStripMenuItem->Name = L"начальноеПриближениеV0xYToolStripMenuItem";
 			this->начальноеПриближениеV0xYToolStripMenuItem->Size = System::Drawing::Size(408, 26);
 			this->начальноеПриближениеV0xYToolStripMenuItem->Text = L"Начальное приближение V0(x, y)";
+			this->начальноеПриближениеV0xYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::начальноеПриближениеV0xYToolStripMenuItem_Click);
 			// 
 			// начальноеПриближениеV20xYToolStripMenuItem
 			// 
 			this->начальноеПриближениеV20xYToolStripMenuItem->Name = L"начальноеПриближениеV20xYToolStripMenuItem";
 			this->начальноеПриближениеV20xYToolStripMenuItem->Size = System::Drawing::Size(408, 26);
 			this->начальноеПриближениеV20xYToolStripMenuItem->Text = L"Начальное приближение V20(x, y)";
+			this->начальноеПриближениеV20xYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::начальноеПриближениеV20xYToolStripMenuItem_Click);
 			// 
 			// численноеРешениеVxYToolStripMenuItem1
 			// 
 			this->численноеРешениеVxYToolStripMenuItem1->Name = L"численноеРешениеVxYToolStripMenuItem1";
 			this->численноеРешениеVxYToolStripMenuItem1->Size = System::Drawing::Size(408, 26);
 			this->численноеРешениеVxYToolStripMenuItem1->Text = L"Численное решение V(x, y)";
+			this->численноеРешениеVxYToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::численноеРешениеVxYToolStripMenuItem1_Click);
 			// 
 			// численноеРешениеV2xYToolStripMenuItem
 			// 
 			this->численноеРешениеV2xYToolStripMenuItem->Name = L"численноеРешениеV2xYToolStripMenuItem";
 			this->численноеРешениеV2xYToolStripMenuItem->Size = System::Drawing::Size(408, 26);
 			this->численноеРешениеV2xYToolStripMenuItem->Text = L"Численное решение V2(x, y)";
+			this->численноеРешениеV2xYToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::численноеРешениеV2xYToolStripMenuItem_Click);
 			// 
 			// разностьЧисленныхРешенийToolStripMenuItem
 			// 
 			this->разностьЧисленныхРешенийToolStripMenuItem->Name = L"разностьЧисленныхРешенийToolStripMenuItem";
 			this->разностьЧисленныхРешенийToolStripMenuItem->Size = System::Drawing::Size(408, 26);
 			this->разностьЧисленныхРешенийToolStripMenuItem->Text = L"Разность численных решений V(x, y) - V2(x, y)";
+			this->разностьЧисленныхРешенийToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::разностьЧисленныхРешенийToolStripMenuItem_Click);
 			// 
 			// TableLayoutPanelMain
 			// 
@@ -1710,6 +1719,78 @@ namespace numLabChebishev {
 
 		private: System::Void справкаToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 			hForm->Show();
+		}
+
+		private: System::Void точноеРешениеUxYToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_test.gp 1";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void начальноПриближениеV0xYToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_test.gp 2";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void численноеРешениеVxYToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_test.gp 3";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void разностьТочногоИЧисленногоРешенияToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_test.gp 4";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void начальноеПриближениеV0xYToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_main.gp 1";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void начальноеПриближениеV20xYToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_main.gp 2";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void численноеРешениеVxYToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_main.gp 3";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void численноеРешениеV2xYToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_main.gp 4";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
+		}
+
+		private: System::Void разностьЧисленныхРешенийToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+			proc->StartInfo->Arguments = "-c scripts/chart_main.gp 5";
+
+			proc->Start();
+			proc->WaitForExit();
+			proc->Close();
 		}
 	};
 }
