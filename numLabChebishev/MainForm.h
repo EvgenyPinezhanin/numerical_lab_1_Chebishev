@@ -38,13 +38,26 @@ namespace numLabChebishev {
 	double f_test(double x, double y) {
 		return 4.0 * (1 - x * x - y * y) * exp(1 - x * x - y * y);
 	}
+
+	double f(double x, double y) {
+		return abs(x * x - y * y);
+	}
 	
 	double mu_test(double arg, int j) {
 		switch (j) {
-		case 1: case 2: case 3: case 4: 
-			return exp(-arg * arg);
-		default:
-			return -1.0;
+			case 1: case 2: case 3: case 4: 
+				return exp(-arg * arg);
+			default:
+				return -1.0;
+		}
+	}
+
+	double mu(double arg, int j) {
+		switch (j) {
+			case 1: return -arg * arg + 1.0;
+			case 2: return (1.0 - arg * arg) * exp(arg);
+			case 3: case 4: return 1.0 - arg * arg;
+			default: return -1.0;
 		}
 	}
 
@@ -150,7 +163,6 @@ namespace numLabChebishev {
 		}
 
 #pragma region declaration
-
 	private: System::Windows::Forms::TableLayoutPanel^ TableLayoutPanelTaskOptHelp;
 	private: System::Windows::Forms::GroupBox^ GroupBoxTask;
 	private: System::Windows::Forms::GroupBox^ GroupBoxOpt;
@@ -239,6 +251,14 @@ namespace numLabChebishev {
 		{
 			this->TableLayoutPanelTaskOptHelp = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->GroupBoxOpt = (gcnew System::Windows::Forms::GroupBox());
+			this->GroupBoxParam2 = (gcnew System::Windows::Forms::GroupBox());
+			this->GroupBoxStop2 = (gcnew System::Windows::Forms::GroupBox());
+			this->TextBoxIter2 = (gcnew System::Windows::Forms::TextBox());
+			this->TextBoxAccur2 = (gcnew System::Windows::Forms::TextBox());
+			this->LabelIter = (gcnew System::Windows::Forms::Label());
+			this->LabelAccur2 = (gcnew System::Windows::Forms::Label());
+			this->TextBoxK2 = (gcnew System::Windows::Forms::TextBox());
+			this->LabelK2 = (gcnew System::Windows::Forms::Label());
 			this->TextBoxK = (gcnew System::Windows::Forms::TextBox());
 			this->LabelK = (gcnew System::Windows::Forms::Label());
 			this->GroupBoxStop = (gcnew System::Windows::Forms::GroupBox());
@@ -296,16 +316,10 @@ namespace numLabChebishev {
 			this->разностьЧисленныхРешенийToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->TableLayoutPanelMain = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->SplitContainerChartTable = (gcnew System::Windows::Forms::SplitContainer());
-			this->GroupBoxParam2 = (gcnew System::Windows::Forms::GroupBox());
-			this->LabelK2 = (gcnew System::Windows::Forms::Label());
-			this->TextBoxK2 = (gcnew System::Windows::Forms::TextBox());
-			this->GroupBoxStop2 = (gcnew System::Windows::Forms::GroupBox());
-			this->TextBoxIter2 = (gcnew System::Windows::Forms::TextBox());
-			this->TextBoxAccur2 = (gcnew System::Windows::Forms::TextBox());
-			this->LabelIter = (gcnew System::Windows::Forms::Label());
-			this->LabelAccur2 = (gcnew System::Windows::Forms::Label());
 			this->TableLayoutPanelTaskOptHelp->SuspendLayout();
 			this->GroupBoxOpt->SuspendLayout();
+			this->GroupBoxParam2->SuspendLayout();
+			this->GroupBoxStop2->SuspendLayout();
 			this->GroupBoxStop->SuspendLayout();
 			this->GroupBoxApproximation->SuspendLayout();
 			this->GroupBoxTask->SuspendLayout();
@@ -335,8 +349,6 @@ namespace numLabChebishev {
 			this->SplitContainerChartTable->Panel1->SuspendLayout();
 			this->SplitContainerChartTable->Panel2->SuspendLayout();
 			this->SplitContainerChartTable->SuspendLayout();
-			this->GroupBoxParam2->SuspendLayout();
-			this->GroupBoxStop2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// TableLayoutPanelTaskOptHelp
@@ -355,7 +367,7 @@ namespace numLabChebishev {
 			this->TableLayoutPanelTaskOptHelp->RowStyles->Add((gcnew System::Windows::Forms::RowStyle()));
 			this->TableLayoutPanelTaskOptHelp->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				20)));
-			this->TableLayoutPanelTaskOptHelp->Size = System::Drawing::Size(340, 860);
+			this->TableLayoutPanelTaskOptHelp->Size = System::Drawing::Size(340, 862);
 			this->TableLayoutPanelTaskOptHelp->TabIndex = 0;
 			// 
 			// GroupBoxOpt
@@ -373,10 +385,99 @@ namespace numLabChebishev {
 			this->GroupBoxOpt->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->GroupBoxOpt->Location = System::Drawing::Point(3, 292);
 			this->GroupBoxOpt->Name = L"GroupBoxOpt";
-			this->GroupBoxOpt->Size = System::Drawing::Size(334, 565);
+			this->GroupBoxOpt->Size = System::Drawing::Size(334, 567);
 			this->GroupBoxOpt->TabIndex = 1;
 			this->GroupBoxOpt->TabStop = false;
 			this->GroupBoxOpt->Text = L"Параметры";
+			// 
+			// GroupBoxParam2
+			// 
+			this->GroupBoxParam2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->GroupBoxParam2->AutoSize = true;
+			this->GroupBoxParam2->Controls->Add(this->GroupBoxStop2);
+			this->GroupBoxParam2->Controls->Add(this->TextBoxK2);
+			this->GroupBoxParam2->Controls->Add(this->LabelK2);
+			this->GroupBoxParam2->Enabled = false;
+			this->GroupBoxParam2->Location = System::Drawing::Point(6, 238);
+			this->GroupBoxParam2->Name = L"GroupBoxParam2";
+			this->GroupBoxParam2->Size = System::Drawing::Size(322, 173);
+			this->GroupBoxParam2->TabIndex = 9;
+			this->GroupBoxParam2->TabStop = false;
+			this->GroupBoxParam2->Text = L"Параметры для сетки с половинным шагом";
+			// 
+			// GroupBoxStop2
+			// 
+			this->GroupBoxStop2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->GroupBoxStop2->AutoSize = true;
+			this->GroupBoxStop2->Controls->Add(this->TextBoxIter2);
+			this->GroupBoxStop2->Controls->Add(this->TextBoxAccur2);
+			this->GroupBoxStop2->Controls->Add(this->LabelIter);
+			this->GroupBoxStop2->Controls->Add(this->LabelAccur2);
+			this->GroupBoxStop2->Location = System::Drawing::Point(6, 55);
+			this->GroupBoxStop2->Name = L"GroupBoxStop2";
+			this->GroupBoxStop2->Size = System::Drawing::Size(307, 97);
+			this->GroupBoxStop2->TabIndex = 10;
+			this->GroupBoxStop2->TabStop = false;
+			this->GroupBoxStop2->Text = L"Критерии остановки";
+			// 
+			// TextBoxIter2
+			// 
+			this->TextBoxIter2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->TextBoxIter2->Location = System::Drawing::Point(178, 54);
+			this->TextBoxIter2->Name = L"TextBoxIter2";
+			this->TextBoxIter2->Size = System::Drawing::Size(120, 22);
+			this->TextBoxIter2->TabIndex = 3;
+			this->TextBoxIter2->Text = L"100000";
+			// 
+			// TextBoxAccur2
+			// 
+			this->TextBoxAccur2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->TextBoxAccur2->Location = System::Drawing::Point(178, 26);
+			this->TextBoxAccur2->Name = L"TextBoxAccur2";
+			this->TextBoxAccur2->Size = System::Drawing::Size(120, 22);
+			this->TextBoxAccur2->TabIndex = 2;
+			this->TextBoxAccur2->Text = L"0.000000005";
+			// 
+			// LabelIter
+			// 
+			this->LabelIter->AutoSize = true;
+			this->LabelIter->Location = System::Drawing::Point(6, 57);
+			this->LabelIter->Name = L"LabelIter";
+			this->LabelIter->Size = System::Drawing::Size(139, 17);
+			this->LabelIter->TabIndex = 1;
+			this->LabelIter->Text = L"По числу итераций:";
+			// 
+			// LabelAccur2
+			// 
+			this->LabelAccur2->AutoSize = true;
+			this->LabelAccur2->Location = System::Drawing::Point(6, 29);
+			this->LabelAccur2->Name = L"LabelAccur2";
+			this->LabelAccur2->Size = System::Drawing::Size(147, 17);
+			this->LabelAccur2->TabIndex = 0;
+			this->LabelAccur2->Text = L"По точности метода:";
+			// 
+			// TextBoxK2
+			// 
+			this->TextBoxK2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->TextBoxK2->Location = System::Drawing::Point(199, 27);
+			this->TextBoxK2->Name = L"TextBoxK2";
+			this->TextBoxK2->Size = System::Drawing::Size(111, 22);
+			this->TextBoxK2->TabIndex = 9;
+			this->TextBoxK2->Text = L"13";
+			// 
+			// LabelK2
+			// 
+			this->LabelK2->AutoSize = true;
+			this->LabelK2->Location = System::Drawing::Point(6, 30);
+			this->LabelK2->Name = L"LabelK2";
+			this->LabelK2->Size = System::Drawing::Size(188, 17);
+			this->LabelK2->TabIndex = 8;
+			this->LabelK2->Text = L"Количество параметров, k:";
 			// 
 			// TextBoxK
 			// 
@@ -524,7 +625,7 @@ namespace numLabChebishev {
 			this->TextBoxPartY->Name = L"TextBoxPartY";
 			this->TextBoxPartY->Size = System::Drawing::Size(132, 22);
 			this->TextBoxPartY->TabIndex = 4;
-			this->TextBoxPartY->Text = L"100";
+			this->TextBoxPartY->Text = L"10";
 			// 
 			// TextBoxPartX
 			// 
@@ -534,7 +635,7 @@ namespace numLabChebishev {
 			this->TextBoxPartX->Name = L"TextBoxPartX";
 			this->TextBoxPartX->Size = System::Drawing::Size(132, 22);
 			this->TextBoxPartX->TabIndex = 3;
-			this->TextBoxPartX->Text = L"100";
+			this->TextBoxPartX->Text = L"10";
 			// 
 			// LabelPartY
 			// 
@@ -656,7 +757,7 @@ namespace numLabChebishev {
 			this->tabPage2->Location = System::Drawing::Point(4, 25);
 			this->tabPage2->Name = L"tabPage2";
 			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(1068, 299);
+			this->tabPage2->Size = System::Drawing::Size(1068, 377);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"V(0)(xi, yj)";
 			this->tabPage2->UseVisualStyleBackColor = true;
@@ -666,7 +767,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart2->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->PictureBoxChart2->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart2->Name = L"PictureBoxChart2";
-			this->PictureBoxChart2->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart2->Size = System::Drawing::Size(1062, 371);
 			this->PictureBoxChart2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart2->TabIndex = 0;
 			this->PictureBoxChart2->TabStop = false;
@@ -677,7 +778,7 @@ namespace numLabChebishev {
 			this->tabPage3->Location = System::Drawing::Point(4, 25);
 			this->tabPage3->Name = L"tabPage3";
 			this->tabPage3->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage3->Size = System::Drawing::Size(1068, 299);
+			this->tabPage3->Size = System::Drawing::Size(1068, 377);
 			this->tabPage3->TabIndex = 2;
 			this->tabPage3->Text = L"V(N)(x, y)";
 			this->tabPage3->UseVisualStyleBackColor = true;
@@ -687,7 +788,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart3->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->PictureBoxChart3->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart3->Name = L"PictureBoxChart3";
-			this->PictureBoxChart3->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart3->Size = System::Drawing::Size(1062, 371);
 			this->PictureBoxChart3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart3->TabIndex = 0;
 			this->PictureBoxChart3->TabStop = false;
@@ -698,7 +799,7 @@ namespace numLabChebishev {
 			this->tabPage4->Location = System::Drawing::Point(4, 25);
 			this->tabPage4->Name = L"tabPage4";
 			this->tabPage4->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage4->Size = System::Drawing::Size(1068, 299);
+			this->tabPage4->Size = System::Drawing::Size(1068, 377);
 			this->tabPage4->TabIndex = 3;
 			this->tabPage4->Text = L"U(x, y) - V(N)(x, y)";
 			this->tabPage4->UseVisualStyleBackColor = true;
@@ -708,7 +809,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart4->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->PictureBoxChart4->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart4->Name = L"PictureBoxChart4";
-			this->PictureBoxChart4->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart4->Size = System::Drawing::Size(1062, 371);
 			this->PictureBoxChart4->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart4->TabIndex = 0;
 			this->PictureBoxChart4->TabStop = false;
@@ -719,7 +820,7 @@ namespace numLabChebishev {
 			this->tabPage5->Location = System::Drawing::Point(4, 25);
 			this->tabPage5->Name = L"tabPage5";
 			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage5->Size = System::Drawing::Size(1068, 299);
+			this->tabPage5->Size = System::Drawing::Size(1068, 377);
 			this->tabPage5->TabIndex = 4;
 			this->tabPage5->Text = L"***";
 			this->tabPage5->UseVisualStyleBackColor = true;
@@ -729,7 +830,7 @@ namespace numLabChebishev {
 			this->PictureBoxChart5->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->PictureBoxChart5->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart5->Name = L"PictureBoxChart5";
-			this->PictureBoxChart5->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart5->Size = System::Drawing::Size(1062, 371);
 			this->PictureBoxChart5->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart5->TabIndex = 0;
 			this->PictureBoxChart5->TabStop = false;
@@ -743,7 +844,7 @@ namespace numLabChebishev {
 			this->TabControlTable->Location = System::Drawing::Point(0, 0);
 			this->TabControlTable->Name = L"TabControlTable";
 			this->TabControlTable->SelectedIndex = 0;
-			this->TabControlTable->Size = System::Drawing::Size(1076, 450);
+			this->TabControlTable->Size = System::Drawing::Size(1076, 452);
 			this->TabControlTable->TabIndex = 1;
 			// 
 			// tabPage6
@@ -752,7 +853,7 @@ namespace numLabChebishev {
 			this->tabPage6->Location = System::Drawing::Point(4, 25);
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage6->Size = System::Drawing::Size(1068, 421);
+			this->tabPage6->Size = System::Drawing::Size(1068, 423);
 			this->tabPage6->TabIndex = 0;
 			this->tabPage6->Text = L"U(x, y)";
 			this->tabPage6->UseVisualStyleBackColor = true;
@@ -768,7 +869,7 @@ namespace numLabChebishev {
 			this->Table1->ReadOnly = true;
 			this->Table1->RowHeadersWidth = 51;
 			this->Table1->RowTemplate->Height = 24;
-			this->Table1->Size = System::Drawing::Size(1062, 415);
+			this->Table1->Size = System::Drawing::Size(1062, 417);
 			this->Table1->TabIndex = 0;
 			// 
 			// tabPage7
@@ -777,20 +878,23 @@ namespace numLabChebishev {
 			this->tabPage7->Location = System::Drawing::Point(4, 25);
 			this->tabPage7->Name = L"tabPage7";
 			this->tabPage7->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage7->Size = System::Drawing::Size(1068, 333);
+			this->tabPage7->Size = System::Drawing::Size(1068, 423);
 			this->tabPage7->TabIndex = 1;
 			this->tabPage7->Text = L"V(N)(x, y)";
 			this->tabPage7->UseVisualStyleBackColor = true;
 			// 
 			// Table2
 			// 
+			this->Table2->AllowUserToAddRows = false;
+			this->Table2->AllowUserToDeleteRows = false;
 			this->Table2->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->Table2->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->Table2->Location = System::Drawing::Point(3, 3);
 			this->Table2->Name = L"Table2";
+			this->Table2->ReadOnly = true;
 			this->Table2->RowHeadersWidth = 51;
 			this->Table2->RowTemplate->Height = 24;
-			this->Table2->Size = System::Drawing::Size(1062, 327);
+			this->Table2->Size = System::Drawing::Size(1062, 417);
 			this->Table2->TabIndex = 0;
 			// 
 			// tabPage8
@@ -799,20 +903,23 @@ namespace numLabChebishev {
 			this->tabPage8->Location = System::Drawing::Point(4, 25);
 			this->tabPage8->Name = L"tabPage8";
 			this->tabPage8->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage8->Size = System::Drawing::Size(1068, 333);
+			this->tabPage8->Size = System::Drawing::Size(1068, 423);
 			this->tabPage8->TabIndex = 2;
 			this->tabPage8->Text = L"U(x, y) - V(N)(x, y)";
 			this->tabPage8->UseVisualStyleBackColor = true;
 			// 
 			// Table3
 			// 
+			this->Table3->AllowUserToAddRows = false;
+			this->Table3->AllowUserToDeleteRows = false;
 			this->Table3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->Table3->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->Table3->Location = System::Drawing::Point(3, 3);
 			this->Table3->Name = L"Table3";
+			this->Table3->ReadOnly = true;
 			this->Table3->RowHeadersWidth = 51;
 			this->Table3->RowTemplate->Height = 24;
-			this->Table3->Size = System::Drawing::Size(1062, 327);
+			this->Table3->Size = System::Drawing::Size(1062, 417);
 			this->Table3->TabIndex = 0;
 			// 
 			// MenuStripMain
@@ -824,7 +931,7 @@ namespace numLabChebishev {
 			});
 			this->MenuStripMain->Location = System::Drawing::Point(0, 0);
 			this->MenuStripMain->Name = L"MenuStripMain";
-			this->MenuStripMain->Size = System::Drawing::Size(1428, 30);
+			this->MenuStripMain->Size = System::Drawing::Size(1428, 28);
 			this->MenuStripMain->TabIndex = 1;
 			this->MenuStripMain->Text = L"MenuStripMain";
 			// 
@@ -835,7 +942,7 @@ namespace numLabChebishev {
 					this->справкаToolStripMenuItem
 			});
 			this->задачаToolStripMenuItem->Name = L"задачаToolStripMenuItem";
-			this->задачаToolStripMenuItem->Size = System::Drawing::Size(71, 26);
+			this->задачаToolStripMenuItem->Size = System::Drawing::Size(71, 24);
 			this->задачаToolStripMenuItem->Text = L"Задача";
 			// 
 			// решатьToolStripMenuItem
@@ -860,7 +967,7 @@ namespace numLabChebishev {
 					this->MainToolStripMenuItem
 			});
 			this->графикToolStripMenuItem->Name = L"графикToolStripMenuItem";
-			this->графикToolStripMenuItem->Size = System::Drawing::Size(73, 26);
+			this->графикToolStripMenuItem->Size = System::Drawing::Size(73, 24);
 			this->графикToolStripMenuItem->Text = L"График";
 			// 
 			// TestToolStripMenuItem
@@ -871,7 +978,7 @@ namespace numLabChebishev {
 			});
 			this->TestToolStripMenuItem->Enabled = false;
 			this->TestToolStripMenuItem->Name = L"TestToolStripMenuItem";
-			this->TestToolStripMenuItem->Size = System::Drawing::Size(212, 26);
+			this->TestToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->TestToolStripMenuItem->Text = L"Тестовая задача";
 			// 
 			// точноеРешениеUxYToolStripMenuItem
@@ -907,7 +1014,7 @@ namespace numLabChebishev {
 			});
 			this->MainToolStripMenuItem->Enabled = false;
 			this->MainToolStripMenuItem->Name = L"MainToolStripMenuItem";
-			this->MainToolStripMenuItem->Size = System::Drawing::Size(212, 26);
+			this->MainToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->MainToolStripMenuItem->Text = L"Основная задача";
 			// 
 			// начальноеПриближениеV0xYToolStripMenuItem
@@ -950,12 +1057,12 @@ namespace numLabChebishev {
 			this->TableLayoutPanelMain->Controls->Add(this->SplitContainerChartTable, 1, 0);
 			this->TableLayoutPanelMain->Controls->Add(this->TableLayoutPanelTaskOptHelp, 0, 0);
 			this->TableLayoutPanelMain->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->TableLayoutPanelMain->Location = System::Drawing::Point(0, 30);
+			this->TableLayoutPanelMain->Location = System::Drawing::Point(0, 28);
 			this->TableLayoutPanelMain->Name = L"TableLayoutPanelMain";
 			this->TableLayoutPanelMain->RowCount = 1;
 			this->TableLayoutPanelMain->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent,
 				100)));
-			this->TableLayoutPanelMain->Size = System::Drawing::Size(1428, 866);
+			this->TableLayoutPanelMain->Size = System::Drawing::Size(1428, 868);
 			this->TableLayoutPanelMain->TabIndex = 2;
 			// 
 			// SplitContainerChartTable
@@ -972,98 +1079,9 @@ namespace numLabChebishev {
 			// SplitContainerChartTable.Panel2
 			// 
 			this->SplitContainerChartTable->Panel2->Controls->Add(this->TabControlTable);
-			this->SplitContainerChartTable->Size = System::Drawing::Size(1076, 860);
+			this->SplitContainerChartTable->Size = System::Drawing::Size(1076, 862);
 			this->SplitContainerChartTable->SplitterDistance = 406;
 			this->SplitContainerChartTable->TabIndex = 1;
-			// 
-			// GroupBoxParam2
-			// 
-			this->GroupBoxParam2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->GroupBoxParam2->AutoSize = true;
-			this->GroupBoxParam2->Controls->Add(this->GroupBoxStop2);
-			this->GroupBoxParam2->Controls->Add(this->TextBoxK2);
-			this->GroupBoxParam2->Controls->Add(this->LabelK2);
-			this->GroupBoxParam2->Enabled = false;
-			this->GroupBoxParam2->Location = System::Drawing::Point(6, 238);
-			this->GroupBoxParam2->Name = L"GroupBoxParam2";
-			this->GroupBoxParam2->Size = System::Drawing::Size(322, 173);
-			this->GroupBoxParam2->TabIndex = 9;
-			this->GroupBoxParam2->TabStop = false;
-			this->GroupBoxParam2->Text = L"Параметры для сетки с половинным шагом";
-			// 
-			// LabelK2
-			// 
-			this->LabelK2->AutoSize = true;
-			this->LabelK2->Location = System::Drawing::Point(6, 30);
-			this->LabelK2->Name = L"LabelK2";
-			this->LabelK2->Size = System::Drawing::Size(188, 17);
-			this->LabelK2->TabIndex = 8;
-			this->LabelK2->Text = L"Количество параметров, k:";
-			// 
-			// TextBoxK2
-			// 
-			this->TextBoxK2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->TextBoxK2->Location = System::Drawing::Point(199, 27);
-			this->TextBoxK2->Name = L"TextBoxK2";
-			this->TextBoxK2->Size = System::Drawing::Size(111, 22);
-			this->TextBoxK2->TabIndex = 9;
-			this->TextBoxK2->Text = L"13";
-			// 
-			// GroupBoxStop2
-			// 
-			this->GroupBoxStop2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->GroupBoxStop2->AutoSize = true;
-			this->GroupBoxStop2->Controls->Add(this->TextBoxIter2);
-			this->GroupBoxStop2->Controls->Add(this->TextBoxAccur2);
-			this->GroupBoxStop2->Controls->Add(this->LabelIter);
-			this->GroupBoxStop2->Controls->Add(this->LabelAccur2);
-			this->GroupBoxStop2->Location = System::Drawing::Point(6, 55);
-			this->GroupBoxStop2->Name = L"GroupBoxStop2";
-			this->GroupBoxStop2->Size = System::Drawing::Size(307, 97);
-			this->GroupBoxStop2->TabIndex = 10;
-			this->GroupBoxStop2->TabStop = false;
-			this->GroupBoxStop2->Text = L"Критерии остановки";
-			// 
-			// TextBoxIter2
-			// 
-			this->TextBoxIter2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->TextBoxIter2->Location = System::Drawing::Point(178, 54);
-			this->TextBoxIter2->Name = L"TextBoxIter2";
-			this->TextBoxIter2->Size = System::Drawing::Size(120, 22);
-			this->TextBoxIter2->TabIndex = 3;
-			this->TextBoxIter2->Text = L"100000";
-			// 
-			// TextBoxAccur2
-			// 
-			this->TextBoxAccur2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->TextBoxAccur2->Location = System::Drawing::Point(178, 26);
-			this->TextBoxAccur2->Name = L"TextBoxAccur2";
-			this->TextBoxAccur2->Size = System::Drawing::Size(120, 22);
-			this->TextBoxAccur2->TabIndex = 2;
-			this->TextBoxAccur2->Text = L"0.000000005";
-			// 
-			// LabelIter
-			// 
-			this->LabelIter->AutoSize = true;
-			this->LabelIter->Location = System::Drawing::Point(6, 57);
-			this->LabelIter->Name = L"LabelIter";
-			this->LabelIter->Size = System::Drawing::Size(139, 17);
-			this->LabelIter->TabIndex = 1;
-			this->LabelIter->Text = L"По числу итераций:";
-			// 
-			// LabelAccur2
-			// 
-			this->LabelAccur2->AutoSize = true;
-			this->LabelAccur2->Location = System::Drawing::Point(6, 29);
-			this->LabelAccur2->Name = L"LabelAccur2";
-			this->LabelAccur2->Size = System::Drawing::Size(147, 17);
-			this->LabelAccur2->TabIndex = 0;
-			this->LabelAccur2->Text = L"По точности метода:";
 			// 
 			// MainForm
 			// 
@@ -1082,6 +1100,10 @@ namespace numLabChebishev {
 			this->TableLayoutPanelTaskOptHelp->PerformLayout();
 			this->GroupBoxOpt->ResumeLayout(false);
 			this->GroupBoxOpt->PerformLayout();
+			this->GroupBoxParam2->ResumeLayout(false);
+			this->GroupBoxParam2->PerformLayout();
+			this->GroupBoxStop2->ResumeLayout(false);
+			this->GroupBoxStop2->PerformLayout();
 			this->GroupBoxStop->ResumeLayout(false);
 			this->GroupBoxStop->PerformLayout();
 			this->GroupBoxApproximation->ResumeLayout(false);
@@ -1117,10 +1139,6 @@ namespace numLabChebishev {
 			this->SplitContainerChartTable->Panel2->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainerChartTable))->EndInit();
 			this->SplitContainerChartTable->ResumeLayout(false);
-			this->GroupBoxParam2->ResumeLayout(false);
-			this->GroupBoxParam2->PerformLayout();
-			this->GroupBoxStop2->ResumeLayout(false);
-			this->GroupBoxStop2->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1269,6 +1287,7 @@ namespace numLabChebishev {
 			hForm->info->max_y1 = *y_max;
 			hForm->info->approx = startApprox;
 			hForm->info->norm_R0 = R0;
+			hForm->info->time = time;
 
 			if (task == TASK::MAIN) {
 				hForm->info->k2 = kParam2;
@@ -1281,9 +1300,8 @@ namespace numLabChebishev {
 				hForm->info->norm_R02 = R02;
 				hForm->info->max_x2 = *x_max2;
 				hForm->info->max_y2 = *y_max2;
+				hForm->info->time2 = time2;
 			}
-
-			hForm->info->time = time;
 		}
 
 		private: void set_chart(PictureBox^ pb, Image^% img, string str) {
@@ -1323,6 +1341,8 @@ namespace numLabChebishev {
 				set_chart(PictureBoxChart3, image3, "./images/main_vn.png");
 				set_chart(PictureBoxChart4, image4, "./images/main_vn2.png");
 				set_chart(PictureBoxChart5, image5, "./images/main_vn2_vn.png");
+
+				MainToolStripMenuItem->Enabled = true;
 			}
 			else
 			{
@@ -1340,6 +1360,8 @@ namespace numLabChebishev {
 				set_chart(PictureBoxChart2, image2, "./images/test_v0.png");
 				set_chart(PictureBoxChart3, image3, "./images/test_vn.png");
 				set_chart(PictureBoxChart4, image4, "./images/test_u_vn.png");
+
+				TestToolStripMenuItem->Enabled = true;
 			}
 		}
 
@@ -1399,9 +1421,15 @@ namespace numLabChebishev {
 			set_border();
 
 			if (task == TASK::MAIN) {
-
+				for (int i = 1; i < m; i++) {
+					for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
+						Table1->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V)[j];
+						Table2->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V2)[(2 * i - 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1];
+						Table3->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V2)[(2 * i - 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j];
+					}
+				}
 			}
-			else 
+			else
 			{
 				for (int i = 1; i < m; i++) {
 					for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
@@ -1502,7 +1530,7 @@ namespace numLabChebishev {
 			y_max = c;
 			for (int i = 0; i < m - 1; i++) {
 				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-					eps_curr = abs(u(a + (j % (n - 1) + 1) * h, c + i * k) - (*V)[j]);
+					eps_curr = abs(u(a + (j % (n - 1) + 1) * h, c + (i + 1) * k) - (*V)[j]);
 					if (eps_curr > eps1) {
 						eps1 = eps_curr;
 						x_max = a + (j % (n - 1) + 1) * h;
@@ -1519,7 +1547,7 @@ namespace numLabChebishev {
 			y_max = c;
 			for (int i = 0; i < m - 1; i++) {
 				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-					eps_curr = abs((*V2)[2 * i * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j]);
+					eps_curr = abs((*V2)[(2 * i + 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j]);
 					if (eps_curr > eps2) {
 						eps2 = eps_curr;
 						x_max = a + (j % (n - 1) + 1) * 2.0 * h;
@@ -1534,7 +1562,13 @@ namespace numLabChebishev {
 			h = (b - a) / n;
 			k = (d - c) / m;
 			A->setParam(n, m, h, k);
-			VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
+			if (task == TASK::MAIN) {
+				VectorB::getVectorB(*B, n, m, h, k, f, mu, a, b, c, d);
+			}
+			else
+			{
+				VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
+			}
 			initial_approximation(*V, n, m, h, k);
 
 			*V0 = *V;
@@ -1560,7 +1594,7 @@ namespace numLabChebishev {
 				h = (b - a) / (2 * n);
 				k = (d - c) / (2 * m);
 				A->setParam(2 * n, 2 * m, h, k);
-				VectorB::getVectorB(*B, 2 * n, 2 * m, h, k, f_test, mu_test, a, b, c, d);
+				VectorB::getVectorB(*B, 2 * n, 2 * m, h, k, f, mu, a, b, c, d);
 				initial_approximation(*V2, 2 * n, 2 * m, h, k);
 
 				*V02 = *V2;
@@ -1623,6 +1657,9 @@ namespace numLabChebishev {
 				clear_table(Table3);
 
 				isTaskMain = false;
+
+				MainToolStripMenuItem->Enabled = false;
+				TestToolStripMenuItem->Enabled = false;
 			}
 			else if (ComboBoxTask->Text == "Основная задача" && !isTaskMain)
 			{
@@ -1649,6 +1686,9 @@ namespace numLabChebishev {
 				clear_table(Table3);
 
 				isTaskMain = true;
+
+				MainToolStripMenuItem->Enabled = false;
+				TestToolStripMenuItem->Enabled = false;
 			}
 		}
 
