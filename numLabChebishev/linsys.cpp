@@ -5,7 +5,6 @@ MatrixA::MatrixA(int _n, int _m, double _h, double _k)
 	: n(_n), m(_m), h(_h), k(_k) {}
 
 vector<double> MatrixA::operator*(const vector<double>& vec) {
-	// if ((n - 1) * (m - 1) != vec.size()) throw "Different matrix size and vector size";
 	vector<double> tmp(vec.size());
 	double _h_2 = -1.0 / (h * h);
 	double _k_2 = -1.0 / (k * k);
@@ -18,26 +17,26 @@ vector<double> MatrixA::operator*(const vector<double>& vec) {
 	tmp[size - 1] = vec[size - 1 - (n - 1)] * _k_2 + vec[size - 2] * _h_2 + vec[size - 1] * _A;
 
 	for (size_t i = 1; i < n - 2; i++) {
-		tmp[i] = vec[i - 1] * _h_2 + vec[i] * _A + vec[i + 1] * _h_2 + vec[i + n - 1] * _k_2;
+		tmp[i] = (vec[i - 1]  + vec[i + 1]) * _h_2 + vec[i] * _A + vec[i + n - 1] * _k_2;
 	}
 
 	for (size_t i = size - (n - 2); i < size - 1; i++) {
-		tmp[i] = vec[i - (n - 1)] * _k_2 + vec[i - 1] * _h_2 + vec[i] * _A + vec[i + 1] * _h_2;
+		tmp[i] = vec[i - (n - 1)] * _k_2 + (vec[i - 1] + vec[i + 1]) * _h_2 + vec[i] * _A;
 	}
 
 	for (size_t i = n - 1; i < size + 1 - 2 * (n - 1); i += (n - 1)) {
-		tmp[i] = vec[i - (n - 1)] * _k_2 + vec[i] * _A + vec[i + 1] * _h_2 + vec[i + (n - 1)] * _k_2;
+		tmp[i] = (vec[i - (n - 1)] + vec[i + (n - 1)]) * _k_2 + vec[i] * _A + vec[i + 1] * _h_2;
 	}
 
 	for (size_t i = 2 * (n - 1) - 1; i < size - (n - 1); i += (n - 1)) {
-		tmp[i] = vec[i - (n - 1)] * _k_2 + vec[i - 1] * _h_2 + vec[i] * _A + vec[i + (n - 1)] * _k_2;
+		tmp[i] = (vec[i - (n - 1)] + vec[i + (n - 1)]) * _k_2 + vec[i - 1] * _h_2 + vec[i] * _A;
 	}
 	int lb, rb;
 	for (int i = 1; i < m - 2; i++) {
 		lb = 1 + i * (n - 1);
 		rb = (i + 1) * (n - 1) - 1;
 		for (int j = lb; j < rb; j++) {
-			tmp[j] = vec[j - (n - 1)] * _k_2 + vec[j - 1] * _h_2 + vec[j] * _A + vec[j + 1] * _h_2 + vec[j + (n - 1)] * _k_2;
+			tmp[j] = (vec[j - (n - 1)] + vec[j + (n - 1)]) * _k_2 + (vec[j - 1] + vec[j + 1]) * _h_2 + vec[j] * _A;
 		}
 	}
 	return tmp;

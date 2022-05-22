@@ -58,6 +58,21 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::Label^ LabelPart;
 	private: System::Windows::Forms::Label^ LabelPartY;
 	private: System::Windows::Forms::Label^ LabelMethod;
+	private: System::Windows::Forms::Label^ LabelStopAccur;
+	private: System::Windows::Forms::Label^ LabelStopIter;
+	private: System::Windows::Forms::Label^ LabelResSLAU;
+	private: System::Windows::Forms::Label^ LabelAccur;
+	private: System::Windows::Forms::Label^ LabelResNev;
+	private: System::Windows::Forms::Label^ LabelTypeNorm;
+	private: System::Windows::Forms::Label^ LabelRes;
+	private: System::Windows::Forms::Label^ LabelEps;
+	private: System::Windows::Forms::Label^ LabelMax;
+	private: System::Windows::Forms::Label^ LabelXeq;
+	private: System::Windows::Forms::Label^ LabelYeq;
+	private: System::Windows::Forms::Label^ LabelApproximation;
+	private: System::Windows::Forms::Label^ LabelNevRN;
+	private: System::Windows::Forms::Label^ LabelTyprNorm2;
+	private: System::Windows::Forms::Label^ LabelTimeAll;
 
 
 
@@ -97,6 +112,21 @@ namespace numLabChebishev {
 			this->LabelPart = (gcnew System::Windows::Forms::Label());
 			this->LabelPartY = (gcnew System::Windows::Forms::Label());
 			this->LabelMethod = (gcnew System::Windows::Forms::Label());
+			this->LabelStopAccur = (gcnew System::Windows::Forms::Label());
+			this->LabelStopIter = (gcnew System::Windows::Forms::Label());
+			this->LabelResSLAU = (gcnew System::Windows::Forms::Label());
+			this->LabelAccur = (gcnew System::Windows::Forms::Label());
+			this->LabelResNev = (gcnew System::Windows::Forms::Label());
+			this->LabelTypeNorm = (gcnew System::Windows::Forms::Label());
+			this->LabelRes = (gcnew System::Windows::Forms::Label());
+			this->LabelEps = (gcnew System::Windows::Forms::Label());
+			this->LabelMax = (gcnew System::Windows::Forms::Label());
+			this->LabelXeq = (gcnew System::Windows::Forms::Label());
+			this->LabelYeq = (gcnew System::Windows::Forms::Label());
+			this->LabelApproximation = (gcnew System::Windows::Forms::Label());
+			this->LabelNevRN = (gcnew System::Windows::Forms::Label());
+			this->LabelTyprNorm2 = (gcnew System::Windows::Forms::Label());
+			this->LabelTimeAll = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// ButtonOK
@@ -148,7 +178,7 @@ namespace numLabChebishev {
 			// LabelEpsMet
 			// 
 			this->LabelEpsMet->AutoSize = true;
-			this->LabelEpsMet->Location = System::Drawing::Point(162, 72);
+			this->LabelEpsMet->Location = System::Drawing::Point(264, 72);
 			this->LabelEpsMet->Name = L"LabelEpsMet";
 			this->LabelEpsMet->Size = System::Drawing::Size(62, 17);
 			this->LabelEpsMet->TabIndex = 5;
@@ -157,7 +187,7 @@ namespace numLabChebishev {
 			// LabelNmax
 			// 
 			this->LabelNmax->AutoSize = true;
-			this->LabelNmax->Location = System::Drawing::Point(285, 72);
+			this->LabelNmax->Location = System::Drawing::Point(499, 72);
 			this->LabelNmax->Name = L"LabelNmax";
 			this->LabelNmax->Size = System::Drawing::Size(43, 17);
 			this->LabelNmax->TabIndex = 6;
@@ -166,7 +196,7 @@ namespace numLabChebishev {
 			// LabelN_iter
 			// 
 			this->LabelN_iter->AutoSize = true;
-			this->LabelN_iter->Location = System::Drawing::Point(162, 104);
+			this->LabelN_iter->Location = System::Drawing::Point(379, 103);
 			this->LabelN_iter->Name = L"LabelN_iter";
 			this->LabelN_iter->Size = System::Drawing::Size(18, 17);
 			this->LabelN_iter->TabIndex = 7;
@@ -175,7 +205,7 @@ namespace numLabChebishev {
 			// LabelEpsN
 			// 
 			this->LabelEpsN->AutoSize = true;
-			this->LabelEpsN->Location = System::Drawing::Point(285, 104);
+			this->LabelEpsN->Location = System::Drawing::Point(363, 135);
 			this->LabelEpsN->Name = L"LabelEpsN";
 			this->LabelEpsN->Size = System::Drawing::Size(41, 17);
 			this->LabelEpsN->TabIndex = 8;
@@ -184,7 +214,7 @@ namespace numLabChebishev {
 			// LabelEps1
 			// 
 			this->LabelEps1->AutoSize = true;
-			this->LabelEps1->Location = System::Drawing::Point(28, 173);
+			this->LabelEps1->Location = System::Drawing::Point(245, 259);
 			this->LabelEps1->Name = L"LabelEps1";
 			this->LabelEps1->Size = System::Drawing::Size(47, 17);
 			this->LabelEps1->TabIndex = 9;
@@ -193,7 +223,7 @@ namespace numLabChebishev {
 			// LabelXmax
 			// 
 			this->LabelXmax->AutoSize = true;
-			this->LabelXmax->Location = System::Drawing::Point(194, 173);
+			this->LabelXmax->Location = System::Drawing::Point(54, 319);
 			this->LabelXmax->Name = L"LabelXmax";
 			this->LabelXmax->Size = System::Drawing::Size(47, 17);
 			this->LabelXmax->TabIndex = 10;
@@ -202,7 +232,7 @@ namespace numLabChebishev {
 			// LabelYmax
 			// 
 			this->LabelYmax->AutoSize = true;
-			this->LabelYmax->Location = System::Drawing::Point(368, 173);
+			this->LabelYmax->Location = System::Drawing::Point(173, 320);
 			this->LabelYmax->Name = L"LabelYmax";
 			this->LabelYmax->Size = System::Drawing::Size(48, 17);
 			this->LabelYmax->TabIndex = 11;
@@ -211,7 +241,7 @@ namespace numLabChebishev {
 			// LabelRN
 			// 
 			this->LabelRN->AutoSize = true;
-			this->LabelRN->Location = System::Drawing::Point(162, 143);
+			this->LabelRN->Location = System::Drawing::Point(264, 165);
 			this->LabelRN->Name = L"LabelRN";
 			this->LabelRN->Size = System::Drawing::Size(28, 17);
 			this->LabelRN->TabIndex = 12;
@@ -220,7 +250,7 @@ namespace numLabChebishev {
 			// LabelR0
 			// 
 			this->LabelR0->AutoSize = true;
-			this->LabelR0->Location = System::Drawing::Point(171, 265);
+			this->LabelR0->Location = System::Drawing::Point(332, 389);
 			this->LabelR0->Name = L"LabelR0";
 			this->LabelR0->Size = System::Drawing::Size(26, 17);
 			this->LabelR0->TabIndex = 13;
@@ -229,7 +259,7 @@ namespace numLabChebishev {
 			// LabelTime
 			// 
 			this->LabelTime->AutoSize = true;
-			this->LabelTime->Location = System::Drawing::Point(41, 332);
+			this->LabelTime->Location = System::Drawing::Point(281, 452);
 			this->LabelTime->Name = L"LabelTime";
 			this->LabelTime->Size = System::Drawing::Size(34, 17);
 			this->LabelTime->TabIndex = 14;
@@ -238,7 +268,7 @@ namespace numLabChebishev {
 			// LabelApprox
 			// 
 			this->LabelApprox->AutoSize = true;
-			this->LabelApprox->Location = System::Drawing::Point(94, 221);
+			this->LabelApprox->Location = System::Drawing::Point(381, 353);
 			this->LabelApprox->Name = L"LabelApprox";
 			this->LabelApprox->Size = System::Drawing::Size(96, 17);
 			this->LabelApprox->TabIndex = 15;
@@ -289,12 +319,162 @@ namespace numLabChebishev {
 			this->LabelMethod->TabIndex = 20;
 			this->LabelMethod->Text = L"метод с чебышевским набором k параметров, где k =";
 			// 
+			// LabelStopAccur
+			// 
+			this->LabelStopAccur->AutoSize = true;
+			this->LabelStopAccur->Location = System::Drawing::Point(15, 71);
+			this->LabelStopAccur->Name = L"LabelStopAccur";
+			this->LabelStopAccur->Size = System::Drawing::Size(227, 17);
+			this->LabelStopAccur->TabIndex = 21;
+			this->LabelStopAccur->Text = L"критерии остановки по точности";
+			// 
+			// LabelStopIter
+			// 
+			this->LabelStopIter->AutoSize = true;
+			this->LabelStopIter->Location = System::Drawing::Point(332, 72);
+			this->LabelStopIter->Name = L"LabelStopIter";
+			this->LabelStopIter->Size = System::Drawing::Size(145, 17);
+			this->LabelStopIter->TabIndex = 22;
+			this->LabelStopIter->Text = L"и по числу итераций";
+			// 
+			// LabelResSLAU
+			// 
+			this->LabelResSLAU->AutoSize = true;
+			this->LabelResSLAU->Location = System::Drawing::Point(12, 103);
+			this->LabelResSLAU->Name = L"LabelResSLAU";
+			this->LabelResSLAU->Size = System::Drawing::Size(351, 17);
+			this->LabelResSLAU->TabIndex = 23;
+			this->LabelResSLAU->Text = L"На решение схемы (СЛАУ) затрачено итераций N =";
+			// 
+			// LabelAccur
+			// 
+			this->LabelAccur->AutoSize = true;
+			this->LabelAccur->Location = System::Drawing::Point(12, 135);
+			this->LabelAccur->Name = L"LabelAccur";
+			this->LabelAccur->Size = System::Drawing::Size(317, 17);
+			this->LabelAccur->TabIndex = 24;
+			this->LabelAccur->Text = L"и достигнута точность итерационного метода ";
+			// 
+			// LabelResNev
+			// 
+			this->LabelResNev->AutoSize = true;
+			this->LabelResNev->Location = System::Drawing::Point(15, 165);
+			this->LabelResNev->Name = L"LabelResNev";
+			this->LabelResNev->Size = System::Drawing::Size(230, 17);
+			this->LabelResNev->TabIndex = 25;
+			this->LabelResNev->Text = L"Схема (СЛАУ) решена с невязкой";
+			// 
+			// LabelTypeNorm
+			// 
+			this->LabelTypeNorm->AutoSize = true;
+			this->LabelTypeNorm->Location = System::Drawing::Point(15, 194);
+			this->LabelTypeNorm->Name = L"LabelTypeNorm";
+			this->LabelTypeNorm->Size = System::Drawing::Size(310, 17);
+			this->LabelTypeNorm->TabIndex = 26;
+			this->LabelTypeNorm->Text = L"для невязки СЛАУ использована норма \"max\"";
+			// 
+			// LabelRes
+			// 
+			this->LabelRes->AutoSize = true;
+			this->LabelRes->Location = System::Drawing::Point(15, 230);
+			this->LabelRes->Name = L"LabelRes";
+			this->LabelRes->Size = System::Drawing::Size(439, 17);
+			this->LabelRes->TabIndex = 27;
+			this->LabelRes->Text = L"Тестовая задача должна быть решена с погрешностью не более";
+			// 
+			// LabelEps
+			// 
+			this->LabelEps->AutoSize = true;
+			this->LabelEps->Location = System::Drawing::Point(15, 259);
+			this->LabelEps->Name = L"LabelEps";
+			this->LabelEps->Size = System::Drawing::Size(220, 17);
+			this->LabelEps->TabIndex = 28;
+			this->LabelEps->Text = L"задача решена с погрешностью";
+			// 
+			// LabelMax
+			// 
+			this->LabelMax->AutoSize = true;
+			this->LabelMax->Location = System::Drawing::Point(15, 286);
+			this->LabelMax->Name = L"LabelMax";
+			this->LabelMax->Size = System::Drawing::Size(535, 17);
+			this->LabelMax->TabIndex = 29;
+			this->LabelMax->Text = L"Максимальное отклонение точного и численного решения наблюдается в узле";
+			// 
+			// LabelXeq
+			// 
+			this->LabelXeq->AutoSize = true;
+			this->LabelXeq->Location = System::Drawing::Point(18, 319);
+			this->LabelXeq->Name = L"LabelXeq";
+			this->LabelXeq->Size = System::Drawing::Size(30, 17);
+			this->LabelXeq->TabIndex = 30;
+			this->LabelXeq->Text = L"x = ";
+			// 
+			// LabelYeq
+			// 
+			this->LabelYeq->AutoSize = true;
+			this->LabelYeq->Location = System::Drawing::Point(130, 320);
+			this->LabelYeq->Name = L"LabelYeq";
+			this->LabelYeq->Size = System::Drawing::Size(39, 17);
+			this->LabelYeq->TabIndex = 31;
+			this->LabelYeq->Text = L"; y = ";
+			// 
+			// LabelApproximation
+			// 
+			this->LabelApproximation->AutoSize = true;
+			this->LabelApproximation->Location = System::Drawing::Point(15, 353);
+			this->LabelApproximation->Name = L"LabelApproximation";
+			this->LabelApproximation->Size = System::Drawing::Size(354, 17);
+			this->LabelApproximation->TabIndex = 32;
+			this->LabelApproximation->Text = L"В качестве начального приближения использовано ";
+			// 
+			// LabelNevRN
+			// 
+			this->LabelNevRN->AutoSize = true;
+			this->LabelNevRN->Location = System::Drawing::Point(18, 389);
+			this->LabelNevRN->Name = L"LabelNevRN";
+			this->LabelNevRN->Size = System::Drawing::Size(297, 17);
+			this->LabelNevRN->TabIndex = 33;
+			this->LabelNevRN->Text = L"Невязка СЛАУ на начальном приближении ";
+			// 
+			// LabelTyprNorm2
+			// 
+			this->LabelTyprNorm2->AutoSize = true;
+			this->LabelTyprNorm2->Location = System::Drawing::Point(19, 417);
+			this->LabelTyprNorm2->Name = L"LabelTyprNorm2";
+			this->LabelTyprNorm2->Size = System::Drawing::Size(310, 17);
+			this->LabelTyprNorm2->TabIndex = 34;
+			this->LabelTyprNorm2->Text = L"для невязки СЛАУ использована норма \"max\"";
+			// 
+			// LabelTimeAll
+			// 
+			this->LabelTimeAll->AutoSize = true;
+			this->LabelTimeAll->Location = System::Drawing::Point(19, 452);
+			this->LabelTimeAll->Name = L"LabelTimeAll";
+			this->LabelTimeAll->Size = System::Drawing::Size(244, 17);
+			this->LabelTimeAll->TabIndex = 35;
+			this->LabelTimeAll->Text = L"Время затраченное на вычисления";
+			// 
 			// HelpForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(576, 549);
+			this->Controls->Add(this->LabelTimeAll);
+			this->Controls->Add(this->LabelTyprNorm2);
+			this->Controls->Add(this->LabelNevRN);
+			this->Controls->Add(this->LabelApproximation);
+			this->Controls->Add(this->LabelYeq);
+			this->Controls->Add(this->LabelXeq);
+			this->Controls->Add(this->LabelMax);
+			this->Controls->Add(this->LabelEps);
+			this->Controls->Add(this->LabelRes);
+			this->Controls->Add(this->LabelTypeNorm);
+			this->Controls->Add(this->LabelResNev);
+			this->Controls->Add(this->LabelAccur);
+			this->Controls->Add(this->LabelResSLAU);
+			this->Controls->Add(this->LabelStopIter);
+			this->Controls->Add(this->LabelStopAccur);
 			this->Controls->Add(this->LabelMethod);
 			this->Controls->Add(this->LabelPartY);
 			this->Controls->Add(this->LabelPart);
@@ -350,7 +530,7 @@ namespace numLabChebishev {
 				LabelM->Text = info->m.ToString();
 				LabelK->Text = info->k.ToString();
 				LabelEpsMet->Text = info->epsMet.ToString();
-				LabelEpsMet->Text = info->Nmax.ToString();
+				LabelNmax->Text = info->Nmax.ToString();
 				LabelN_iter->Text = info->N.ToString();
 				LabelEpsN->Text = info->epsN.ToString();
 				LabelEps1->Text = info->eps1.ToString();

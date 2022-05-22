@@ -16,10 +16,10 @@ double iter_chebishev::calc_eps_current(const vector<double>& V_prev, const vect
 }
 
 iter_chebishev::iter_chebishev() 
-	: A(MatrixA()), B(vector<double>()), k(1), approx(APPROX::ZERO), epsMet(0.0), Nmax(0), Mmin(0), Mmax(0), tau(vector<double>()) { }
+	: A(MatrixA()), B(vector<double>()), k(1), epsMet(0.0), Nmax(0), Mmin(0), Mmax(0), tau(vector<double>()) { }
 
-iter_chebishev::iter_chebishev(const MatrixA& _A, const vector<double>& _B, int _k, APPROX _approx, double _epsMet, int _Nmax)
-	: A(_A), B(_B), k(_k), approx(_approx), epsMet(_epsMet), Nmax(_Nmax), Mmin(0), Mmax(0), tau(vector<double>()) { }
+iter_chebishev::iter_chebishev(const MatrixA& _A, const vector<double>& _B, int _k, double _epsMet, int _Nmax)
+	: A(_A), B(_B), k(_k), epsMet(_epsMet), Nmax(_Nmax), Mmin(0), Mmax(0), tau(vector<double>()) { }
 
 void iter_chebishev::setA(const MatrixA& _A) {
 	A = _A;
@@ -31,10 +31,6 @@ void iter_chebishev::setB(const vector<double>& _B) {
 
 void iter_chebishev::setK(int _k) {
 	k = _k;
-}
-
-void iter_chebishev::setApprox(APPROX _approx) {
-	approx = _approx;
 }
 
 void iter_chebishev::setEpsMet(double _epsMet) {

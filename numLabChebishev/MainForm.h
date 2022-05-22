@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+
 #include "HelpForm.h"
 #include "linsys.h"
 #include "info.h"
@@ -18,6 +19,15 @@ namespace numLabChebishev {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Reflection;
+
+	// Функция для установки Control двойной буфферизации
+	void SetDoubleBuffered(Control^ c, bool value) {
+		PropertyInfo^ pi = (Control::typeid)->GetProperty("DoubleBuffered", BindingFlags::SetProperty | BindingFlags::Instance | BindingFlags::NonPublic);
+		if (pi != nullptr) {
+			pi->SetValue(c, value, nullptr);
+		}
+	}
 
 	const double a = -1.0, b = 1.0, c = -1.0, d = 1.0;
 
@@ -46,21 +56,21 @@ namespace numLabChebishev {
 	private:
 		Bitmap ^imageTest, ^imageMain, ^imageDefault;
 		Image^ image1, ^ image2, ^ image3, ^ image4, ^ image5;
-		int kParam;
+		int kParam, kParam2;
 		int n, m;
-		double epsMet, *eps, eps1;
-		int Nmax, *N;
+		double epsMet, epsMet2, *eps, *epsN2, eps1, eps2;
+		int Nmax, Nmax2, *N, *N2;
 		APPROX startApprox;
 		TASK task;
 		double h, k;
 		
 		MatrixA *A;
 		vector<double> *B;
-		vector<double> *V, *V0;
+		vector<double> *V, *V2, *V0, *V02;
 
-		double time;
-		double RN, R0;
-		double *x_max, *y_max;
+		double time, time2;
+		double RN, RN2, R0, R02;
+		double *x_max, *y_max, *x_max2, *y_max2;
 		
 		iter_chebishev *chebishev;
 		
@@ -71,6 +81,8 @@ namespace numLabChebishev {
 		ofstream *ofstr;
 		Process^ proc;
 
+		bool isTaskMain;
+
 	public:
 		MainForm(void)
 		{
@@ -80,6 +92,7 @@ namespace numLabChebishev {
 			imageMain = gcnew Bitmap("images/main_task.png");
 			imageDefault = gcnew Bitmap("images/default_chart.png");
 			PictureBoxEquation->Image = (Image^)imageTest;
+
 			set_default_chart();
 
 			hForm = gcnew HelpForm();
@@ -88,12 +101,21 @@ namespace numLabChebishev {
 			B = new vector<double>();
 			V = new vector<double>();
 			V0 = new vector<double>();
+			V2 = new vector<double>();
+			V02 = new vector<double>();
 
 			x_max = new double;
 			y_max = new double;
 
+			x_max2 = new double;
+			y_max2 = new double;
+
 			eps = new double;
 			N = new int;
+
+			epsN2 = new double;
+			N2 = new int;
+
 			startApprox = APPROX::ZERO;
 			task = TASK::TEST;
 
@@ -105,6 +127,14 @@ namespace numLabChebishev {
 			proc = gcnew Process();
 			proc->StartInfo->FileName = "gnuplot.exe";
 			proc->StartInfo->CreateNoWindow = true;
+
+			SetDoubleBuffered(Table1, true);
+			SetDoubleBuffered(Table2, true);
+			SetDoubleBuffered(Table3, true);
+
+			isTaskMain = false;
+
+			TabControlChart->TabPages->Remove(tabPage5);
 		}
 
 	protected:
@@ -151,12 +181,9 @@ namespace numLabChebishev {
 	private: System::Windows::Forms::TabPage^ tabPage6;
 	private: System::Windows::Forms::TabPage^ tabPage7;
 	private: System::Windows::Forms::TabPage^ tabPage8;
-private: System::Windows::Forms::DataGridView^ Table1;
-private: System::Windows::Forms::DataGridView^ Table2;
-private: System::Windows::Forms::DataGridView^ Table3;
-
-
-
+	private: System::Windows::Forms::DataGridView^ Table1;
+	private: System::Windows::Forms::DataGridView^ Table2;
+	private: System::Windows::Forms::DataGridView^ Table3;
 	private: System::Windows::Forms::ToolStripMenuItem^ TestToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ MainToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ точноеРешениеUxYToolStripMenuItem;
@@ -183,6 +210,14 @@ private: System::Windows::Forms::DataGridView^ Table3;
 	private: System::Windows::Forms::PictureBox^ PictureBoxChart4;
 	private: System::Windows::Forms::PictureBox^ PictureBoxChart5;
 	private: System::Windows::Forms::SplitContainer^ SplitContainerChartTable;
+	private: System::Windows::Forms::GroupBox^ GroupBoxParam2;
+	private: System::Windows::Forms::GroupBox^ GroupBoxStop2;
+	private: System::Windows::Forms::TextBox^ TextBoxIter2;
+	private: System::Windows::Forms::TextBox^ TextBoxAccur2;
+	private: System::Windows::Forms::Label^ LabelIter;
+	private: System::Windows::Forms::Label^ LabelAccur2;
+	private: System::Windows::Forms::TextBox^ TextBoxK2;
+	private: System::Windows::Forms::Label^ LabelK2;
 	private: System::ComponentModel::IContainer^ components;
 
 #pragma endregion
@@ -261,6 +296,14 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->разностьЧисленныхРешенийToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->TableLayoutPanelMain = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->SplitContainerChartTable = (gcnew System::Windows::Forms::SplitContainer());
+			this->GroupBoxParam2 = (gcnew System::Windows::Forms::GroupBox());
+			this->LabelK2 = (gcnew System::Windows::Forms::Label());
+			this->TextBoxK2 = (gcnew System::Windows::Forms::TextBox());
+			this->GroupBoxStop2 = (gcnew System::Windows::Forms::GroupBox());
+			this->TextBoxIter2 = (gcnew System::Windows::Forms::TextBox());
+			this->TextBoxAccur2 = (gcnew System::Windows::Forms::TextBox());
+			this->LabelIter = (gcnew System::Windows::Forms::Label());
+			this->LabelAccur2 = (gcnew System::Windows::Forms::Label());
 			this->TableLayoutPanelTaskOptHelp->SuspendLayout();
 			this->GroupBoxOpt->SuspendLayout();
 			this->GroupBoxStop->SuspendLayout();
@@ -292,6 +335,8 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->SplitContainerChartTable->Panel1->SuspendLayout();
 			this->SplitContainerChartTable->Panel2->SuspendLayout();
 			this->SplitContainerChartTable->SuspendLayout();
+			this->GroupBoxParam2->SuspendLayout();
+			this->GroupBoxStop2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// TableLayoutPanelTaskOptHelp
@@ -310,11 +355,12 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->TableLayoutPanelTaskOptHelp->RowStyles->Add((gcnew System::Windows::Forms::RowStyle()));
 			this->TableLayoutPanelTaskOptHelp->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
 				20)));
-			this->TableLayoutPanelTaskOptHelp->Size = System::Drawing::Size(340, 694);
+			this->TableLayoutPanelTaskOptHelp->Size = System::Drawing::Size(340, 860);
 			this->TableLayoutPanelTaskOptHelp->TabIndex = 0;
 			// 
 			// GroupBoxOpt
 			// 
+			this->GroupBoxOpt->Controls->Add(this->GroupBoxParam2);
 			this->GroupBoxOpt->Controls->Add(this->TextBoxK);
 			this->GroupBoxOpt->Controls->Add(this->LabelK);
 			this->GroupBoxOpt->Controls->Add(this->GroupBoxStop);
@@ -327,7 +373,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->GroupBoxOpt->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->GroupBoxOpt->Location = System::Drawing::Point(3, 292);
 			this->GroupBoxOpt->Name = L"GroupBoxOpt";
-			this->GroupBoxOpt->Size = System::Drawing::Size(334, 399);
+			this->GroupBoxOpt->Size = System::Drawing::Size(334, 565);
 			this->GroupBoxOpt->TabIndex = 1;
 			this->GroupBoxOpt->TabStop = false;
 			this->GroupBoxOpt->Text = L"Параметры";
@@ -360,7 +406,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->GroupBoxStop->Controls->Add(this->TextBoxAccuracy);
 			this->GroupBoxStop->Controls->Add(this->LabelStep);
 			this->GroupBoxStop->Controls->Add(this->LabelAccuracy);
-			this->GroupBoxStop->Location = System::Drawing::Point(12, 135);
+			this->GroupBoxStop->Location = System::Drawing::Point(9, 135);
 			this->GroupBoxStop->Name = L"GroupBoxStop";
 			this->GroupBoxStop->Size = System::Drawing::Size(316, 97);
 			this->GroupBoxStop->TabIndex = 6;
@@ -414,9 +460,9 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->GroupBoxApproximation->Controls->Add(this->RadioButtonApproxAverage);
 			this->GroupBoxApproximation->Controls->Add(this->RadioButtonApproxY);
 			this->GroupBoxApproximation->Controls->Add(this->RadioButtonApproxX);
-			this->GroupBoxApproximation->Location = System::Drawing::Point(12, 238);
+			this->GroupBoxApproximation->Location = System::Drawing::Point(6, 407);
 			this->GroupBoxApproximation->Name = L"GroupBoxApproximation";
-			this->GroupBoxApproximation->Size = System::Drawing::Size(313, 144);
+			this->GroupBoxApproximation->Size = System::Drawing::Size(322, 144);
 			this->GroupBoxApproximation->TabIndex = 5;
 			this->GroupBoxApproximation->TabStop = false;
 			this->GroupBoxApproximation->Text = L"Начальное приближение";
@@ -580,7 +626,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->TabControlChart->Location = System::Drawing::Point(0, 0);
 			this->TabControlChart->Name = L"TabControlChart";
 			this->TabControlChart->SelectedIndex = 0;
-			this->TabControlChart->Size = System::Drawing::Size(1076, 328);
+			this->TabControlChart->Size = System::Drawing::Size(1076, 406);
 			this->TabControlChart->TabIndex = 1;
 			// 
 			// tabPage1
@@ -589,7 +635,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->tabPage1->Location = System::Drawing::Point(4, 25);
 			this->tabPage1->Name = L"tabPage1";
 			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(1068, 299);
+			this->tabPage1->Size = System::Drawing::Size(1068, 377);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"U(x, y)";
 			this->tabPage1->UseVisualStyleBackColor = true;
@@ -599,7 +645,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->PictureBoxChart1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->PictureBoxChart1->Location = System::Drawing::Point(3, 3);
 			this->PictureBoxChart1->Name = L"PictureBoxChart1";
-			this->PictureBoxChart1->Size = System::Drawing::Size(1062, 293);
+			this->PictureBoxChart1->Size = System::Drawing::Size(1062, 371);
 			this->PictureBoxChart1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->PictureBoxChart1->TabIndex = 0;
 			this->PictureBoxChart1->TabStop = false;
@@ -697,7 +743,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->TabControlTable->Location = System::Drawing::Point(0, 0);
 			this->TabControlTable->Name = L"TabControlTable";
 			this->TabControlTable->SelectedIndex = 0;
-			this->TabControlTable->Size = System::Drawing::Size(1076, 362);
+			this->TabControlTable->Size = System::Drawing::Size(1076, 450);
 			this->TabControlTable->TabIndex = 1;
 			// 
 			// tabPage6
@@ -706,7 +752,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->tabPage6->Location = System::Drawing::Point(4, 25);
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage6->Size = System::Drawing::Size(1068, 333);
+			this->tabPage6->Size = System::Drawing::Size(1068, 421);
 			this->tabPage6->TabIndex = 0;
 			this->tabPage6->Text = L"U(x, y)";
 			this->tabPage6->UseVisualStyleBackColor = true;
@@ -722,7 +768,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->Table1->ReadOnly = true;
 			this->Table1->RowHeadersWidth = 51;
 			this->Table1->RowTemplate->Height = 24;
-			this->Table1->Size = System::Drawing::Size(1062, 327);
+			this->Table1->Size = System::Drawing::Size(1062, 415);
 			this->Table1->TabIndex = 0;
 			// 
 			// tabPage7
@@ -778,7 +824,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			});
 			this->MenuStripMain->Location = System::Drawing::Point(0, 0);
 			this->MenuStripMain->Name = L"MenuStripMain";
-			this->MenuStripMain->Size = System::Drawing::Size(1428, 28);
+			this->MenuStripMain->Size = System::Drawing::Size(1428, 30);
 			this->MenuStripMain->TabIndex = 1;
 			this->MenuStripMain->Text = L"MenuStripMain";
 			// 
@@ -789,7 +835,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 					this->справкаToolStripMenuItem
 			});
 			this->задачаToolStripMenuItem->Name = L"задачаToolStripMenuItem";
-			this->задачаToolStripMenuItem->Size = System::Drawing::Size(71, 24);
+			this->задачаToolStripMenuItem->Size = System::Drawing::Size(71, 26);
 			this->задачаToolStripMenuItem->Text = L"Задача";
 			// 
 			// решатьToolStripMenuItem
@@ -814,7 +860,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 					this->MainToolStripMenuItem
 			});
 			this->графикToolStripMenuItem->Name = L"графикToolStripMenuItem";
-			this->графикToolStripMenuItem->Size = System::Drawing::Size(73, 24);
+			this->графикToolStripMenuItem->Size = System::Drawing::Size(73, 26);
 			this->графикToolStripMenuItem->Text = L"График";
 			// 
 			// TestToolStripMenuItem
@@ -904,12 +950,12 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->TableLayoutPanelMain->Controls->Add(this->SplitContainerChartTable, 1, 0);
 			this->TableLayoutPanelMain->Controls->Add(this->TableLayoutPanelTaskOptHelp, 0, 0);
 			this->TableLayoutPanelMain->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->TableLayoutPanelMain->Location = System::Drawing::Point(0, 28);
+			this->TableLayoutPanelMain->Location = System::Drawing::Point(0, 30);
 			this->TableLayoutPanelMain->Name = L"TableLayoutPanelMain";
 			this->TableLayoutPanelMain->RowCount = 1;
 			this->TableLayoutPanelMain->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent,
 				100)));
-			this->TableLayoutPanelMain->Size = System::Drawing::Size(1428, 700);
+			this->TableLayoutPanelMain->Size = System::Drawing::Size(1428, 866);
 			this->TableLayoutPanelMain->TabIndex = 2;
 			// 
 			// SplitContainerChartTable
@@ -926,16 +972,105 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			// SplitContainerChartTable.Panel2
 			// 
 			this->SplitContainerChartTable->Panel2->Controls->Add(this->TabControlTable);
-			this->SplitContainerChartTable->Size = System::Drawing::Size(1076, 694);
-			this->SplitContainerChartTable->SplitterDistance = 328;
+			this->SplitContainerChartTable->Size = System::Drawing::Size(1076, 860);
+			this->SplitContainerChartTable->SplitterDistance = 406;
 			this->SplitContainerChartTable->TabIndex = 1;
+			// 
+			// GroupBoxParam2
+			// 
+			this->GroupBoxParam2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->GroupBoxParam2->AutoSize = true;
+			this->GroupBoxParam2->Controls->Add(this->GroupBoxStop2);
+			this->GroupBoxParam2->Controls->Add(this->TextBoxK2);
+			this->GroupBoxParam2->Controls->Add(this->LabelK2);
+			this->GroupBoxParam2->Enabled = false;
+			this->GroupBoxParam2->Location = System::Drawing::Point(6, 238);
+			this->GroupBoxParam2->Name = L"GroupBoxParam2";
+			this->GroupBoxParam2->Size = System::Drawing::Size(322, 173);
+			this->GroupBoxParam2->TabIndex = 9;
+			this->GroupBoxParam2->TabStop = false;
+			this->GroupBoxParam2->Text = L"Параметры для сетки с половинным шагом";
+			// 
+			// LabelK2
+			// 
+			this->LabelK2->AutoSize = true;
+			this->LabelK2->Location = System::Drawing::Point(6, 30);
+			this->LabelK2->Name = L"LabelK2";
+			this->LabelK2->Size = System::Drawing::Size(188, 17);
+			this->LabelK2->TabIndex = 8;
+			this->LabelK2->Text = L"Количество параметров, k:";
+			// 
+			// TextBoxK2
+			// 
+			this->TextBoxK2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->TextBoxK2->Location = System::Drawing::Point(199, 27);
+			this->TextBoxK2->Name = L"TextBoxK2";
+			this->TextBoxK2->Size = System::Drawing::Size(111, 22);
+			this->TextBoxK2->TabIndex = 9;
+			this->TextBoxK2->Text = L"13";
+			// 
+			// GroupBoxStop2
+			// 
+			this->GroupBoxStop2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->GroupBoxStop2->AutoSize = true;
+			this->GroupBoxStop2->Controls->Add(this->TextBoxIter2);
+			this->GroupBoxStop2->Controls->Add(this->TextBoxAccur2);
+			this->GroupBoxStop2->Controls->Add(this->LabelIter);
+			this->GroupBoxStop2->Controls->Add(this->LabelAccur2);
+			this->GroupBoxStop2->Location = System::Drawing::Point(6, 55);
+			this->GroupBoxStop2->Name = L"GroupBoxStop2";
+			this->GroupBoxStop2->Size = System::Drawing::Size(307, 97);
+			this->GroupBoxStop2->TabIndex = 10;
+			this->GroupBoxStop2->TabStop = false;
+			this->GroupBoxStop2->Text = L"Критерии остановки";
+			// 
+			// TextBoxIter2
+			// 
+			this->TextBoxIter2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->TextBoxIter2->Location = System::Drawing::Point(178, 54);
+			this->TextBoxIter2->Name = L"TextBoxIter2";
+			this->TextBoxIter2->Size = System::Drawing::Size(120, 22);
+			this->TextBoxIter2->TabIndex = 3;
+			this->TextBoxIter2->Text = L"100000";
+			// 
+			// TextBoxAccur2
+			// 
+			this->TextBoxAccur2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->TextBoxAccur2->Location = System::Drawing::Point(178, 26);
+			this->TextBoxAccur2->Name = L"TextBoxAccur2";
+			this->TextBoxAccur2->Size = System::Drawing::Size(120, 22);
+			this->TextBoxAccur2->TabIndex = 2;
+			this->TextBoxAccur2->Text = L"0.000000005";
+			// 
+			// LabelIter
+			// 
+			this->LabelIter->AutoSize = true;
+			this->LabelIter->Location = System::Drawing::Point(6, 57);
+			this->LabelIter->Name = L"LabelIter";
+			this->LabelIter->Size = System::Drawing::Size(139, 17);
+			this->LabelIter->TabIndex = 1;
+			this->LabelIter->Text = L"По числу итераций:";
+			// 
+			// LabelAccur2
+			// 
+			this->LabelAccur2->AutoSize = true;
+			this->LabelAccur2->Location = System::Drawing::Point(6, 29);
+			this->LabelAccur2->Name = L"LabelAccur2";
+			this->LabelAccur2->Size = System::Drawing::Size(147, 17);
+			this->LabelAccur2->TabIndex = 0;
+			this->LabelAccur2->Text = L"По точности метода:";
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
-			this->ClientSize = System::Drawing::Size(1428, 728);
+			this->ClientSize = System::Drawing::Size(1428, 896);
 			this->Controls->Add(this->TableLayoutPanelMain);
 			this->Controls->Add(this->MenuStripMain);
 			this->MainMenuStrip = this->MenuStripMain;
@@ -982,6 +1117,10 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			this->SplitContainerChartTable->Panel2->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainerChartTable))->EndInit();
 			this->SplitContainerChartTable->ResumeLayout(false);
+			this->GroupBoxParam2->ResumeLayout(false);
+			this->GroupBoxParam2->PerformLayout();
+			this->GroupBoxStop2->ResumeLayout(false);
+			this->GroupBoxStop2->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -1041,43 +1180,72 @@ private: System::Windows::Forms::DataGridView^ Table3;
 				MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 				return;
 			}
+
+			if (task == TASK::MAIN) {
+				if (!Int32::TryParse(TextBoxK2->Text, kParam2)) {
+					MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+				else if (kParam2 < 1) {
+					MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+
+				if (!Double::TryParse(TextBoxAccur2->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet2)) {
+					MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+				else if (epsMet2 <= 0.0) {
+					MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+
+				if (!Int32::TryParse(TextBoxIter2->Text, Nmax2)) {
+					MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+				else if (Nmax2 < 1) {
+					MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					return;
+				}
+			}
 		}
 
-		private: void initial_approximation() {
-			V->resize((n - 1) * (m - 1));
+		private: void initial_approximation(vector<double> &vec, int _n, int _m, double _h, double _k) {
+			vec.resize((_n - 1) * (_m - 1));
 			double lb1, inter1, lb2, inter2;
 			switch (startApprox) {
 			case APPROX::ZERO:
-				for (size_t i = 0; i < V->size(); i++) {
-					(*V)[i] = 0.0;
+				for (size_t i = 0; i < vec.size(); i++) {
+					vec[i] = 0.0;
 				}
 				break;
 			case APPROX::AVERAGE:
-				for (int i = 0; i < m - 1; i++) {
-					lb1 = mu_test(c + (i + 1) * k, 1);
-					inter1 = (mu_test(c + (i + 1) * k, 2) - mu_test(c + (i + 1) * k, 1)) / n;
-					for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-						lb2 = mu_test(a + (j + 1) * h, 3);
-						inter2 = (mu_test(a + (j + 1) * h, 4) - mu_test(a + (j + 1) * h, 3)) / m;
-						(*V)[j] = (lb1 + inter1 * (j % (n - 1) + 1) + lb2 + inter2 * (i + 1)) / 2.0;
+				for (int i = 0; i < _m - 1; i++) {
+					lb1 = mu_test(c + (i + 1) * _k, 1);
+					inter1 = (mu_test(c + (i + 1) * _k, 2) - mu_test(c + (i + 1) * _k, 1)) / _n;
+					for (int j = i * (_n - 1); j < (i + 1) * (_n - 1); j++) {
+						lb2 = mu_test(a + (j % (_n - 1) + 1) * _h, 3);
+						inter2 = (mu_test(a + (j % (_n - 1) + 1) * _h, 4) - mu_test(a + (j % (_n - 1) + 1) * _h, 3)) / _m;
+						vec[j] = (lb1 + inter1 * (j % (_n - 1) + 1) + lb2 + inter2 * (i + 1)) / 2.0;
 					}
 				}
 				break;
 			case APPROX::LINEARX:
-				for (int i = 0; i < m - 1; i++) {
-					lb1 = mu_test(c + (i + 1) * k, 1);
-					inter1 = (mu_test(c + (i + 1) * k, 2) - mu_test(c + (i + 1) * k, 1)) / n;
-					for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-						(*V)[j] = lb1 + inter1 * (j % (n - 1) + 1);
+				for (int i = 0; i < _m - 1; i++) {
+					lb1 = mu_test(c + (i + 1) * _k, 1);
+					inter1 = (mu_test(c + (i + 1) * _k, 2) - mu_test(c + (i + 1) * _k, 1)) / _n;
+					for (int j = i * (_n - 1); j < (i + 1) * (_n - 1); j++) {
+						vec[j] = lb1 + inter1 * (j % (_n - 1) + 1);
 					}
 				}
 				break;
 			case APPROX::LINEARY:
-				for (int i = 0; i < n - 1; i++) {
-					lb2 = mu_test(a + (i + 1) * h, 3);
-					inter2 = (mu_test(a + (i + 1) * h, 4) - mu_test(a + (i + 1) * h, 3)) / m;
-					for (int j = i; j < i + 1 + (m - 2) * (n - 1); j += (n - 1)) {
-						(*V)[j] = lb2 + inter2 * (j / (n - 1) + 1);
+				for (int i = 0; i < _n - 1; i++) {
+					lb2 = mu_test(a + (i + 1) * _h, 3);
+					inter2 = (mu_test(a + (i + 1) * _h, 4) - mu_test(a + (i + 1) * _h, 3)) / _m;
+					for (int j = i; j < i + 1 + (_m - 2) * (_n - 1); j += (_n - 1)) {
+						vec[j] = lb2 + inter2 * (j / (_n - 1) + 1);
 					}
 				}
 				break;
@@ -1102,10 +1270,18 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			hForm->info->approx = startApprox;
 			hForm->info->norm_R0 = R0;
 
-			// double epsN2, eps2;
-			// int N2;
-			// double norm_RN2, norm_R02;
-			// double max_x2, max_y2;
+			if (task == TASK::MAIN) {
+				hForm->info->k2 = kParam2;
+				hForm->info->epsMet2 = epsMet2;
+				hForm->info->epsN2 = *epsN2;
+				hForm->info->eps2 = eps2;
+				hForm->info->Nmax2 = Nmax2; 
+				hForm->info->N2 = *N2;
+				hForm->info->norm_RN2 = RN2;
+				hForm->info->norm_R02 = R02;
+				hForm->info->max_x2 = *x_max2;
+				hForm->info->max_y2 = *y_max2;
+			}
 
 			hForm->info->time = time;
 		}
@@ -1130,9 +1306,11 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			clear_image(image5);
 
 			if (task == TASK::MAIN) {
-				write_points_in_matrix("./data/points_v0_test.txt", *V0, n, m, h, k);
-				write_points_in_matrix("./data/points_vn_test.txt", *V, n, m, h, k);
-				write_points_in_matrix_u_("./data/points_u_vn_test.txt", *V);
+				write_points_in_matrix("./data/points_v0_main.txt", *V0, n, m, 2.0 * h, 2.0 * k);
+				write_points_in_matrix("./data/points_v02_main.txt", *V02, 2 * n, 2 * m, h, k);
+				write_points_in_matrix("./data/points_vn_main.txt", *V, n, m, 2.0 * h, 2.0 * k);
+				write_points_in_matrix("./data/points_vn2_main.txt", *V2, 2 * n, 2 * m, h, k);
+				write_points_in_matrix_vn2_vn("./data/points_vn2_vn_main.txt");
 
 				proc->StartInfo->Arguments = "-p -c scripts/chart_main_image.gp";
 
@@ -1140,10 +1318,11 @@ private: System::Windows::Forms::DataGridView^ Table3;
 				proc->WaitForExit();
 				proc->Close();
 
-				set_chart(PictureBoxChart1, image1, "./images/test_u.png");
-				set_chart(PictureBoxChart2, image2, "./images/test_v0.png");
-				set_chart(PictureBoxChart3, image3, "./images/test_vn.png");
-				set_chart(PictureBoxChart4, image4, "./images/test_u_vn.png");
+				set_chart(PictureBoxChart1, image1, "./images/main_v0.png");
+				set_chart(PictureBoxChart2, image2, "./images/main_v02.png");
+				set_chart(PictureBoxChart3, image3, "./images/main_vn.png");
+				set_chart(PictureBoxChart4, image4, "./images/main_vn2.png");
+				set_chart(PictureBoxChart5, image5, "./images/main_vn2_vn.png");
 			}
 			else
 			{
@@ -1164,23 +1343,74 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			}
 		}
 
-		private: void clear_table() {
-			Table1->Columns->Clear();
-			Table2->Columns->Clear();
-			Table3->Columns->Clear();
+		private: void clear_table(DataGridView^ tab) {
+			tab->Columns->Clear();
+		}
+
+		private: void init_columns_rows(DataGridView^ tab) {
+			clear_table(tab);
+			tab->Columns->Add("null", "");
+			tab->Columns->Add("ci", "i");
+			for (int i = 0; i < n + 1; i++) {
+				tab->Columns->Add("c" + i.ToString(), i.ToString());
+			}
+			for (int i = 0; i < m + 2; i++) {
+				tab->Rows->Add();
+			}
+			tab->Rows[0]->Cells[0]->Value = "j";
+			tab->Rows[0]->Cells[1]->Value = "Y\\X";
+			for (int i = 0; i < m + 1; i++) {
+				tab->Rows[i + 1]->Cells[0]->Value = i.ToString();
+				tab->Rows[i + 1]->Cells[1]->Value = (c + i * k).ToString();
+			}
+			for (int i = 0; i < m + 1; i++) {
+				tab->Rows[0]->Cells[i + 2]->Value = (a + i * h).ToString();
+			}
+		}
+
+		private: void set_border() {
+			double zero = 0.0;
+			for (int i = 0; i < n + 1; i++) {
+				Table1->Rows[1]->Cells[i + 2]->Value = mu_test(a + i * h, 3).ToString();
+				Table2->Rows[1]->Cells[i + 2]->Value = mu_test(a + i * h, 3).ToString();
+				Table3->Rows[1]->Cells[i + 2]->Value = zero.ToString();
+			}
+			for (int i = 1; i < m; i++) {
+				Table1->Rows[i + 1]->Cells[2]->Value = mu_test(c + i * k, 1);
+				Table2->Rows[i + 1]->Cells[2]->Value = mu_test(c + i * k, 1);
+				Table3->Rows[i + 1]->Cells[2]->Value = zero.ToString();
+
+				Table1->Rows[i + 1]->Cells[n + 2]->Value = mu_test(c + i * k, 2);
+				Table2->Rows[i + 1]->Cells[n + 2]->Value = mu_test(c + i * k, 2);
+				Table3->Rows[i + 1]->Cells[n + 2]->Value = zero.ToString();
+			}
+			for (int i = 0; i < n + 1; i++) {
+				Table1->Rows[m + 1]->Cells[i + 2]->Value = mu_test(a + i * h, 4);
+				Table2->Rows[m + 1]->Cells[i + 2]->Value = mu_test(a + i * h, 4);
+				Table3->Rows[m + 1]->Cells[i + 2]->Value = zero.ToString();
+			}
 		}
 
 		private: void set_table() {
-			clear_table();
-			Table1->Columns->Add("null", "");
-			Table1->Columns->Add("ci", "i");
-			for (int i = 0; i < n + 1; i++) {
-				Table1->Columns->Add("c" + i.ToString(), i.ToString());
-			}
-			for (int i = 0; i < m + 2; i++) {
-				Table1->Rows->Add();
-			}
+			init_columns_rows(Table1);
+			init_columns_rows(Table2);
+			init_columns_rows(Table3);
 
+			set_border();
+
+			if (task == TASK::MAIN) {
+
+			}
+			else 
+			{
+				for (int i = 1; i < m; i++) {
+					for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
+						Table1->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V)[j];
+						Table2->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = u(a + (j % (n - 1) + 1) * h, c + i * k);
+						Table3->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = u(a + (j % (n - 1) + 1) * h, c + i * k) - (*V)[j];
+					}
+				}
+			}
 		}
 
 		private: void write_points_in_matrix(string str, const vector<double> &v, int _n, int _m, double _h, double _k) {
@@ -1238,18 +1468,62 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			ofstr->close();
 		}
 
+		private: void write_points_in_matrix_vn2_vn(string str) {
+			ofstr->open(str);
+			if (!ofstr->is_open()) throw "Error! The file is not open";
+			*ofstr << n + 2 << " ";
+			for (int i = 0; i < n + 1; i++) {
+				*ofstr << a + i * 2.0 * h << " ";
+			}
+			*ofstr << endl << c << " ";
+			for (int i = 0; i < n + 1; i++) {
+				*ofstr << 0.0 << " ";
+			}
+			*ofstr << endl;
+			for (int i = 1; i < m; i++) {
+				*ofstr << c + i * 2.0 * k << " " << 0.0 << " ";
+				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
+					*ofstr << (*V2)[(2 * (i - 1) + 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j] << " ";
+				}
+				*ofstr << 0.0 << endl;
+			}
+			*ofstr << d << " ";
+			for (int i = 0; i < n + 1; i++) {
+				*ofstr << 0.0 << " ";
+			}
+			*ofstr << endl;
+			ofstr->close();
+		}
+
 		private: void calc_eps_1(double &x_max, double &y_max) {
 			double eps_curr;
 			eps1 = 0.0;
 			x_max = a;
 			y_max = c;
-			for (int i = 1; i < m; i++) {
-				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
+			for (int i = 0; i < m - 1; i++) {
+				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
 					eps_curr = abs(u(a + (j % (n - 1) + 1) * h, c + i * k) - (*V)[j]);
 					if (eps_curr > eps1) {
 						eps1 = eps_curr;
 						x_max = a + (j % (n - 1) + 1) * h;
-						y_max = c + i * k;
+						y_max = c + (i + 1) * k;
+					}
+				}
+			}
+		}
+
+		private: void calc_eps_2(double &x_max, double &y_max) {
+			double eps_curr;
+			eps2 = 0.0;
+			x_max = a;
+			y_max = c;
+			for (int i = 0; i < m - 1; i++) {
+				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
+					eps_curr = abs((*V2)[2 * i * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j]);
+					if (eps_curr > eps2) {
+						eps2 = eps_curr;
+						x_max = a + (j % (n - 1) + 1) * 2.0 * h;
+						y_max = c + (i + 1) * 2.0 * k;
 					}
 				}
 			}
@@ -1261,7 +1535,7 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			k = (d - c) / m;
 			A->setParam(n, m, h, k);
 			VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
-			initial_approximation();
+			initial_approximation(*V, n, m, h, k);
 
 			*V0 = *V;
 
@@ -1270,7 +1544,6 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			chebishev->setA(*A);
 			chebishev->setB(*B);
 			chebishev->setK(kParam);
-			chebishev->setApprox(startApprox);
 			chebishev->setEpsMet(epsMet);
 			chebishev->setNmax(Nmax);
 			
@@ -1283,8 +1556,40 @@ private: System::Windows::Forms::DataGridView^ Table3;
 			TimeSpan ts = stopWatch->Elapsed;
 			time = ts.TotalSeconds;
 
-			RN = norm_vector_max((*A) * (*V) - *B);
-			calc_eps_1(*x_max, *y_max);
+			if (task == TASK::MAIN) {
+				h = (b - a) / (2 * n);
+				k = (d - c) / (2 * m);
+				A->setParam(2 * n, 2 * m, h, k);
+				VectorB::getVectorB(*B, 2 * n, 2 * m, h, k, f_test, mu_test, a, b, c, d);
+				initial_approximation(*V2, 2 * n, 2 * m, h, k);
+
+				*V02 = *V2;
+
+				R02 = norm_vector_max((*A) * (*V2) - *B);
+
+				chebishev->setA(*A);
+				chebishev->setB(*B);
+				chebishev->setK(kParam2);
+				chebishev->setEpsMet(epsMet2);
+				chebishev->setNmax(Nmax2);
+
+				Stopwatch^ stopWatch = gcnew Stopwatch();
+				stopWatch->Start();
+
+				chebishev->solve(*V2, *epsN2, *N2);
+
+				stopWatch->Stop();
+				TimeSpan ts = stopWatch->Elapsed;
+				time2 = ts.TotalSeconds;
+
+				RN2 = norm_vector_max((*A) * (*V2) - *B);
+				calc_eps_2(*x_max2, *y_max2);
+			}
+			else
+			{
+				RN = norm_vector_max((*A) * (*V) - *B);
+				calc_eps_1(*x_max, *y_max);
+			}
 
 			setInfo();
 			справкаToolStripMenuItem->Enabled = true;
@@ -1295,26 +1600,36 @@ private: System::Windows::Forms::DataGridView^ Table3;
 		}
 
 		private: System::Void ComboBoxTask_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-			справкаToolStripMenuItem->Enabled = false;
-			set_default_chart();
-			if (ComboBoxTask->Text == "Тестовая задача") {
+			if (ComboBoxTask->Text == "Тестовая задача" && isTaskMain) {
 				task = TASK::TEST;
 				PictureBoxEquation->Image = (Image^)imageTest;
+				TabControlChart->TabPages->Remove(tabPage5);
+				GroupBoxParam2->Enabled = false;
 
 				tabPage1->Text = "U(x, y)";
 				tabPage2->Text = "V(0)(xi, yi)";
 				tabPage3->Text = "V(N)(x, y)";
 				tabPage4->Text = "U(x, y) - V(N)(x, y)";
-				tabPage5->Text = "***";
 
 				tabPage6->Text = "U(x, y)";
 				tabPage7->Text = "V(N)(x, y)";
 				tabPage8->Text = "U(x, y) - V(N)(x, y)";
+
+				справкаToolStripMenuItem->Enabled = false;
+				set_default_chart();
+
+				clear_table(Table1);
+				clear_table(Table2);
+				clear_table(Table3);
+
+				isTaskMain = false;
 			}
-			else
+			else if (ComboBoxTask->Text == "Основная задача" && !isTaskMain)
 			{
 				task = TASK::MAIN;
 				PictureBoxEquation->Image = (Image^)imageMain;
+				TabControlChart->TabPages->Add(tabPage5);
+				GroupBoxParam2->Enabled = true;
 
 				tabPage1->Text = "V(0)(xi, yj)";
 				tabPage2->Text = "V2(0)(xi, yj)";
@@ -1325,6 +1640,15 @@ private: System::Windows::Forms::DataGridView^ Table3;
 				tabPage6->Text = "V(N)(x, y)";
 				tabPage7->Text = "V2(N2)(x, y)";
 				tabPage8->Text = "V(N)(x, y) - V2(N2)(x, y)";
+
+				справкаToolStripMenuItem->Enabled = false;
+				set_default_chart();
+
+				clear_table(Table1);
+				clear_table(Table2);
+				clear_table(Table3);
+
+				isTaskMain = true;
 			}
 		}
 

@@ -14,7 +14,6 @@ private:
 	MatrixA A;
 	vector<double> B;
 	int k;
-	APPROX approx;
 	double epsMet;
 	int Nmax;
 
@@ -26,12 +25,11 @@ private:
 
 public:
 	iter_chebishev();
-	iter_chebishev(const MatrixA &_A, const vector<double> &_B, int _k, APPROX _approx, double _epsMet, int _Nmax);
+	iter_chebishev(const MatrixA &_A, const vector<double> &_B, int _k, double _epsMet, int _Nmax);
 
 	void setA(const MatrixA &_A);
 	void setB(const vector<double> &_B);
 	void setK(int _k);
-	void setApprox(APPROX _approx);
 	void setEpsMet(double _epsMet);
 	void setNmax(int _Nmax);
 
