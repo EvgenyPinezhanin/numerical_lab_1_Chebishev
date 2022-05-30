@@ -262,7 +262,7 @@ namespace numLabChebishev {
 			// 
 			// ButtonOK
 			// 
-			this->ButtonOK->Location = System::Drawing::Point(509, 684);
+			this->ButtonOK->Location = System::Drawing::Point(541, 684);
 			this->ButtonOK->Name = L"ButtonOK";
 			this->ButtonOK->Size = System::Drawing::Size(112, 47);
 			this->ButtonOK->TabIndex = 0;
@@ -387,7 +387,7 @@ namespace numLabChebishev {
 			this->LabelYmax->AutoSize = true;
 			this->LabelYmax->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->LabelYmax->Location = System::Drawing::Point(147, 279);
+			this->LabelYmax->Location = System::Drawing::Point(236, 279);
 			this->LabelYmax->Name = L"LabelYmax";
 			this->LabelYmax->Size = System::Drawing::Size(53, 17);
 			this->LabelYmax->TabIndex = 11;
@@ -536,9 +536,9 @@ namespace numLabChebishev {
 			this->LabelTypeNorm->AutoSize = true;
 			this->LabelTypeNorm->Location = System::Drawing::Point(12, 180);
 			this->LabelTypeNorm->Name = L"LabelTypeNorm";
-			this->LabelTypeNorm->Size = System::Drawing::Size(310, 17);
+			this->LabelTypeNorm->Size = System::Drawing::Size(348, 17);
 			this->LabelTypeNorm->TabIndex = 26;
-			this->LabelTypeNorm->Text = L"для невязки СЛАУ использована норма \"max\"";
+			this->LabelTypeNorm->Text = L"для невязки СЛАУ использована норма: евклидова";
 			// 
 			// LabelRes
 			// 
@@ -570,7 +570,7 @@ namespace numLabChebishev {
 			// LabelXeq
 			// 
 			this->LabelXeq->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->LabelXeq->Location = System::Drawing::Point(21, 279);
+			this->LabelXeq->Location = System::Drawing::Point(12, 279);
 			this->LabelXeq->Margin = System::Windows::Forms::Padding(0);
 			this->LabelXeq->Name = L"LabelXeq";
 			this->LabelXeq->Size = System::Drawing::Size(26, 17);
@@ -580,7 +580,7 @@ namespace numLabChebishev {
 			// LabelYeq
 			// 
 			this->LabelYeq->AutoSize = true;
-			this->LabelYeq->Location = System::Drawing::Point(109, 279);
+			this->LabelYeq->Location = System::Drawing::Point(198, 279);
 			this->LabelYeq->Margin = System::Windows::Forms::Padding(0);
 			this->LabelYeq->Name = L"LabelYeq";
 			this->LabelYeq->Size = System::Drawing::Size(35, 17);
@@ -610,9 +610,9 @@ namespace numLabChebishev {
 			this->LabelTyprNorm2->AutoSize = true;
 			this->LabelTyprNorm2->Location = System::Drawing::Point(12, 362);
 			this->LabelTyprNorm2->Name = L"LabelTyprNorm2";
-			this->LabelTyprNorm2->Size = System::Drawing::Size(310, 17);
+			this->LabelTyprNorm2->Size = System::Drawing::Size(348, 17);
 			this->LabelTyprNorm2->TabIndex = 34;
-			this->LabelTyprNorm2->Text = L"для невязки СЛАУ использована норма \"max\"";
+			this->LabelTyprNorm2->Text = L"для невязки СЛАУ использована норма: евклидова";
 			// 
 			// LabelTimeAll
 			// 
@@ -688,7 +688,7 @@ namespace numLabChebishev {
 			// LabelSec
 			// 
 			this->LabelSec->AutoSize = true;
-			this->LabelSec->Location = System::Drawing::Point(348, 392);
+			this->LabelSec->Location = System::Drawing::Point(358, 392);
 			this->LabelSec->Name = L"LabelSec";
 			this->LabelSec->Size = System::Drawing::Size(15, 17);
 			this->LabelSec->TabIndex = 43;
@@ -708,7 +708,7 @@ namespace numLabChebishev {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(348, 691);
+			this->label1->Location = System::Drawing::Point(358, 691);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(15, 17);
 			this->label1->TabIndex = 80;
@@ -772,9 +772,9 @@ namespace numLabChebishev {
 			this->label3->AutoSize = true;
 			this->label3->Location = System::Drawing::Point(12, 661);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(310, 17);
+			this->label3->Size = System::Drawing::Size(348, 17);
 			this->label3->TabIndex = 71;
-			this->label3->Text = L"для невязки СЛАУ использована норма \"max\"";
+			this->label3->Text = L"для невязки СЛАУ использована норма: евклидова";
 			// 
 			// label4
 			// 
@@ -799,9 +799,9 @@ namespace numLabChebishev {
 			this->label11->AutoSize = true;
 			this->label11->Location = System::Drawing::Point(12, 578);
 			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(310, 17);
+			this->label11->Size = System::Drawing::Size(348, 17);
 			this->label11->TabIndex = 63;
-			this->label11->Text = L"для невязки СЛАУ использована норма \"max\"";
+			this->label11->Text = L"для невязки СЛАУ использована норма: евклидова";
 			// 
 			// label12
 			// 
@@ -963,7 +963,7 @@ namespace numLabChebishev {
 			// LabelHalfStep
 			// 
 			this->LabelHalfStep->AutoSize = true;
-			this->LabelHalfStep->Location = System::Drawing::Point(14, 279);
+			this->LabelHalfStep->Location = System::Drawing::Point(12, 279);
 			this->LabelHalfStep->Name = L"LabelHalfStep";
 			this->LabelHalfStep->Size = System::Drawing::Size(336, 17);
 			this->LabelHalfStep->TabIndex = 81;
@@ -973,7 +973,7 @@ namespace numLabChebishev {
 			// LabelYmax2
 			// 
 			this->LabelYmax2->AutoSize = true;
-			this->LabelYmax2->Location = System::Drawing::Point(445, 279);
+			this->LabelYmax2->Location = System::Drawing::Point(494, 279);
 			this->LabelYmax2->Margin = System::Windows::Forms::Padding(0);
 			this->LabelYmax2->Name = L"LabelYmax2";
 			this->LabelYmax2->Size = System::Drawing::Size(35, 17);
@@ -982,8 +982,7 @@ namespace numLabChebishev {
 			// 
 			// LabelXmax2
 			// 
-			this->LabelXmax2->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->LabelXmax2->Location = System::Drawing::Point(357, 279);
+			this->LabelXmax2->Location = System::Drawing::Point(347, 279);
 			this->LabelXmax2->Margin = System::Windows::Forms::Padding(0);
 			this->LabelXmax2->Name = L"LabelXmax2";
 			this->LabelXmax2->Size = System::Drawing::Size(26, 17);
@@ -995,7 +994,7 @@ namespace numLabChebishev {
 			this->LabelYmax2_->AutoSize = true;
 			this->LabelYmax2_->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->LabelYmax2_->Location = System::Drawing::Point(483, 279);
+			this->LabelYmax2_->Location = System::Drawing::Point(532, 279);
 			this->LabelYmax2_->Name = L"LabelYmax2_";
 			this->LabelYmax2_->Size = System::Drawing::Size(53, 17);
 			this->LabelYmax2_->TabIndex = 83;
@@ -1006,7 +1005,7 @@ namespace numLabChebishev {
 			this->LabelXmax2_->AutoSize = true;
 			this->LabelXmax2_->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->LabelXmax2_->Location = System::Drawing::Point(377, 279);
+			this->LabelXmax2_->Location = System::Drawing::Point(372, 279);
 			this->LabelXmax2_->Name = L"LabelXmax2_";
 			this->LabelXmax2_->Size = System::Drawing::Size(52, 17);
 			this->LabelXmax2_->TabIndex = 82;
@@ -1017,7 +1016,7 @@ namespace numLabChebishev {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(633, 743);
+			this->ClientSize = System::Drawing::Size(665, 743);
 			this->Controls->Add(this->LabelYmax2);
 			this->Controls->Add(this->LabelXmax2);
 			this->Controls->Add(this->LabelYmax2_);
@@ -1168,6 +1167,8 @@ namespace numLabChebishev {
 					label2->Visible = true;
 					LabelTime2->Visible = true;
 					label1->Visible = true;
+
+					LabelYmax->Visible = false;
 				}
 				else
 				{
@@ -1209,6 +1210,8 @@ namespace numLabChebishev {
 					label2->Visible = false;
 					LabelTime2->Visible = false;
 					label1->Visible = false;
+
+					LabelYmax->Visible = true;
 				}
 				LabelN->Text = info->n.ToString();
 				LabelM->Text = info->m.ToString();

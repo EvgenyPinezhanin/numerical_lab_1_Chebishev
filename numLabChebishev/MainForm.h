@@ -78,8 +78,7 @@ namespace numLabChebishev {
 		double h, k;
 		
 		MatrixA *A;
-		vector<double> *B;
-		vector<double> *V, *V2, *V0, *V02;
+		VectorV *V, *V2, *V0, *V02;
 
 		double time, time2;
 		double RN, RN2, R0, R02;
@@ -111,11 +110,10 @@ namespace numLabChebishev {
 			hForm = gcnew HelpForm();
 
 			A = new MatrixA();
-			B = new vector<double>();
-			V = new vector<double>();
-			V0 = new vector<double>();
-			V2 = new vector<double>();
-			V02 = new vector<double>();
+			V = new VectorV();
+			V0 = new VectorV();
+			V2 = new VectorV();
+			V02 = new VectorV();
 
 			x_max = new double;
 			y_max = new double;
@@ -440,7 +438,7 @@ namespace numLabChebishev {
 			this->TextBoxAccur2->Name = L"TextBoxAccur2";
 			this->TextBoxAccur2->Size = System::Drawing::Size(120, 22);
 			this->TextBoxAccur2->TabIndex = 2;
-			this->TextBoxAccur2->Text = L"0.000000005";
+			this->TextBoxAccur2->Text = L"0.0000005";
 			// 
 			// LabelIter
 			// 
@@ -468,7 +466,7 @@ namespace numLabChebishev {
 			this->TextBoxK2->Name = L"TextBoxK2";
 			this->TextBoxK2->Size = System::Drawing::Size(111, 22);
 			this->TextBoxK2->TabIndex = 9;
-			this->TextBoxK2->Text = L"13";
+			this->TextBoxK2->Text = L"32";
 			// 
 			// LabelK2
 			// 
@@ -487,7 +485,7 @@ namespace numLabChebishev {
 			this->TextBoxK->Name = L"TextBoxK";
 			this->TextBoxK->Size = System::Drawing::Size(132, 22);
 			this->TextBoxK->TabIndex = 8;
-			this->TextBoxK->Text = L"13";
+			this->TextBoxK->Text = L"32";
 			// 
 			// LabelK
 			// 
@@ -532,7 +530,7 @@ namespace numLabChebishev {
 			this->TextBoxAccuracy->Name = L"TextBoxAccuracy";
 			this->TextBoxAccuracy->Size = System::Drawing::Size(132, 22);
 			this->TextBoxAccuracy->TabIndex = 2;
-			this->TextBoxAccuracy->Text = L"0.000000005";
+			this->TextBoxAccuracy->Text = L"0.0000005";
 			// 
 			// LabelStep
 			// 
@@ -625,7 +623,7 @@ namespace numLabChebishev {
 			this->TextBoxPartY->Name = L"TextBoxPartY";
 			this->TextBoxPartY->Size = System::Drawing::Size(132, 22);
 			this->TextBoxPartY->TabIndex = 4;
-			this->TextBoxPartY->Text = L"10";
+			this->TextBoxPartY->Text = L"200";
 			// 
 			// TextBoxPartX
 			// 
@@ -635,7 +633,7 @@ namespace numLabChebishev {
 			this->TextBoxPartX->Name = L"TextBoxPartX";
 			this->TextBoxPartX->Size = System::Drawing::Size(132, 22);
 			this->TextBoxPartX->TabIndex = 3;
-			this->TextBoxPartX->Text = L"10";
+			this->TextBoxPartX->Text = L"200";
 			// 
 			// LabelPartY
 			// 
@@ -978,7 +976,7 @@ namespace numLabChebishev {
 			});
 			this->TestToolStripMenuItem->Enabled = false;
 			this->TestToolStripMenuItem->Name = L"TestToolStripMenuItem";
-			this->TestToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->TestToolStripMenuItem->Size = System::Drawing::Size(212, 26);
 			this->TestToolStripMenuItem->Text = L"Тестовая задача";
 			// 
 			// точноеРешениеUxYToolStripMenuItem
@@ -1018,7 +1016,7 @@ namespace numLabChebishev {
 			});
 			this->MainToolStripMenuItem->Enabled = false;
 			this->MainToolStripMenuItem->Name = L"MainToolStripMenuItem";
-			this->MainToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->MainToolStripMenuItem->Size = System::Drawing::Size(212, 26);
 			this->MainToolStripMenuItem->Text = L"Основная задача";
 			// 
 			// начальноеПриближениеV0xYToolStripMenuItem
@@ -1162,117 +1160,121 @@ namespace numLabChebishev {
 			PictureBoxChart5->Image = (Image^)imageDefault;
 		}
 		
-		private: void reading_parameters() {
+		private: bool reading_parameters() {
 			if (!Int32::TryParse(TextBoxK->Text, kParam)) {
 				MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			else if (kParam < 1) {
 				MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			
 			if (!Int32::TryParse(TextBoxPartX->Text, n)) {
 				MessageBox::Show(L"Число разбиениий по x, n не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			else if (n < 2) {
 				MessageBox::Show(L"Число разбиениий по x, n меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			
 			if (!Int32::TryParse(TextBoxPartY->Text, m)) {
 				MessageBox::Show(L"Число разбиениий по y, m не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			else if (m < 2) {
 				MessageBox::Show(L"Число разбиениий по y, m меньше 2", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			
 			if (!Double::TryParse(TextBoxAccuracy->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet)) {
 				MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			else if (epsMet <= 0.0) {
 				MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			
 			if (!Int32::TryParse(TextBoxStep->Text, Nmax)) {
 				MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 			else if (Nmax < 1) {
 				MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-				return;
+				return false;
 			}
 
 			if (task == TASK::MAIN) {
 				if (!Int32::TryParse(TextBoxK2->Text, kParam2)) {
 					MessageBox::Show(L"Количество параметров k не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-					return;
+					return false;
 				}
 				else if (kParam2 < 1) {
 					MessageBox::Show(L"Количество параметров k меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-					return;
+					return false;
 				}
 
 				if (!Double::TryParse(TextBoxAccur2->Text, System::Globalization::NumberStyles::Float, System::Globalization::CultureInfo::InvariantCulture, epsMet2)) {
 					MessageBox::Show(L"Точность метода не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-					return;
+					return false;
 				}
 				else if (epsMet2 <= 0.0) {
 					MessageBox::Show(L"Точность метода меньше 0", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-					return;
+					return false;
 				}
 
 				if (!Int32::TryParse(TextBoxIter2->Text, Nmax2)) {
 					MessageBox::Show(L"Максимальное число итераций не число", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-					return;
+					return false;
 				}
 				else if (Nmax2 < 1) {
 					MessageBox::Show(L"Максимальное число итераций меньше 1", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-					return;
+					return false;
 				}
 			}
+			return true;
 		}
 
-		private: void initial_approximation(vector<double> &vec, int _n, int _m, double _h, double _k) {
-			vec.resize((_n - 1) * (_m - 1));
-			double lb1, inter1, lb2, inter2;
+		private: void initial_approximation(VectorV &V, double _h, double _k, double (*_mu)(double, int)) {
+			int n, m;
+			V.getSize(n, m);
+			double lb1, lb2, inter1, inter2;
 			switch (startApprox) {
 			case APPROX::ZERO:
-				for (size_t i = 0; i < vec.size(); i++) {
-					vec[i] = 0.0;
+				for (int i = 1; i < n; i++) {
+					for (int j = 1; j < m; j++) {
+						V[i][j] = 0.0;
+					}
 				}
 				break;
 			case APPROX::AVERAGE:
-				for (int i = 0; i < _m - 1; i++) {
-					lb1 = mu_test(c + (i + 1) * _k, 1);
-					inter1 = (mu_test(c + (i + 1) * _k, 2) - mu_test(c + (i + 1) * _k, 1)) / _n;
-					for (int j = i * (_n - 1); j < (i + 1) * (_n - 1); j++) {
-						lb2 = mu_test(a + (j % (_n - 1) + 1) * _h, 3);
-						inter2 = (mu_test(a + (j % (_n - 1) + 1) * _h, 4) - mu_test(a + (j % (_n - 1) + 1) * _h, 3)) / _m;
-						vec[j] = (lb1 + inter1 * (j % (_n - 1) + 1) + lb2 + inter2 * (i + 1)) / 2.0;
+				for (int i = 1; i < m; i++) {
+					lb1 = mu_test(c + i * _k, 1);
+					inter1 = (mu_test(c + i * _k, 2) - mu_test(c + i * _k, 1)) / n;
+					for (int j = 1; j < n; j++) {
+						lb2 = mu_test(a + j * _h, 3);
+						inter2 = (mu_test(a + j * _h, 4) - mu_test(a + j * _h, 3)) / m;
+						V[j][i] = (lb1 + inter1 * j + lb2 + inter2 * i) / 2.0;
 					}
 				}
 				break;
 			case APPROX::LINEARX:
-				for (int i = 0; i < _m - 1; i++) {
-					lb1 = mu_test(c + (i + 1) * _k, 1);
-					inter1 = (mu_test(c + (i + 1) * _k, 2) - mu_test(c + (i + 1) * _k, 1)) / _n;
-					for (int j = i * (_n - 1); j < (i + 1) * (_n - 1); j++) {
-						vec[j] = lb1 + inter1 * (j % (_n - 1) + 1);
+				for (int i = 1; i < m; i++) {
+					lb1 = mu_test(c + i * _k, 1);
+					inter1 = (mu_test(c + i * _k, 2) - mu_test(c + i * _k, 1)) / n;
+					for (int j = 1; j < n; j++) {
+						V[i][j] = lb1 + inter1 * j;
 					}
 				}
 				break;
 			case APPROX::LINEARY:
-				for (int i = 0; i < _n - 1; i++) {
-					lb2 = mu_test(a + (i + 1) * _h, 3);
-					inter2 = (mu_test(a + (i + 1) * _h, 4) - mu_test(a + (i + 1) * _h, 3)) / _m;
-					for (int j = i; j < i + 1 + (_m - 2) * (_n - 1); j += (_n - 1)) {
-						vec[j] = lb2 + inter2 * (j / (_n - 1) + 1);
+				for (int i = 1; i < n; i++) {
+					lb2 = mu_test(a + i * _h, 3);
+					inter2 = (mu_test(a + i * _h, 4) - mu_test(a + i * _h, 3)) / m;
+					for (int j = 1; j < m; j++) {
+						V[j][i] = lb2 + inter2 * j;
 					}
 				}
 				break;
@@ -1318,19 +1320,20 @@ namespace numLabChebishev {
 			pb->Image = img;
 		}
 
-		private: void clear_image(Image^% img) {
+		private: void clear_image(PictureBox^ picture, Image^% img) {
 			if (img != nullptr) {
 				img->~Image();
 				img = nullptr;
+				picture->Image = (Image^)imageDefault;
 			}
 		}
 
 		private: void create_chart() {
-			clear_image(image1);
-			clear_image(image2);
-			clear_image(image3);
-			clear_image(image4);
-			clear_image(image5);
+			clear_image(PictureBoxChart1, image1);
+			clear_image(PictureBoxChart2, image2);
+			clear_image(PictureBoxChart3, image3);
+			clear_image(PictureBoxChart4, image4);
+			clear_image(PictureBoxChart5, image5);
 
 			if (task == TASK::MAIN) {
 				write_points_in_matrix("./data/points_v0_main.txt", *V0, n, m, 2.0 * h, 2.0 * k);
@@ -1382,8 +1385,14 @@ namespace numLabChebishev {
 			clear_table(tab);
 			tab->Columns->Add("null", "");
 			tab->Columns->Add("ci", "i");
+
 			for (int i = 0; i < n + 1; i++) {
+				// DataGridViewColumn^ columns = gcnew DataGridViewColumn();
+				// columns->FillWeight = 30;
+				// columns->Name = "c" + i.ToString();
+				// columns->HeaderText = i.ToString();
 				tab->Columns->Add("c" + i.ToString(), i.ToString());
+				tab->Columns[i + 2]->FillWeight = 30;
 			}
 			for (int i = 0; i < m + 2; i++) {
 				tab->Rows->Add();
@@ -1394,31 +1403,8 @@ namespace numLabChebishev {
 				tab->Rows[i + 1]->Cells[0]->Value = i.ToString();
 				tab->Rows[i + 1]->Cells[1]->Value = (c + i * k).ToString();
 			}
-			for (int i = 0; i < m + 1; i++) {
+			for (int i = 0; i < n + 1; i++) {
 				tab->Rows[0]->Cells[i + 2]->Value = (a + i * h).ToString();
-			}
-		}
-
-		private: void set_border() {
-			double zero = 0.0;
-			for (int i = 0; i < n + 1; i++) {
-				Table1->Rows[1]->Cells[i + 2]->Value = mu_test(a + i * h, 3).ToString();
-				Table2->Rows[1]->Cells[i + 2]->Value = mu_test(a + i * h, 3).ToString();
-				Table3->Rows[1]->Cells[i + 2]->Value = zero.ToString();
-			}
-			for (int i = 1; i < m; i++) {
-				Table1->Rows[i + 1]->Cells[2]->Value = mu_test(c + i * k, 1);
-				Table2->Rows[i + 1]->Cells[2]->Value = mu_test(c + i * k, 1);
-				Table3->Rows[i + 1]->Cells[2]->Value = zero.ToString();
-
-				Table1->Rows[i + 1]->Cells[n + 2]->Value = mu_test(c + i * k, 2);
-				Table2->Rows[i + 1]->Cells[n + 2]->Value = mu_test(c + i * k, 2);
-				Table3->Rows[i + 1]->Cells[n + 2]->Value = zero.ToString();
-			}
-			for (int i = 0; i < n + 1; i++) {
-				Table1->Rows[m + 1]->Cells[i + 2]->Value = mu_test(a + i * h, 4);
-				Table2->Rows[m + 1]->Cells[i + 2]->Value = mu_test(a + i * h, 4);
-				Table3->Rows[m + 1]->Cells[i + 2]->Value = zero.ToString();
 			}
 		}
 
@@ -1427,57 +1413,47 @@ namespace numLabChebishev {
 			init_columns_rows(Table2);
 			init_columns_rows(Table3);
 
-			set_border();
-
 			if (task == TASK::MAIN) {
-				for (int i = 1; i < m; i++) {
-					for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
-						Table1->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V)[j];
-						Table2->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V2)[(2 * i - 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1];
-						Table3->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V2)[(2 * i - 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j];
+				for (int i = 0; i < n + 1; i++) {
+					for (int j = 0; j < m + 1; j++) {
+						Table1->Rows[j + 1]->Cells[i + 2]->Value = (*V)[i][j];
+						Table2->Rows[j + 1]->Cells[i + 2]->Value = (*V2)[2 * i][2 * j];
+						Table3->Rows[j + 1]->Cells[i + 2]->Value = (*V2)[2 * i][2 * j] - (*V)[i][j];
 					}
 				}
 			}
 			else
 			{
-				for (int i = 1; i < m; i++) {
-					for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
-						Table1->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = (*V)[j];
-						Table2->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = u(a + (j % (n - 1) + 1) * h, c + i * k);
-						Table3->Rows[i + 1]->Cells[j % (n - 1) + 3]->Value = u(a + (j % (n - 1) + 1) * h, c + i * k) - (*V)[j];
+				for (int i = 0; i < n + 1; i++) {
+					for (int j = 0; j < m + 1; j++) {
+						Table1->Rows[j + 1]->Cells[i + 2]->Value = (*V)[i][j];
+						Table2->Rows[j + 1]->Cells[i + 2]->Value = u(a + i * h, c + j * k);
+						Table3->Rows[j + 1]->Cells[i + 2]->Value = u(a + i * h, c + j * k) - (*V)[i][j];
 					}
 				}
 			}
 		}
 
-		private: void write_points_in_matrix(string str, const vector<double> &v, int _n, int _m, double _h, double _k) {
+		private: void write_points_in_matrix(string str, const VectorV &V, int _n, int _m, double _h, double _k) {
 			ofstr->open(str);
 			if (!ofstr->is_open()) throw "Error! The file is not open";
 			*ofstr << _n + 2 << " ";
 			for (int i = 0; i < _n + 1; i++) {
 				*ofstr << a + i * _h << " ";
 			}
-			*ofstr << endl << c << " ";
-			for (int i = 0; i < _n + 1; i++) {
-				*ofstr << mu_test(a + i * _h, 3) << " ";
-			}
 			*ofstr << endl;
-			for (int i = 1; i < _m; i++) {
-				*ofstr << c + i * _k << " " << mu_test(c + i * _k, 1) << " ";
-				for (int j = (i - 1) * (_n - 1); j < i * (_n - 1); j++) {
-					*ofstr << v[j] << " ";
+			for (int i = 0; i < _m + 1; i++) {
+				*ofstr << c + i * _k << " ";
+				for (int j = 0; j < _n + 1; j++) {
+					*ofstr << V[j][i] << " ";
 				}
-				*ofstr << mu_test(c + i * _k, 2)  << endl;
-			}
-			*ofstr << d << " ";
-			for (int i = 0; i < _n + 1; i++) {
-				*ofstr << mu_test(a + i * _h, 4) << " ";
+				*ofstr << endl;
 			}
 			*ofstr << endl;
 			ofstr->close();
 		}
 
-		private: void write_points_in_matrix_u_(string str, const vector<double>& v) {
+		private: void write_points_in_matrix_u_(string str, const VectorV& V) {
 			ofstr->open(str);
 			if (!ofstr->is_open()) throw "Error! The file is not open";
 			*ofstr << n + 2 << " ";
@@ -1491,9 +1467,8 @@ namespace numLabChebishev {
 			*ofstr << endl;
 			for (int i = 1; i < m; i++) {
 				*ofstr << c + i * k << " " << 0.0 << " ";
-				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
-					double asd = a + (j % (n - 1) + 1) * h;
-					*ofstr << u(a + (j % (n - 1) + 1) * h, c + i * k) - v[j] << " ";
+				for (int j = 1; j < n; j++) {
+					*ofstr << u(a + j * h, c + i * k) - V[j][i] << " ";
 				}
 				*ofstr << 0.0 << endl;
 			}
@@ -1519,8 +1494,8 @@ namespace numLabChebishev {
 			*ofstr << endl;
 			for (int i = 1; i < m; i++) {
 				*ofstr << c + i * 2.0 * k << " " << 0.0 << " ";
-				for (int j = (i - 1) * (n - 1); j < i * (n - 1); j++) {
-					*ofstr << (*V2)[(2 * (i - 1) + 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j] << " ";
+				for (int j = 1; j < n; j++) {
+					*ofstr << (*V2)[2 * j][2 * i] - (*V)[j][i] << " ";
 				}
 				*ofstr << 0.0 << endl;
 			}
@@ -1537,13 +1512,13 @@ namespace numLabChebishev {
 			eps1 = 0.0;
 			x_max = a;
 			y_max = c;
-			for (int i = 0; i < m - 1; i++) {
-				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-					eps_curr = abs(u(a + (j % (n - 1) + 1) * h, c + (i + 1) * k) - (*V)[j]);
+			for (int i = 1; i < n; i++) {
+				for (int j = 1; j < m; j++) {
+					eps_curr = abs(u(a + i * h, c + j * k) - (*V)[i][j]);
 					if (eps_curr > eps1) {
 						eps1 = eps_curr;
-						x_max = a + (j % (n - 1) + 1) * h;
-						y_max = c + (i + 1) * k;
+						x_max = a + i * h;
+						y_max = c + j * k;
 					}
 				}
 			}
@@ -1554,92 +1529,108 @@ namespace numLabChebishev {
 			eps2 = 0.0;
 			x_max = a;
 			y_max = c;
-			for (int i = 0; i < m - 1; i++) {
-				for (int j = i * (n - 1); j < (i + 1) * (n - 1); j++) {
-					eps_curr = abs((*V2)[(2 * i + 1) * (2 * n - 1) + 2 * (j % (n - 1)) + 1] - (*V)[j]);
+			for (int i = 1; i < n; i++) {
+				for (int j = 1; j < m; j++) {
+					eps_curr = abs((*V2)[2 * i][2 * j] - (*V)[i][j]);
 					if (eps_curr > eps2) {
 						eps2 = eps_curr;
-						x_max = a + (j % (n - 1) + 1) * 2.0 * h;
-						y_max = c + (i + 1) * 2.0 * k;
+						x_max = a + i * 2.0 * h;
+						y_max = c + j * 2.0 * k;
 					}
 				}
 			}
 		}
 
 		private: System::Void решатьToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-			reading_parameters();
-			h = (b - a) / n;
-			k = (d - c) / m;
-			A->setParam(n, m, h, k);
-			if (task == TASK::MAIN) {
-				VectorB::getVectorB(*B, n, m, h, k, f, mu, a, b, c, d);
-			}
-			else
-			{
-				VectorB::getVectorB(*B, n, m, h, k, f_test, mu_test, a, b, c, d);
-			}
-			initial_approximation(*V, n, m, h, k);
+			try {
+				if (!reading_parameters()) return;
+				h = (b - a) / n;
+				k = (d - c) / m;
+				A->n = n; A->m = m;
+				A->h = h; A->k = k;
+				if (task == TASK::MAIN) {
+					A->f = f;
+					V->setSize(n, m);
+					V->setInterval(a, b, c, d);
+					V->setBorder(mu);
+					initial_approximation(*V, h, k, mu);
+				}
+				else
+				{
+					A->f = f_test;
+					V->setSize(n, m);
+					V->setInterval(a, b, c, d);
+					V->setBorder(mu_test);
+					initial_approximation(*V, h, k, mu_test);
+				}
 
-			*V0 = *V;
+				*V0 = *V;
 
-			R0 = norm_vector_max((*A) * (*V) - *B);
-			
-			chebishev->setA(*A);
-			chebishev->setB(*B);
-			chebishev->setK(kParam);
-			chebishev->setEpsMet(epsMet);
-			chebishev->setNmax(Nmax);
-			
-			Stopwatch^ stopWatch = gcnew Stopwatch();
-			stopWatch->Start();
-
-			chebishev->solve(*V, *eps, *N);
-
-			stopWatch->Stop();
-			TimeSpan ts = stopWatch->Elapsed;
-			time = ts.TotalSeconds;
-
-			if (task == TASK::MAIN) {
-				h = (b - a) / (2 * n);
-				k = (d - c) / (2 * m);
-				A->setParam(2 * n, 2 * m, h, k);
-				VectorB::getVectorB(*B, 2 * n, 2 * m, h, k, f, mu, a, b, c, d);
-				initial_approximation(*V2, 2 * n, 2 * m, h, k);
-
-				*V02 = *V2;
-
-				R02 = norm_vector_max((*A) * (*V2) - *B);
+				R0 = A->residual(*V0).norm_vector_euclid();
 
 				chebishev->setA(*A);
-				chebishev->setB(*B);
-				chebishev->setK(kParam2);
-				chebishev->setEpsMet(epsMet2);
-				chebishev->setNmax(Nmax2);
+				chebishev->setK(kParam);
+				chebishev->setEpsMet(epsMet);
+				chebishev->setNmax(Nmax);
 
 				Stopwatch^ stopWatch = gcnew Stopwatch();
 				stopWatch->Start();
 
-				chebishev->solve(*V2, *epsN2, *N2);
+				chebishev->solve(*V, *eps, *N);
 
 				stopWatch->Stop();
 				TimeSpan ts = stopWatch->Elapsed;
-				time2 = ts.TotalSeconds;
+				time = ts.TotalSeconds;
 
-				RN2 = norm_vector_max((*A) * (*V2) - *B);
-				calc_eps_2(*x_max2, *y_max2);
+				RN = A->residual(*V).norm_vector_euclid();
+				if (task == TASK::MAIN) {
+					h = (b - a) / (2 * n);
+					k = (d - c) / (2 * m);
+					A->n = 2 * n; A->m = 2 * m;
+					A->h = h; A->k = k;
+					V2->setSize(2 * n, 2 * m);
+					V2->setInterval(a, b, c, d);
+					V2->setBorder(mu);
+					initial_approximation(*V2, h, k, mu);
+
+					*V02 = *V2;
+
+					R02 = A->residual(*V02).norm_vector_euclid();
+
+					chebishev->setA(*A);
+					chebishev->setK(kParam2);
+					chebishev->setEpsMet(epsMet2);
+					chebishev->setNmax(Nmax2);
+
+					Stopwatch^ stopWatch = gcnew Stopwatch();
+					stopWatch->Start();
+
+					chebishev->solve(*V2, *epsN2, *N2);
+
+					stopWatch->Stop();
+					TimeSpan ts = stopWatch->Elapsed;
+					time2 = ts.TotalSeconds;
+
+					RN2 = A->residual(*V2).norm_vector_euclid();
+					calc_eps_2(*x_max2, *y_max2);
+				}
+				else
+				{
+					calc_eps_1(*x_max, *y_max);
+				}
+
+				setInfo();
+				справкаToolStripMenuItem->Enabled = true;
+
+				create_chart();
+
+				set_table();
 			}
-			else
+			catch (System::Exception^ e)
 			{
-				RN = norm_vector_max((*A) * (*V) - *B);
-				calc_eps_1(*x_max, *y_max);
+				Console::WriteLine("Возникло исключение");
+				Console::WriteLine(e->HResult);
 			}
-
-			setInfo();
-			справкаToolStripMenuItem->Enabled = true;
-
-			create_chart();
-
-			set_table();
 		}
 
 		private: System::Void ComboBoxTask_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {

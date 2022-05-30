@@ -1,40 +1,53 @@
 #pragma once
 
-#include <omp.h>
-
 #include <vector>
 #define _USE_MATH_DEFINES
 #include <math.h>
 
 using namespace std;
 
-class MatrixA {
+class VectorV {
 private:
+	vector<vector<double>> *v_data;
+	double a, b, c, d;
+	int n, m;
+
+public:
+	VectorV() : v_data(new vector<vector<double>>()) {};
+	VectorV(int _n, int _m, double _a, double _b, double _c, double _d);
+	VectorV(const VectorV &V);
+	~VectorV();
+
+	VectorV& operator=(const VectorV& V);
+
+	vector<double>& operator[](size_t index);
+	const vector<double>& operator[](size_t index) const;
+	
+	void setBorder(double (*mu)(double, int));
+	void setInterval(double _a, double _b, double _c, double _d);
+	void setSize(int _n, int _m);
+
+	void getInterval(double& _a, double& _b, double& _c, double& _d) const;
+	void getSize(int& _n, int& _m) const;
+
+	double norm_vector_max();
+	double norm_vector_euclid();
+
+	friend VectorV operator-(const VectorV& V1, const VectorV& V2);
+	friend VectorV operator*(double a, const VectorV& V);
+};
+
+class MatrixA {
+public:
+	MatrixA(int _n = 0, int _m = 0, double _h = 0.0, double _k = 0.0, double (*_f)(double, double) = nullptr)
+		: n(_n), m(_m), h(_h), k(_k), f(_f) {};
+
+	double (*f)(double, double);
+
 	int n, m;
 	double h, k;
 
-public:
-	MatrixA(int _n = 0, int _m = 0, double _h = 0.1, double _k = 0.1);
+	void getLamdMinMax(double& Mmin, double& Mmax) const;
 
-	vector<double> operator*(const vector<double>& vec);
-
-	void setN(int _n);
-	void setM(int _m);
-	void setH(double _h);
-	void setK(double _k);
-	void setParam(int _n, int _m, double _h, double _k);
-
-	void getLamdMinMax(double &Mmin, double &Mmax) const;
+	VectorV residual(const VectorV& V);
 };
-
-class VectorB {
-public:
-	static void getVectorB(vector<double> &vec, int n, int m, double h, double k, double (*f)(double, double), 
-						   double (*mu)(double, int), double a, double b, double c, double d);
-};
-
-vector<double> operator+(const vector<double> &v1, const vector<double> &v2);
-vector<double> operator-(const vector<double>& v1, const vector<double>& v2);
-vector<double> operator*(double a, const vector<double>& v);
-
-double norm_vector_max(vector<double> vec);

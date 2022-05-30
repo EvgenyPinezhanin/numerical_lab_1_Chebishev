@@ -37,3 +37,6 @@ if (ARG1 == 5) {
 	set title 'V2^{(N2)}(x, y) - V^{(N)}(x, y)'
 	splot datafile_vn2_vn matrix nonuniform with pm3d title 'V2^{(N2)}(x, y) - V^{(N)}(x, y)'
 }
+
+bind all "alt-End" "exit gnuplot"
+pause mouse close

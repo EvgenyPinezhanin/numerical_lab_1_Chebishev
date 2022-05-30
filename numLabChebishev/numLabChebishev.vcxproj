@@ -95,7 +95,7 @@ if not exist "$(TargetDir)data\" mkdir  "$(TargetDir)data\"</Command>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <OpenMPSupport>true</OpenMPSupport>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -125,7 +125,7 @@ if not exist "$(TargetDir)data\" mkdir "$(TargetDir)data\"</Command>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
     <PreBuildEvent>
