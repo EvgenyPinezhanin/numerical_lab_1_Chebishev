@@ -1566,7 +1566,7 @@ namespace numLabChebishev {
 
 				*V0 = *V;
 
-				R0 = A->residual(*V0).norm_vector_euclid();
+				R0 = A->residual(*V0).norm_vector_max();
 
 				chebishev->setA(*A);
 				chebishev->setK(kParam);
